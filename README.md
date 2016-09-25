@@ -42,6 +42,13 @@ migrate
 runserver
 ```
 
+To create admin and get access to admin tool you should type
+
+```
+createsuperuser
+```
+Default admin username/password pair created is: admin/adminadmin
+
 Initial Endpoints
 -----------------
 
@@ -61,8 +68,8 @@ References
 
 Helpful links
 
-[https://habrahabr.ru/post/240463/](https://habrahabr.ru/post/240463/)
-[http://jsman.ru/mongo-book/](http://jsman.ru/mongo-book/)
-[https://docs.djangoproject.com/en/1.10/](https://docs.djangoproject.com/en/1.10/)
-[https://www.youtube.com/watch?v=IZqBTPmxoew](https://www.youtube.com/watch?v=IZqBTPmxoew)
+[https://habrahabr.ru/post/240463/](https://habrahabr.ru/post/240463/) <BR>
+[http://jsman.ru/mongo-book/](http://jsman.ru/mongo-book/) <BR>
+[https://docs.djangoproject.com/en/1.10/](https://docs.djangoproject.com/en/1.10/) <BR>
+[https://www.youtube.com/watch?v=IZqBTPmxoew](https://www.youtube.com/watch?v=IZqBTPmxoew) <BR>
 [http://geo2tag.org/?tag=geo2tag_seminars&lang=ru_RU](http://geo2tag.org/?tag=geo2tag_seminars&lang=ru_RU)
