@@ -1,0 +1,158 @@
+body {
+    margin: 0 auto;
+    background-image: url("../img/Yellow-Taxis-in-Times-Square.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 720px;
+}
+
+.container {
+    width: 500px;
+    height: 400px;
+    background-color: rgba(90, 98, 128, 0.7);
+    text-align: center;
+    margin: 150px auto auto auto;
+    border-radius: 4px;
+}
+
+.container img {
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+    margin-bottom: 30px;
+}
+
+input[type="text"],input[type="password"] {
+    height: 45px;
+    width: 300px;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding-left: 40px;
+    border-radius: 4px;
+}
+
+#sign-up {
+    cursor: pointer;
+    padding: 15px 30px;
+    color: #fff;
+    border-radius: 4px;
+    border:none;
+    background-color: red;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+#sign-up:hover {
+    background-color: darkred;
+}
+
+#sign-in {
+    cursor: pointer;
+    padding: 15px 30px;
+    color: #fff;
+    border-radius: 4px;
+    border:none;
+    background-color: #2ECC11;
+    margin-bottom: 20px;
+}
+
+#sign-in:hover{
+    background-color: darkgreen;
+}
+
+form a{
+    color: #fff;
+}
+
+form a:hover{
+    color: darkred;
+}
+.form-input:before {
+    content: "\f007";
+    position: absolute;
+    font-family: "FontAwesome";
+    color: rgba(90, 98, 128, 0.7);
+    padding-left: 5px;
+    padding-top: 7px;
+    font-size: 35px;
+}
+
+.form-input:nth-child(2)::before {
+    content: "\f023";
+}
+
+@-webkit-keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+        transform: translateX(-5px);
+    }
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+@keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+        transform: translateX(-5px);
+    }
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+.container img:hover
+{
+    -webkit-animation: swing 1s ease;
+    animation: swing 1s ease;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
