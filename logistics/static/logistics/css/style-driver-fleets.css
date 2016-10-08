@@ -1,0 +1,126 @@
+.search-form .form-group {
+  float: right !important;
+  transition: all 0.35s, border-radius 0s;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+}
+.search-form .form-group input.form-control {
+  padding-right: 20px;
+  border: 0 none;
+  background: transparent;
+  box-shadow: none;
+  display:block;
+}
+.search-form .form-group input.form-control::-webkit-input-placeholder {
+  display: none;
+}
+.search-form .form-group input.form-control:-moz-placeholder {
+  /* Firefox 18- */
+  display: none;
+}
+.search-form .form-group input.form-control::-moz-placeholder {
+  /* Firefox 19+ */
+  display: none;
+}
+.search-form .form-group input.form-control:-ms-input-placeholder {
+  display: none;
+}
+.search-form .form-group:hover,
+.search-form .form-group.hover {
+  width: 100%;
+  border-radius: 4px 25px 25px 4px;
+}
+.search-form .form-group span.form-control-feedback {
+  position: absolute;
+  top: -1px;
+  right: -2px;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  color: #3596e0;
+  left: initial;
+  font-size: 14px;
+}
+
+#search-fleet-bar{
+  margin-top: 15px;
+}
+
+#select-fleet{
+  margin-top: 15px;
+  /*display: inline-block;*/
+}
+table { border-collapse: collapse; }
+
+td + td,
+th + th { border-left: 1px solid; }
+tr + tr { border-top: 1px solid; }
+
+#myTable, #driver-fleets-table{
+  margin-top: 15px;
+  width: 800px;
+  height: 300px;
+  border: double;
+}
+
+#cur-trip{
+  margin-top: 15px;
+}
+
+.category{
+  font-weight: bold;
+}
+
+.row p{
+  padding-bottom: 10px;
+}
+
+.buttons{
+  /*margin: 15px;*/
+  padding: 10px;
+}
+
+#body-trouble{
+  height:80%;
+  width:80%;
+}
+
+#trouble-report-list{
+  margin: 15px;
+}
+
+#container-trouble .btn-group.bootstrap-select.show-tick{
+  display: flex;
+  margin-left: 15px;
+  width: 35%;
+}
+
+#trouble-text{
+  width: 35%;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+#trouble-buttons{
+  margin-left: 15px;
+}
+
+#close-trip{
+  margin-left: 15px;
+}
+
+#choose-category{
+  margin: 10px;
+}
+
+#choose-category select,form,p{
+  margin: 10px;
+}
+

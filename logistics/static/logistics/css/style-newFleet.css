@@ -1,0 +1,39 @@
+body {
+    padding-top: 70px;
+    padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+    position: static;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+    margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+    width: auto;
+}
+
+#add-fleet-form {
+    margin: 20px;
+}
+
+.add-fleet-text, #add-fleet-submit, #add-driver-submit, .add-driver-text{
+    display: inline-block;
+}
+
+.add-driver-text {
+    height:23px;
+}
+
+#add-driver-form {
+    margin: 20px;
+    display: inline-block;
+}
+
+.add-driver-text {
+    height:23px;
+}

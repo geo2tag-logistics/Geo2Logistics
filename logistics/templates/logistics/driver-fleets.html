@@ -1,0 +1,273 @@
+{% extends 'logistics/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'logistics/css/style-driver-fleets.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/themes/blue/style.css' %}">
+{% endblock %}
+
+{% block page-title %}
+    Driver fleets
+{% endblock %}
+
+{% block main-content %}
+
+    <div class="row" id="more-info">
+        <div class="col-sm-6">
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1" data-toggle="tab">Новый рейс</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Текущий рейс</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Мои рейсы</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div class="container" id="search-fleet-bar">
+                            <div class="row">
+                                <h3>Выбор автопарка:</h3>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select class="selectpicker" multiple id="select-fleet">
+                                        <option>Таксовичкофф</option>
+                                        <option>ЯндексТакси</option>
+                                        <option>Uber</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <form action="" class="search-form">
+                                        <div class="form-group has-feedback">
+                                            <label for="search" class="sr-only">Search</label>
+                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <table id="myTable" class="tablesorter" >
+                                <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>ID рейса</th>
+                                    <th>Длительность</th>
+                                    <th>Расстояние</th>
+                                    <th>Описание маршрута</th>
+                                    <th>Карта</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>05.09.1992</td>
+                                    <td>123456</td>
+                                    <td>15</td>
+                                    <td>1500</td>
+                                    <td>-</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>05.09.2212</td>
+                                    <td>12233</td>
+                                    <td>123</td>
+                                    <td>131400</td>
+                                    <td>-</td>
+                                    <td>No</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="container" id="cur-trip">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="category">ID рейса</p>
+                                    <p class="category">Дата</p>
+                                    <p class="category">Маршрут</p>
+                                    <p class="category">Длительность</p>
+                                    <p class="category">Дальность</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>ABCDF</p>
+                                    <p>02.01.2017 01:21</p>
+                                    <p>no</p>
+                                    <p>3:25</p>
+                                    <p>105.21</p>
+                                </div>
+                            </div>
+                            <!-- Button trigger modal -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="buttons">
+                                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                            Описание
+                                        </button>
+                                    </div>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Описание маршрута</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Подробное описание...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="buttons" >
+                                        <div class="row">
+                                            <button class="btn btn-success btn-lg" id="close-trip">
+                                                Завершить рейс
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="buttons">
+                                        <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#trouble">
+                                            Сообщить о проблеме
+                                        </button>
+                                    </div>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="trouble" tabindex="-1" role="dialog" aria-labelledby="troubleLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="troubleLabel">Описание проблемы</h4>
+                                                </div>
+                                                <div class="modal-body" id="body-trouble">
+                                                    <div class="container" id="container-trouble">
+                                                        <select class="selectpicker" multiple id="trouble-report-list">
+                                                            <option>Авария</option>
+                                                            <option>Ограбление</option>
+                                                            <option>Иное</option>
+                                                        </select>
+                                                        <textarea rows="10" id="trouble-text">
+
+                                                        </textarea>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row" id="trouble-buttons">
+                                                        <div class="col-md-1">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Отправить</button>
+
+                                                        </div>
+                                                        <div class="col-md-4">
+
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="container">
+                            <div class="row" id="choose-category">
+                                <div class="col-xs-6 col-sm-3">
+                                    <p>Выбор автопарка</p>
+                                    <p>Выбор рейса</p>
+                                </div>
+                                <div class="col-xs-6 col-sm-3">
+                                     <select class="selectpicker" multiple id="my-trips">
+                                                            <option>Таксовичкофф</option>
+                                                            <option>ЯндексТакси</option>
+                                                            <option>Uber</option>
+                                     </select>
+                                    <form action="" class="search-form">
+                                        <div class="form-group has-feedback">
+                                            <label for="search" class="sr-only">Search</label>
+                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-xs-6 col-sm-3"></div>
+                                <div class="col-xs-6 col-sm-3"></div>
+                            </div>
+
+                            <div>
+                            <table id="driver-fleets-table" class="tablesorter">
+                                <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>ID рейса</th>
+                                    <th>Статус</th>
+                                    <th>Описание маршрута</th>
+                                    <th>Карта</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>05.09.1992</td>
+                                    <td>123456</td>
+                                    <td>Выполнен</td>
+                                    <td>-</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>05.09.2212</td>
+                                    <td>12233</td>
+                                    <td>Не выполнен</td>
+                                    <td>-</td>
+                                    <td>No</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="{% static 'logistics/js/bootstrap.min.js' %}"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+    <script src="{% static 'logistics/js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'logistics/js/jquery-latest.js' %}"></script>
+    <script type="text/javascript" src="{% static 'logistics/js/jquery.tablesorter.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'logistics/js/my-table.js' %}"></script>
+    <script type="text/javascript" src="{% static 'logistics/js/driver-fleets.js' %}"></script>
+{% endblock %}

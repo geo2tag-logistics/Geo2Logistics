@@ -69,3 +69,4 @@ atlassian-ide-plugin.xml
 
 #Frontend
 node_modules
+*.pyc
