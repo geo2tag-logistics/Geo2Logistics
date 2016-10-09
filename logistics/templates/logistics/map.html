@@ -1,0 +1,25 @@
+{% extends 'logistics/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block page-title %}
+    Map
+{% endblock %}
+
+
+{% block main-content %}
+    <div class="page-header">
+        <h1>Карта</h1>
+    </div>
+    <div class="container">
+    <iframe src="https://api-maps.yandex.ru/frame/v1/-/CZg4aJm8" width="560" height="400" frameborder="0"></iframe>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
+

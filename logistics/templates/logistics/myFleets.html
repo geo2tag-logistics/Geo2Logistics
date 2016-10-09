@@ -4,10 +4,11 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'logistics/css/style-myFleets.css' %}">
     <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 
 {% block page-title %}
-My fleets
+    My fleets
 {% endblock %}
 
 
@@ -49,12 +50,61 @@ My fleets
             </table>
         </div>
     </div>
-    <form action="addFleet.html">
-        <button type="submit" class="btn btn-lg btn-primary" id="add-new-fleet">Добавить новый</button>
-    </form>
+    {#    #}
+    <div class="buttons">
+        <button type="submit" class="btn btn-lg btn-primary" id="add-new-fleet" data-toggle="modal" data-target="#createNewFleet">Добавить новый</button>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="createNewFleet" tabindex="-1" role="dialog" aria-labelledby="createNewFleetLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
+                </div>
+                <div class="modal-body" id="body-createNewFleet">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="headerTit">Название</p>
+                                <p class="headerTit">Описание</p>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" placeholder="Название" class="profile-input">
+                                <textarea rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="headerTit">Пригласить</p>
+                            </div>
+                            </div>
+                        <div class="row" id="list-of-drivers">
+                            <div class="col-md-4">
+                                <input id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput"
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="row" id="creation-buttons">
+                        <div class="col-md-8">
+                            <button type="button" class="btn btn-lg btn-success" data-dismiss="modal">Создать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    #}
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
 
 {% endblock %}
 

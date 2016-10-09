@@ -24,3 +24,29 @@ body {
 h1{
     text-align: center;
 }
+
+.headerTit {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input.profile-input {
+    display: block;
+    margin: 15px 0 15px 0;
+}
+
+h5{
+    text-align: center;
+}
+
+#tag-drivers {
+    width: 60px;
+}
+
+#list-of-drivers {
+    padding: 15px;
+}
+
+textarea{
+    width: 165px;
+}

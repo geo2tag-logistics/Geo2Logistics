@@ -8,6 +8,7 @@ from logistics.views import driverProfile
 from logistics.views import login
 from logistics.views import myFleets
 from logistics.views import ownerProfile
+from logistics.views import map
 
 urlpatterns = [
 
@@ -18,6 +19,7 @@ urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^myFleets/$', myFleets, name='myFleets'),
     url(r'^ownerProfile/$', ownerProfile, name='ownerProfile'),
+    url(r'^map/$', map, name='map'),
 
     url(r'^', home, name='home'),
 

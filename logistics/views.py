@@ -23,6 +23,9 @@ def myFleets(request):
 def ownerProfile(request):
     return render(request, 'logistics/owner-profile.html')
 
+def map(request):
+    return render(request, 'logistics/map.html')
+
 def home(request):
     # return render(request, 'logistics/login.html'),
     return render(request, 'logistics/myFleets.html')
