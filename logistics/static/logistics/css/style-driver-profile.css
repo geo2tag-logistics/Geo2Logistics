@@ -1,0 +1,78 @@
+.headerTit {
+    margin: 20px;
+    text-align: right;
+    font-weight: bold;
+}
+
+#mainTit {
+    border-bottom: 1px solid black;
+}
+
+.profile-input {
+    margin-top: 15px;
+}
+#second-row, #third-row {
+    margin-top: 10px;
+}
+
+#update-driver-info {
+    margin-top: 15px;
+    width: 181px;
+}
+
+button.btn.dropdown-toggle.btn-default {
+    margin-top: 10px;
+}
+
+/* layout.css Style */
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #ccc;
+  border-style: dashed;
+  border-color: #ccc;
+  line-height: 200px;
+  text-align: center
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+
+
+
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.image-preview-input input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+
+.panel-heading{
+    text-align: center;
+}
+
+#auto-data {
+    margin-top: 40px;
+}

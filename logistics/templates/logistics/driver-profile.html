@@ -1,0 +1,124 @@
+{% extends 'logistics/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'logistics/css/style-driver-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-select.min.css' %}">
+{% endblock %}
+
+{% block page-title %}
+    Driver's profile
+{% endblock %}
+
+{% block main-content %}
+    <div class="container">
+        <div class="row">
+            <h3 id="mainTit">Личные данные</h3><br>
+            <div class="col-xs-6 col-md-4">
+                <p class="headerTit">Имя</p>
+                <p class="headerTit">Фамилия</p>
+                <p class="headerTit">Отчество</p>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <input type="text" placeholder="Имя" class="profile-input">
+                <input type="text" placeholder="Фамилия" class="profile-input">
+                <input type="text" placeholder="Отчество" class="profile-input">
+            </div>
+        </div>
+        <div class="row" id="second-row">
+            <div class="col-xs-6 col-md-4">
+                <p class="headerTit">Почта</p>
+                <p class="headerTit">Номер телефона</p>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <input type="email" placeholder="Почта" class="profile-input">
+                <input type="tel" placeholder="Номер телефона" class="profile-input">
+            </div>
+        </div>
+        <div class="row" id="third-row">
+            <div class="col-xs-6 col-md-4">
+                <p class="headerTit">Старый пароль</p>
+                <p class="headerTit">Новый пароль</p>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <input type="password" placeholder="Старый пароль" class="profile-input">
+                <input type="password" placeholder="Новый пароль" class="profile-input">
+                <button class="btn btn-success" type="button" id="update-driver-info">Обновить</button>
+
+            </div>
+        </div>
+
+        <div class="row" id="auto-data">
+            <h3 id="mainTit">Данные об авто</h3><br>
+            <div class="col-xs-6 col-md-4">
+                <p class="headerTit">Тип кузова</p>
+                <p class="headerTit">Марка</p>
+                <p class="headerTit">Модель</p>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <select class="selectpicker">
+                    <option>Седан</option>
+                    <option>Универсал</option>
+                    <option>Хэтчбек</option>
+                </select>
+                <input type="text" placeholder="Марка" class="profile-input">
+                <input type="text" placeholder="Модель" class="profile-input">
+            </div>
+        </div>
+        <div class="row" id="foto-row">
+            <div class="col-xs-6 col-md-4">
+                <p class="headerTit">Фото авто</p>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="container"> <br />
+                    <div class="row">
+
+                        <div class="col-md-7">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Загрузка файлов</strong> <small> </small></div>
+                                <div class="panel-body">
+                                    <div class="input-group image-preview">
+                                        <input placeholder="" type="text" class="form-control image-preview-filename" disabled="disabled">
+                                        <!-- don't give a name === doesn't send on POST/GET -->
+                                        <span class="input-group-btn">
+						<!-- image-preview-clear button -->
+						<button type="button" class="btn btn-default image-preview-clear" style="display:none;"> <span class="glyphicon glyphicon-remove"></span> Clear </button>
+                                            <!-- image-preview-input -->
+						<div class="btn btn-default image-preview-input"> <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">Browse</span>
+							<input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                            <!-- rename it -->
+						</div>
+						<button type="button" class="btn btn-labeled btn-default"> <span class="btn-label"><i class="glyphicon glyphicon-upload"></i> </span>Upload</button>
+						</span> </div>
+                                    <!-- /input-group image-preview [TO HERE]-->
+
+                                    <br />
+
+                                    <!-- Drop Zone -->
+                                    <div class="upload-drop-zone" id="drop-zone"> Or drag and drop files here </div>
+                                    <br />
+                                    <!-- Progress Bar -->
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"> <span class="sr-only">60% Complete</span> </div>
+                                    </div>
+                                    <br />
+                                    <!-- Upload Finished -->
+                                    <div class="js-upload-finished">
+                                        <h4>Upload history</h4>
+                                        <div class="list-group"> <a href="#" class="list-group-item list-group-item-danger"><span class="badge alert-danger pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue.xls</a> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{% static 'logistics/js/uploadFile.js' %}"></script>
+    <script src="{% static 'logistics/js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'logistics/js/uploadFile.js' %}"></script>
+{% endblock %}
