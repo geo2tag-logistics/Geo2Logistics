@@ -9,6 +9,7 @@
 
 .profile-input {
     margin-top: 15px;
+    width: 180px;
 }
 #second-row {
     margin-top: 10px;
@@ -67,4 +68,9 @@ a.btn.btn-small {
 
 .panel-heading{
     text-align: center;
+}
+
+img {
+    display: block;
+    height: 50px;
 }

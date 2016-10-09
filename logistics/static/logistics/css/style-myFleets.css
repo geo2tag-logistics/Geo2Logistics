@@ -33,6 +33,7 @@ h1{
 input.profile-input {
     display: block;
     margin: 15px 0 15px 0;
+    width: 180px;
 }
 
 h5{
