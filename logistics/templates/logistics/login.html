@@ -2,28 +2,32 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Geo2Logistics</title>
     <link href="{% static 'logistics/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'logistics/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
-  </head>
-  <body>
-  <div class="container">
-    <form>
-      <img src="{% static 'logistics/img/taxi.png' %}" alt="Taxi">
-      <div class="form-input">
-      <input type="text" name="username" placeholder="Enter username">
-      </div>
-      <div class="form-input">
-        <input type="password" name="pass" placeholder="Enter password">
-      </div>
-      <input type="submit" name="sign-up" value="Sign Up" class="btn-login" id="sign-up">
-      <input type="submit" name="sign-in" value="Sign In" class="btn-login" id="sign-in"> <br>
-      <a href="#">Forgot password?</a>
+</head>
+<body>
+<div class="container">
+    <form action="{% url 'login' %}" method="post">>
+        {% csrf_token %}
+        <img src="{% static 'logistics/img/taxi.png' %}" alt="Taxi">
+        {% if error_login %}
+            <br> <label> {{ error_login }} </label>
+        {% endif %}
+        <div class="form-input">
+            <input type="text" name="username" id="username" placeholder="Enter username">
+        </div>
+        <div class="form-input">
+            <input type="password" name="pass" id="password" placeholder="Enter password">
+        </div>
+        <input class="btn-login" type="submit" value="Sign Up" name="sign-up" id="sign-up">
+        <input class="btn-login" type="submit" value="Sign In" name="sign-in" id="sign-in"> <br>
+        <a href="#">Forgot password?</a>
     </form>
-  </div>
-  <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="{% static 'logistics/js/bootstrap.min.js' %}"></script>
-  </body>
+</div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{% static 'logistics/js/bootstrap.min.js' %}"></script>
+</body>
 </html>
