@@ -6,51 +6,46 @@ class Owner(models.Model):
     last_name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
     is_confirmed = models.BooleanField(default=False)
-    #agreement = models.ImageField(null=True, blank=True)
+    # agreement = models.ImageField(null=True, blank=True)
 
     def __str__(self):
-        return self.firstName+' '+self.lastName
+        return self.first_name + ' ' + self.last_name
 
 
 class Fleet(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
     creation_date = models.DateTimeField()
+
     owner = models.ForeignKey(Owner)
 
-
-class DriverAuto(models.Model):
-    back = models.CharField(max_length=50, null=True, blank=True)
-    model = models.CharField(max_length=50, null=True, blank=True)
-    manufacturer = models.CharField(max_length=50, null=True, blank=True)
-    #photo = models.ImageField(null=True, blank=True)
-
-
-class DriverStats(models.Model):
-    #TODO not implemented yet
-    #текущее местоположение
-    nothing = models.IntegerField(null=True, blank=True) #delete
+    def __str__(self):
+        return self.name
 
 
 class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
-    driver_auto = models.OneToOneField(DriverAuto, on_delete=models.CASCADE, null=True, blank=True)
-    driver_stats = models.OneToOneField(DriverStats, on_delete=models.CASCADE)
-    fleets = models.ManyToManyField(Fleet, related_name="fleets")
-    pending_fleets = models.ManyToManyField(Fleet, related_name="pending_fleets")
+    auto_back = models.CharField(max_length=50, null=True, blank=True)
+    auto_model = models.CharField(max_length=50, null=True, blank=True)
+    auto_manufacturer = models.CharField(max_length=50, null=True, blank=True)
+    # auto_photo = models.ImageField(null=True, blank=True)
+
+    fleets = models.ManyToManyField(Fleet, related_name="fleets", blank=True)
+    pending_fleets = models.ManyToManyField(Fleet, related_name="pending_fleets", blank=True)
 
     def __str__(self):
-        return self.firstName+' '+self.lastName
+        return self.first_name+' '+self.last_name
 
 
-class TripStats(models.Model):
-    #TODO not implemented yet
-    #длительность
-    #дальность
-    #маршрут
-    nothing = models.IntegerField(null=True, blank=True) #delete
+class DriverStats(models.Model):
+    driver = models.OneToOneField(Driver, on_delete=models.CASCADE)
+    # TODO текущее местоположение
+
+    def __str__(self):
+        return self.driver.first_name+' '+self.driver.last_name+' stats'
+
 
 class Trip(models.Model):
     name = models.CharField(max_length=50)
@@ -64,7 +59,18 @@ class Trip(models.Model):
         (3, 'jam'),
         (4, 'other'),
     )
-    problem = models.IntegerField(choices=PROBLEM,default=1)
-    trip_stats = models.OneToOneField(TripStats, on_delete=models.CASCADE)
+    problem = models.IntegerField(choices=PROBLEM, default=1)
+
     driver = models.ForeignKey(Driver)
     fleet = models.ForeignKey(Fleet)
+
+    def __str__(self):
+        return 'trip ' + self.name
+
+
+class TripStats(models.Model):
+    trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
+    # TODO длительность, дальность, маршрут
+
+    def __str__(self):
+        return 'Trip ' + self.trip.name + ' stats'
