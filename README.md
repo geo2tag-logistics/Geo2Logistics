@@ -19,6 +19,11 @@ pip install django
 
 Deployment
 ----------
+Install required libraries.
+```
+pip install -r /path/to/requirements.txt
+```
+
 After cloning you should be able to run this as a django application. You can
 run it via your IDE or from the command line.
 
