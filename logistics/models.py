@@ -27,6 +27,8 @@ class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
+    is_online = models.BooleanField(default=False)
+    last_seen = models.DateTimeField(null=True, blank=True)
     auto_back = models.CharField(max_length=50, null=True, blank=True)
     auto_model = models.CharField(max_length=50, null=True, blank=True)
     auto_manufacturer = models.CharField(max_length=50, null=True, blank=True)

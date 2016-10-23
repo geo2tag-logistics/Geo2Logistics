@@ -1,5 +1,6 @@
 from django.conf.urls import *
 
+from logistics import api
 from logistics.views import home
 from logistics.views import addFleet
 from logistics.views import driverFleets
@@ -22,6 +23,10 @@ urlpatterns = [
     url(r'^myFleets/$', myFleets, name='myFleets'),
     url(r'^ownerProfile/$', ownerProfile, name='ownerProfile'),
     url(r'^map/$', map, name='map'),
+
+    # API
+    url(r'^api/fleet/$', api.FleetList.as_view(), name='fleet-list'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/drivers/$', api.DriversByFleet().as_view(), name='drivers-by-fleet'),
 
     url(r'^', home, name='home'),
 
