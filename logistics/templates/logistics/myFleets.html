@@ -13,13 +13,12 @@
 
 
 {% block main-content %}
-
-    <div class="page-header">
+    <div class="page-header" >
         <h1>Мои автопарки</h1>
     </div>
-    <div class="row" ng-app="addDataApp">
-        <div class="col-md-12" ng-controller="dataController">
-            <table class="table table-striped table-hover">
+    <div class="row">
+        <div class="col-md-12" >
+            <table class="table table-striped table-hover"  ng-app="addDataApp" ng-controller="dataController">
                 <thead>
                 <tr>
                     <th>Название</th>
@@ -30,7 +29,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="taxi in taxiServices">
-                    <td>{{ taxi.name }}</td>
+                    <td>{{taxi.name}}</td>
                     <td>{{ taxi.cars_count }}</td>
                     <td>{{ taxi.trips_count }} </td>
                     <td>{{ taxi.creation_date }}</td>
@@ -107,11 +106,10 @@
 {% block script %}
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
     <script src="{% static 'logistics/js/addDataToTable.js' %}"></script>
-{#    <script src="{% static 'logistics/js/angular/index.js' %}"></script>#}
-    <script src="js/angular/angular.min.js"></script>
+    <script src="{% static 'logistics/js/angular/index.js' %}"></script>
+{#    <script src="{% static 'logistics/js/angular/angular.min.js' %}"></script>#}
     <script type="text/javascript">
         angular.module('addDataApp', []);
     </script>
-    <script src="js/addDataToTable.js"></script>
 {% endblock %}
 
