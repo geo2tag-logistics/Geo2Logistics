@@ -51,3 +51,10 @@ h5{
 textarea{
     width: 165px;
 }
+
+.odd {
+  color: red;
+}
+.even {
+  color: blue;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Geo2Logistics",
+  "homepage": "https://github.com/geo2tag-logistics/Geo2Logistics",
+  "authors": [
+    "Mtdr <paul.osmolovsky@gmail.com>"
+  ],
+  "description": "geo service for taxi fleet owners and drivers",
+  "main": "manage.py",
+  "keywords": [
+    "taxi",
+    "fleet",
+    "geo2logistics",
+    "geo",
+    "logistic"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "angular": "^1.5.8"
+  }
+}

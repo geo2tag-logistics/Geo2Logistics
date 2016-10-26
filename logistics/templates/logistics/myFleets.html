@@ -13,11 +13,12 @@
 
 
 {% block main-content %}
+
     <div class="page-header">
         <h1>Мои автопарки</h1>
     </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row" ng-app="addDataApp">
+        <div class="col-md-12" ng-controller="dataController">
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
@@ -28,24 +29,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Таксовичкофф</td>
-                    <td>2</td>
-                    <td>5</td>
-                    <td>20.06.1997</td>
+                <tr ng-repeat="taxi in taxiServices">
+                    <td>{{ taxi.name }}</td>
+                    <td>{{ taxi.cars_count }}</td>
+                    <td>{{ taxi.trips_count }} </td>
+                    <td>{{ taxi.creation_date }}</td>
                 </tr>
-                <tr>
-                    <td>ЯндексТакси</td>
-                    <td>12</td>
-                    <td>5</td>
-                    <td>13.06.1997</td>
-                </tr>
-                <tr>
-                    <td>Юбер</td>
-                    <td>22</td>
-                    <td>12</td>
-                    <td>12.08.1997</td>
-                </tr>
+                {#                <tr>#}
+                {#                    <td>ЯндексТакси</td>#}
+                {#                    <td>12</td>#}
+                {#                    <td>5</td>#}
+                {#                    <td>13.06.1997</td>#}
+                {#                </tr>#}
+                {#                <tr>#}
+                {#                    <td>Юбер</td>#}
+                {#                    <td>22</td>#}
+                {#                    <td>12</td>#}
+                {#                    <td>12.08.1997</td>#}
+                {#                </tr>#}
                 </tbody>
             </table>
         </div>
@@ -80,10 +81,10 @@
                             <div class="col-md-3">
                                 <p class="headerTit">Пригласить</p>
                             </div>
-                            </div>
+                        </div>
                         <div class="row" id="list-of-drivers">
                             <div class="col-md-4">
-                                <input id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput"
+                                <input id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput">
                             </div>
                         </div>
                     </div>
@@ -105,6 +106,12 @@
 
 {% block script %}
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
-
+    <script src="{% static 'logistics/js/addDataToTable.js' %}"></script>
+{#    <script src="{% static 'logistics/js/angular/index.js' %}"></script>#}
+    <script src="js/angular/angular.min.js"></script>
+    <script type="text/javascript">
+        angular.module('addDataApp', []);
+    </script>
+    <script src="js/addDataToTable.js"></script>
 {% endblock %}
 
