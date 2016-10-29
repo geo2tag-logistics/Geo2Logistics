@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 
+{% block ng_app %}
+    "myApp"
+{% endblock %}
+
+{% block ng_controller %}
+    "phoneController"
+{% endblock %}
+
 {% block page-title %}
     My fleets
 {% endblock %}
@@ -17,8 +25,8 @@
         <h1>Мои автопарки</h1>
     </div>
     <div class="row">
-        <div class="col-md-12" >
-            <table class="table table-striped table-hover"  ng-app="addDataApp" ng-controller="dataController">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover">
                 <thead>
                 <tr>
                     <th>Название</th>
@@ -27,30 +35,32 @@
                     <th>Дата создания</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr ng-repeat="taxi in taxiServices">
-                    <td>{{taxi.name}}</td>
-                    <td>{{ taxi.cars_count }}</td>
-                    <td>{{ taxi.trips_count }} </td>
-                    <td>{{ taxi.creation_date }}</td>
+                {% verbatim %}
+
+                <tr ng-app="myApp" ng-controller="phoneController" ng-repeat="phone in phoneController">
+                    <td>{[{ phone.name }]}</td>
+                    <td>{[{ phone.cars_count }]}</td>
+                    <td>{[{ phone.trips_count }]} </td>
+                    <td>{[{ phone.creation_date }]}</td>
                 </tr>
-                {#                <tr>#}
-                {#                    <td>ЯндексТакси</td>#}
-                {#                    <td>12</td>#}
-                {#                    <td>5</td>#}
-                {#                    <td>13.06.1997</td>#}
-                {#                </tr>#}
-                {#                <tr>#}
-                {#                    <td>Юбер</td>#}
-                {#                    <td>22</td>#}
-                {#                    <td>12</td>#}
-                {#                    <td>12.08.1997</td>#}
-                {#                </tr>#}
-                </tbody>
+
+                {% endverbatim %}
             </table>
         </div>
+
+        {#                <tr>#}
+        {#                    <td>ЯндексТакси</td>#}
+        {#                    <td>12</td>#}
+        {#                    <td>5</td>#}
+        {#                    <td>13.06.1997</td>#}
+        {#                </tr>#}
+        {#                <tr>#}
+        {#                    <td>Юбер</td>#}
+        {#                    <td>22</td>#}
+        {#                    <td>12</td>#}
+        {#                    <td>12.08.1997</td>#}
+        {#                </tr>#}
     </div>
-    {#    #}
     <div class="buttons">
         <button type="submit" class="btn btn-lg btn-primary" id="add-new-fleet" data-toggle="modal" data-target="#createNewFleet">Добавить новый</button>
     </div>
@@ -103,13 +113,14 @@
     {#    #}
 {% endblock %}
 
+
 {% block script %}
-    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
-    <script src="{% static 'logistics/js/addDataToTable.js' %}"></script>
-    <script src="{% static 'logistics/js/angular/index.js' %}"></script>
-{#    <script src="{% static 'logistics/js/angular/angular.min.js' %}"></script>#}
     <script type="text/javascript">
-        angular.module('addDataApp', []);
+        angular.module('myApp', []);
     </script>
+    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
+    <script src="{% static 'logistics/js/controllers/phonesController.js' %}"></script>
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
+
 {% endblock %}
 

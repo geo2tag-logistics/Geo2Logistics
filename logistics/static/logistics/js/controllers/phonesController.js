@@ -1,7 +1,14 @@
-var addDataApp=angular.module('addDataApp');
-addDataApp.controller('dataController', function($scope) {
+var myApp=angular.module('myApp');
 
-    $scope.taxiServices = [
+myApp.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+    // $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+});
+
+myApp.controller('phoneController', function($scope) {
+
+    $scope.phones = [
         {
             name: "Yandex",
             description: "very good work at Russia",
@@ -23,5 +30,4 @@ addDataApp.controller('dataController', function($scope) {
             cars_count:11,
             trips_count:13
         }];
-
 });
