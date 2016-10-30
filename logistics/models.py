@@ -1,7 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Owner(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='owner')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
@@ -24,6 +28,9 @@ class Fleet(models.Model):
 
 
 class Driver(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='driver')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)

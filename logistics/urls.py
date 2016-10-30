@@ -1,33 +1,39 @@
 from django.conf.urls import *
 
 from logistics import api
-from logistics.views import home
-from logistics.views import addFleet
-from logistics.views import driverFleets
-from logistics.views import base
-from logistics.views import driverProfile
-from logistics.views import login_user
-from logistics.views import myFleets
-from logistics.views import ownerProfile
-from logistics.views import map
-from logistics.views import registration
+
+from rest_framework import routers
+from logistics import views
 
 urlpatterns = [
 
-    url(r'^addFleet/$', addFleet, name='addFleet'),
-    url(r'^base/$', base, name='base'),
-    url(r'^driverFleets/$', driverFleets, name='driverFleets'),
-    url(r'^driverProfile/$', driverProfile, name='driverProfile'),
-    url(r'^reg/$', registration, name='registration'),
-    url(r'^login/$', login_user, name='login'),
-    url(r'^myFleets/$', myFleets, name='myFleets'),
-    url(r'^ownerProfile/$', ownerProfile, name='ownerProfile'),
+
+    url(r'^addFleet/$', views.addFleet, name='addFleet'),
+    url(r'^base/$', views.base, name='base'),
+    url(r'^driverFleets/$', views.driverFleets, name='driverFleets'),
+    url(r'^driverProfile/$', views.driverProfile, name='driverProfile'),
+    url(r'^reg/$', views.registration, name='registration'),
+    url(r'^login/$', views.login_user, name='login'),
+    url(r'^myFleets/$', views.myFleets, name='myFleets'),
+    url(r'^ownerProfile/$', views.ownerProfile, name='ownerProfile'),
     url(r'^map/$', map, name='map'),
 
     # API
+    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/fleet/$', api.FleetList.as_view(), name='fleet-list'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/drivers/$', api.DriversByFleet().as_view(), name='drivers-by-fleet'),
+    url(r'^api/users/$', api.UserList.as_view(), name='user-list'),
+    url(r'^api/users/(?P<user_id>[-\w]+)/$', api.UserDetail.as_view(), name='users-by-id'),
+    url(r'^api/owners/$', api.OwnerList.as_view(), name='owner-list'),
+    url(r'^api/drivers/$', api.DriverList.as_view(), name='driver-list'),
+    url(r'^api/user_signup/$', api.UserSignUp.as_view(), name='user-signup'),
 
-    url(r'^', home, name='home'),
 
+    url(r'^', views.home, name='home'),
+
+]
+
+urlpatterns += [
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
 ]
