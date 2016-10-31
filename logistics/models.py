@@ -3,12 +3,10 @@ from django.contrib.auth.models import User
 
 
 class Owner(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='owner')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    mail = models.CharField(max_length=50)
+    #mail = models.CharField(max_length=50)
     is_confirmed = models.BooleanField(default=False)
     # agreement = models.ImageField(null=True, blank=True)
 
@@ -28,12 +26,10 @@ class Fleet(models.Model):
 
 
 class Driver(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='driver')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    mail = models.CharField(max_length=50)
+    #mail = models.CharField(max_length=50)
     is_online = models.BooleanField(default=False)
     last_seen = models.DateTimeField(null=True, blank=True)
     auto_back = models.CharField(max_length=50, null=True, blank=True)

@@ -1,5 +1,10 @@
 from rest_framework import permissions
 
+def is_owner(user):
+    return user.groups.filter(name='Owner').exists()
+
+def is_driver(user):
+    return user.groups.filter(name='Driver').exists()
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """

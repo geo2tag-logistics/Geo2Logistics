@@ -29,28 +29,28 @@ class FleetSerializer(serializers.ModelSerializer):
 
 
 class OwnerSerializer(serializers.ModelSerializer):
-    name_of_user = serializers.ReadOnlyField(source='user.username')
+    #name_of_user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Owner
         fields = (
             'id',
-            'name_of_user',
+            #'name_of_user',
             'first_name',
             'last_name',
             'is_confirmed',
-            'user'
+            #'user'
         )
 
 
 class DriverSerializer(serializers.ModelSerializer):
-    name_of_user = serializers.ReadOnlyField(source='user.username')
+    #name_of_user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Driver
         fields = (
             'id',
-            'name_of_user',
+            #'name_of_user',
             'first_name',
             'last_name',
             'is_online',
@@ -58,6 +58,14 @@ class DriverSerializer(serializers.ModelSerializer):
             'auto_back',
             'auto_model',
             'auto_manufacturer'
+        )
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = (
+            'id',
+            'name'
         )
 
 
@@ -80,50 +88,44 @@ class DriverSerializer(serializers.ModelSerializer):
 #         model = Group
 #         fields = ('url', 'name', 'permissions')
 
-ROLE_CHOICES = {
-    'OWNER': Owner.objects.all(),
-    'DRIVER': Driver.objects.all(),
-}
+# ROLE_CHOICES = {
+#     'OWNER': Owner.objects.all(),
+#     'DRIVER': Driver.objects.all(),
+# }
+#
+# # TODO CHECK Рабочий вариант.
+# class UserSerializer(serializers.ModelSerializer):
+#     owner = serializers.PrimaryKeyRelatedField(
+#         many=True,
+#         queryset=Owner.objects.all(),
+#     )
+#     driver = serializers.PrimaryKeyRelatedField(
+#         many=True,
+#         queryset=Driver.objects.all()
+#     )
+#
+#     class Meta:
+#         model = User
+#         fields = (
+#             'pk',
+#             'id',
+#             'username',
+#             'email',
+#             'first_name',
+#             'last_name',
+#             'groups',
+#             'user_permissions',
+#             'is_staff',
+#             'is_active',
+#             'is_superuser',
+#             'last_login',
+#             'date_joined',
+#             'owner',
+#             'driver'
+#         )
 
-# TODO CHECK Рабочий вариант.
-class UserSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Owner.objects.all(),
-    )
-    driver = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Driver.objects.all()
-    )
-
-    class Meta:
-        model = User
-        fields = (
-            'pk',
-            'id',
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'groups',
-            'user_permissions',
-            'is_staff',
-            'is_active',
-            'is_superuser',
-            'last_login',
-            'date_joined',
-            'owner',
-            'driver'
-        )
 
 
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = (
-            'id',
-            'name'
-        )
 
 
 

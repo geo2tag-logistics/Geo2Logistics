@@ -1,26 +1,79 @@
-from .models import Fleet, Driver, Owner
-from .serializers import FleetSerializer, DriverSerializer, UserSerializer, OwnerSerializer
+from .models import Fleet, Driver, Owner, DriverStats, Trip, TripStats
+from .serializers import FleetSerializer, DriverSerializer
+from .forms import SignUpForm, LoginForm
 
-from rest_framework import permissions
+from django.contrib.auth.decorators import login_required, user_passes_test
+from logistics.permissions import is_driver, is_owner
+
+from rest_framework import permissions, status
 from logistics.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model # TODO If used custom user model
+
+class SignUp(APIView):
+    def post(self, request):
+        print(request.data)
+        form = SignUpForm(request.data)
+        if form.is_valid():
+            try:
+                user = User.objects.create_user(username=form.login, email=form.email, password=form.password)
+                if(form.is_driver == 0):
+                    owner = Owner.objects.create(user=user, first_name=form.first_name, last_name=form.last_name)
+                    user.save()
+                    owner.save()
+                else:
+                    driver = Driver.objects.create(user=user, first_name=form.first_name, last_name=form.last_name)
+                    driver_stats = DriverStats.objects.create(driver=driver)
+                    user.save()
+                    driver.save()
+                    driver_stats.save()
+                return Response({"status": "ok"}, status=status.HTTP_201_CREATED)
+            except:
+                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+class Auth(APIView):
+    def post(self, request):
+        if request.user.is_anonymous() == False:
+            return Response({"status": "error", "errors": ["Already login"]}, status=status.HTTP_409_CONFLICT)
+        print(request.data)
+        form = LoginForm(request.data)
+        if form.is_valid():
+            try:
+                user = authenticate(username=form.login, password=form.password)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+            except:
+                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class FleetList(APIView):
     def get(self, request, format=None):
+        current_user = request.user
+        print(current_user)
+        # TODO 1) check user GROUP 2) get user MODEL 3) filter fleets according to model instance
         fleets = Fleet.objects.all()
         serialized_fleets = FleetSerializer(fleets, many=True)
-        return Response(serialized_fleets.data)
+        return Response(serialized_fleets.data, status=status.HTTP_200_OK)
 
 
 class DriversByFleet(APIView):
     def get(self, request, fleet_id, format=None):
+        # TODO manage permissions
         drivers = Driver.objects.filter(fleets=fleet_id)
         serialized_drivers = DriverSerializer(drivers, many=True)
-        return Response(serialized_drivers.data)
+        return Response(serialized_drivers.data, status=status.HTTP_200_OK)
 
 
 # class UserAuthorize(APIView):
@@ -29,54 +82,54 @@ class DriversByFleet(APIView):
 #         return Response(serialized_users.data)
 #
 
-class OwnerList(APIView):
-    permission_classes = (
-        permissions.IsAuthenticated,
-        # permissions.IsAuthenticatedOrReadOnly,
-        IsOwnerOrReadOnly,
-    )
-
-    def get(self, request, format=None):
-        owners = Owner.objects.all()
-        serialized_users = OwnerSerializer(owners, many=True)
-        return Response(serialized_users.data)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
-class DriverList(APIView):
-    permission_classes = (
-        permissions.IsAuthenticated,
-        # permissions.IsAuthenticatedOrReadOnly,
-    )
-
-    def get(self, request, format=None):
-        drivers = Driver.objects.all()
-        serialized_users = DriverSerializer(drivers, many=True)
-        return Response(serialized_users.data)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
-class UserList(APIView):
-    def get(self, request, format=None):
-        users = User.objects.all()
-        serialized_users = UserSerializer(users, many=True)
-        return Response(serialized_users.data)
-
-
-class UserDetail(APIView):
-    def get(self, request, user_id, format=None):
-        users = User.objects.filter(id=user_id)
-        serialized_users = UserSerializer(users, many=True)
-        return Response(serialized_users.data)
-
-
-class UserSignUp(generics.CreateAPIView):
-    model = get_user_model()
-    permission_classes = [
-        permissions.AllowAny # Or anon users can't register
-    ]
-    serializer_class = UserSerializer
+# class OwnerList(APIView):
+#     permission_classes = (
+#         permissions.IsAuthenticated,
+#         # permissions.IsAuthenticatedOrReadOnly,
+#         IsOwnerOrReadOnly,
+#     )
+#
+#     def get(self, request, format=None):
+#         owners = Owner.objects.all()
+#         serialized_users = OwnerSerializer(owners, many=True)
+#         return Response(serialized_users.data)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
+#
+#
+# class DriverList(APIView):
+#     permission_classes = (
+#         permissions.IsAuthenticated,
+#         # permissions.IsAuthenticatedOrReadOnly,
+#     )
+#
+#     def get(self, request, format=None):
+#         drivers = Driver.objects.all()
+#         serialized_users = DriverSerializer(drivers, many=True)
+#         return Response(serialized_users.data)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
+#
+#
+# class UserList(APIView):
+#     def get(self, request, format=None):
+#         users = User.objects.all()
+#         serialized_users = UserSerializer(users, many=True)
+#         return Response(serialized_users.data)
+#
+#
+# class UserDetail(APIView):
+#     def get(self, request, user_id, format=None):
+#         users = User.objects.filter(id=user_id)
+#         serialized_users = UserSerializer(users, many=True)
+#         return Response(serialized_users.data)
+#
+#
+# class UserSignUp(generics.CreateAPIView):
+#     model = get_user_model()
+#     permission_classes = [
+#         permissions.AllowAny # Or anon users can't register
+#     ]
+#     serializer_class = UserSerializer

@@ -1,12 +1,11 @@
 from django.contrib.auth import authenticate, login, get_user, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from .models import Driver
 
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from logistics.serializers import UserSerializer, GroupSerializer
-# Create your views here.
+from logistics.serializers import GroupSerializer
 
 def addFleet(request):
     return render(request, 'logistics/addFleet.html')
@@ -21,12 +20,44 @@ def driverFleets(request):
 def driverProfile(request):
     return render(request, 'logistics/driver-profile.html')
 
-def get_user_role(count):
-    return {
-        '1': 'Owner',
-        '2': 'Driver'
-    }
+def ownerFleets(request):
+    return render(request, 'logistics/owner-fleets.html')
 
+def ownerFleetId(request, fleet_id):
+    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id})
+
+def ownerProfile(request):
+    return render(request, 'logistics/owner-profile.html')
+
+def map(request):
+    return render(request, 'logistics/map.html')
+
+def home(request):
+    # return render(request, 'logistics/login.html'),
+    return render(request, 'logistics/owner-fleets.html')
+
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows users to be viewed or edited.
+#     """
+#     queryset = User.objects.all().order_by('-date_joined')
+#     serializer_class = UserSerializer
+#
+#
+# class GroupViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows groups to be viewed or edited.
+#     """
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+
+# def get_user_role(count):
+#     return {
+#         '1': 'Owner',
+#         '2': 'Driver'
+#     }
+#
 def registration(request):
     if request.method == "POST":
         if request.POST.get('logout'):
@@ -62,35 +93,3 @@ def login_user(request):
         })
     else:
         return render(request, 'logistics/login.html')
-
-def ownerFleets(request):
-    return render(request, 'logistics/owner-fleets.html')
-
-def ownerFleetId(request, fleet_id):
-    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id})
-
-def ownerProfile(request):
-    return render(request, 'logistics/owner-profile.html')
-
-def map(request):
-    return render(request, 'logistics/map.html')
-
-def home(request):
-    # return render(request, 'logistics/login.html'),
-    return render(request, 'logistics/owner-fleets.html')
-
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = User.objects.all().order_by('-date_joined')
-#     serializer_class = UserSerializer
-#
-#
-# class GroupViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows groups to be viewed or edited.
-#     """
-#     queryset = Group.objects.all()
-#     serializer_class = GroupSerializer
