@@ -20,22 +20,22 @@ class SignUp(APIView):
         form = SignUpForm(request.data)
         if form.is_valid():
             try:
-                user = User.objects.create_user(username=form.login, email=form.email, password=form.password)
-                if(form.is_driver == 0):
-                    owner = Owner.objects.create(user=user, first_name=form.first_name, last_name=form.last_name)
+                user = User.objects.create_user(username=form.cleaned_data["login"], email=form.cleaned_data["email"], password=form.cleaned_data["password"])
+                if(form.cleaned_data["is_driver"]):
+                    owner = Owner.objects.create(user=user, first_name=form.cleaned_data["first_name"], last_name=form.cleaned_data["last_name"])
                     user.save()
                     owner.save()
                 else:
-                    driver = Driver.objects.create(user=user, first_name=form.first_name, last_name=form.last_name)
+                    driver = Driver.objects.create(user=user, first_name=form.cleaned_data["first_name"], last_name=form.cleaned_data["last_name"])
                     driver_stats = DriverStats.objects.create(driver=driver)
                     user.save()
                     driver.save()
                     driver_stats.save()
                 return Response({"status": "ok"}, status=status.HTTP_201_CREATED)
-            except:
-                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
-            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "error", "errors": ["Invalid post parameters"]}, status=status.HTTP_400_BAD_REQUEST)
 
 class Auth(APIView):
     def post(self, request):
@@ -45,17 +45,17 @@ class Auth(APIView):
         form = LoginForm(request.data)
         if form.is_valid():
             try:
-                user = authenticate(username=form.login, password=form.password)
+                user = authenticate(username=form.cleaned_data["login"], password=form.cleaned_data["password"])
                 if user is not None:
                     if user.is_active:
                         login(request, user)
                         return Response({"status": "ok"}, status=status.HTTP_200_OK)
                     else:
                         return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
-            except:
-                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
-            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "error", "errors": ["Invalid post parameters"]}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FleetList(APIView):
