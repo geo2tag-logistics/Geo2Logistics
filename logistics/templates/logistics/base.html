@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en" ng-app={% block ng_app %} {% endblock %}>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,15 +13,14 @@
 
     <link href="{% static 'logistics/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'logistics/css/style-base.css' %}">
-    {% block css %}
 
-    {% endblock %}
+    {% block css %}{% endblock %}
 
     <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
 
 </head>
 
-<body ng-controller={% block ng_controller %} {% endblock %}>
+<body ng-app={% block ng_app %} {% endblock %}>
 <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -62,9 +61,8 @@
     </div>
 </nav>
 
-<div class="container theme-showcase" role="main">
-    {% block main-content %}
-    {% endblock %}
+<div class="container theme-showcase" role="main" ng-controller={% block ng_controller %} {% endblock %}>
+    {% block main-content %}{% endblock %}
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -72,8 +70,7 @@
 <script src="{% static 'logistics/js/bootstrap.min.js' %}"></script>
 <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
 
-{% block script %}
+{% block script %}{% endblock %}
 
-{% endblock %}
 </body>
 </html>
