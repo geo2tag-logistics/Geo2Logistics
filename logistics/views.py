@@ -63,8 +63,11 @@ def login_user(request):
     else:
         return render(request, 'logistics/login.html')
 
-def myFleets(request):
-    return render(request, 'logistics/myFleets.html')
+def ownerFleets(request):
+    return render(request, 'logistics/owner-fleets.html')
+
+def ownerFleetId(request, fleet_id):
+    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id})
 
 def ownerProfile(request):
     return render(request, 'logistics/owner-profile.html')
@@ -74,7 +77,7 @@ def map(request):
 
 def home(request):
     # return render(request, 'logistics/login.html'),
-    return render(request, 'logistics/myFleets.html')
+    return render(request, 'logistics/owner-fleets.html')
 
 
 # class UserViewSet(viewsets.ModelViewSet):

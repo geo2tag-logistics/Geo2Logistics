@@ -1,0 +1,14 @@
+{% extends 'logistics/base.html' %}
+{% load staticfiles %}
+
+{% block ng_app %}
+    geo2logistics
+{% endblock %}
+
+{% block ng_controller %}
+    FleetController
+{% endblock %}
+
+{% block page-title %}
+    Fleet {{ fleet_id }}
+{% endblock %}
