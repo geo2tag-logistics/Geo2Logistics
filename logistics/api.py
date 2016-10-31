@@ -1,6 +1,6 @@
 from .models import Fleet, Driver, Owner, DriverStats, Trip, TripStats
 from .serializers import FleetSerializer, DriverSerializer
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from logistics.permissions import is_driver, is_owner
@@ -76,12 +76,88 @@ class DriversByFleet(APIView):
         return Response(serialized_drivers.data, status=status.HTTP_200_OK)
 
 
+class FleetView(APIView):
+    def post(self, request, format=None):
+        current_user = request.user
+        print(current_user)
+        form = FleetAddForm(request.data)
+        # TODO Add Owner from request.user & Access level: owner
+        owner = Owner.objects.get(id=2)
+        if form.is_valid():
+            try:
+                fleet = form.save(commit=False)
+                fleet.owner = owner
+                fleet.save()
+                print(fleet.name, fleet.description, fleet.owner, fleet.id)
+                return Response({"status": "ok", "fleet_id": fleet.id}, status=status.HTTP_201_CREATED)
+            except:
+                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, fleet_id, format=None):
+        current_user = request.user
+        print(current_user)
+        fleet_for_delete = Fleet.objects.get(id=fleet_id)
+        # TODO Check owner
+        owner = Owner.objects.get(id=fleet_for_delete.owner.id)
+        if owner == fleet_for_delete.owner:
+            fleet_for_delete.delete()
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FleetInvite(APIView):
+    def post(self, request, fleet_id, format=None):
+        current_user = request.user
+        print(current_user)
+        form_invite = FleetInviteDismissForm(request.data)
+        print(form_invite)
+        if form_invite.is_valid():
+            try:
+                # TODO If many drivers_id in request
+                fleet = Fleet.objects.get(id=fleet_id)
+                id = form_invite.cleaned_data.get('driver_id')
+                driver = Driver.objects.get(id=id)
+                driver.fleets.add(fleet)
+                driver.save()
+                print(fleet.id, id, driver.id)
+                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            except:
+                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error2"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FleetDismiss(APIView):
+    def post(self, request, fleet_id, format=None):
+        current_user = request.user
+        print(current_user)
+        form_dismiss = FleetInviteDismissForm(request.data)
+        print(form_dismiss)
+        if form_dismiss.is_valid():
+            try:
+                # TODO If many drivers_id in request
+                fleet = Fleet.objects.get(id=fleet_id)
+                id = form_dismiss.cleaned_data.get('driver_id')
+                driver = Driver.objects.get(id=id)
+                driver.fleets.remove(fleet)
+                driver.save()
+                print(fleet.id, id, driver.id)
+                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            except:
+                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error2"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # class UserAuthorize(APIView):
 #     def get(self, request, format=None):
 #         serialized_users = UserSerializer(users)
 #         return Response(serialized_users.data)
 #
-
+#
 # class OwnerList(APIView):
 #     permission_classes = (
 #         permissions.IsAuthenticated,
@@ -96,7 +172,7 @@ class DriversByFleet(APIView):
 #
 #     def perform_create(self, serializer):
 #         serializer.save(owner=self.request.user)
-#
+
 #
 # class DriverList(APIView):
 #     permission_classes = (

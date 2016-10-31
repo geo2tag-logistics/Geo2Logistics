@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Owner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
@@ -17,7 +16,7 @@ class Owner(models.Model):
 class Fleet(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
-    creation_date = models.DateTimeField()
+    creation_date = models.DateTimeField(auto_now=True)
 
     owner = models.ForeignKey(Owner)
 

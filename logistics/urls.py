@@ -24,6 +24,10 @@ urlpatterns = [
     url(r'^api/auth/$', api.Auth.as_view(), name='api-auth'),
     url(r'^api/fleet/$', api.FleetList.as_view(), name='fleet-list'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/drivers/$', api.DriversByFleet().as_view(), name='drivers-by-fleet'),
+    url(r'^api/fleet/add-fleet/$', api.FleetView().as_view(), name='fleet-add'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/delete/$', api.FleetView().as_view(), name='fleet-add'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/invite/$', api.FleetInvite().as_view(), name='drivers-by-fleet'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/dismiss/$', api.FleetDismiss().as_view(), name='drivers-by-fleet'),
 
     # ADMIN API
     # url(r'^api/users/$', api.UserList.as_view(), name='user-list'),
