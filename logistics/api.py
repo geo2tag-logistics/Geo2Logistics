@@ -67,9 +67,8 @@ class Logout(APIView):
 class FleetList(APIView):
     permission_classes = (IsOwnerOrDriverPermission,)
     def get(self, request):
-        current_user = request.user
-        if is_owner(current_user):
-            fleets = Fleet.objects.filter(owner=current_user.owner)
+        if is_owner(request.user):
+            fleets = Fleet.objects.filter(owner=request.user.owner)
             serialized_fleets = FleetSerializer(fleets, many=True)
             return Response(serialized_fleets.data, status=status.HTTP_200_OK)
         elif is_driver(request.user):
@@ -83,7 +82,7 @@ class FleetList(APIView):
 class DriversByFleet(APIView):
     permission_classes = (IsOwnerPermission,)
     def get(self, request, fleet_id):
-        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(request.user.owner):
+        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
             drivers = Driver.objects.filter(fleets=fleet_id)
             serialized_drivers = DriverSerializer(drivers, many=True)
             return Response(serialized_drivers.data, status=status.HTTP_200_OK)
@@ -94,7 +93,7 @@ class DriversByFleet(APIView):
 class PendingDriversByFleet(APIView):
     permission_classes = (IsOwnerPermission,)
     def get(self, request, fleet_id):
-        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(request.user.owner):
+        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
             drivers = Driver.objects.exclude(fleets=fleet_id).exclude(pending_fleets=fleet_id)
             serialized_drivers = DriverSerializer(drivers, many=True)
             return Response(serialized_drivers.data, status=status.HTTP_200_OK)
