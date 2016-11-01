@@ -1,63 +1,54 @@
-from django.contrib.auth import authenticate, login, get_user, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from .models import Driver
+from rest_framework.decorators import permission_classes
 
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from logistics.serializers import GroupSerializer
+from logistics.permissions import IsOwnerPermission, IsDriverPermission
 
+
+@permission_classes((IsOwnerPermission, ))
 def addFleet(request):
     return render(request, 'logistics/addFleet.html')
+
 
 def base(request):
     return render(request, 'logistics/base.html')
 
+
+@permission_classes((IsDriverPermission, ))
 def driverFleets(request):
     return render(request, 'logistics/driver-fleets.html')
 
-@login_required
+
+@permission_classes((IsDriverPermission, ))
 def driverProfile(request):
     return render(request, 'logistics/driver-profile.html')
 
+
+@permission_classes((IsOwnerPermission, ))
 def ownerFleets(request):
     return render(request, 'logistics/owner-fleets.html')
 
+
+@permission_classes((IsOwnerPermission, ))
 def ownerFleetId(request, fleet_id):
     return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id})
 
+
+@permission_classes((IsOwnerPermission, ))
 def ownerProfile(request):
     return render(request, 'logistics/owner-profile.html')
 
+
+@permission_classes((IsOwnerPermission, ))
 def map(request):
     return render(request, 'logistics/map.html')
+
 
 def home(request):
     # return render(request, 'logistics/login.html'),
     return render(request, 'logistics/owner-fleets.html')
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = User.objects.all().order_by('-date_joined')
-#     serializer_class = UserSerializer
-#
-#
-# class GroupViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows groups to be viewed or edited.
-#     """
-#     queryset = Group.objects.all()
-#     serializer_class = GroupSerializer
-
-# def get_user_role(count):
-#     return {
-#         '1': 'Owner',
-#         '2': 'Driver'
-#     }
-#
 def registration(request):
     if request.method == "POST":
         if request.POST.get('logout'):
@@ -73,6 +64,7 @@ def registration(request):
         return render(request, 'logistics/register.html')
     else:
         return render(request, 'logistics/register.html')
+
 
 def login_user(request):
     if request.method == "POST":

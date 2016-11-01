@@ -1,7 +1,7 @@
-from .models import Owner, Fleet, Driver, Trip
-from django.contrib.auth.models import User, Group, Permission
-
+from django.contrib.auth.models import Group
 from rest_framework import serializers
+
+from .models import Owner, Fleet, Driver, Trip
 
 
 class FleetSerializer(serializers.ModelSerializer):
@@ -29,36 +29,40 @@ class FleetSerializer(serializers.ModelSerializer):
 
 
 class OwnerSerializer(serializers.ModelSerializer):
-    #name_of_user = serializers.ReadOnlyField(source='user.username')
+    login = serializers.ReadOnlyField(source='user.username')
+    email = serializers.ReadOnlyField(source='user.email')
 
     class Meta:
         model = Owner
         fields = (
             'id',
-            #'name_of_user',
             'first_name',
             'last_name',
             'is_confirmed',
-            #'user'
+            'login',
+            'email'
         )
 
 
 class DriverSerializer(serializers.ModelSerializer):
-    #name_of_user = serializers.ReadOnlyField(source='user.username')
+    login = serializers.ReadOnlyField(source='user.username')
+    email = serializers.ReadOnlyField(source='user.email')
 
     class Meta:
         model = Driver
         fields = (
             'id',
-            #'name_of_user',
             'first_name',
             'last_name',
             'is_online',
             'last_seen',
             'auto_back',
             'auto_model',
-            'auto_manufacturer'
+            'auto_manufacturer',
+            'login',
+            'email'
         )
+
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,80 +71,3 @@ class GroupSerializer(serializers.ModelSerializer):
             'id',
             'name'
         )
-
-
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     username = serializers.CharField(max_length=50)
-#     email = serializers.EmailField()
-#     class Meta:
-#         model = User
-#         fields = ('url', 'username', 'email', 'groups')
-#         read_only_fields = ('account_name',)
-#
-#
-# class GroupSerializer(serializers.HyperlinkedModelSerializer):
-#     permissions = serializers.ManySlugRelatedField(
-#         slug_field='codename',
-#         queryset=Permission.objects.all()
-#     )
-#
-#     class Meta:
-#         model = Group
-#         fields = ('url', 'name', 'permissions')
-
-# ROLE_CHOICES = {
-#     'OWNER': Owner.objects.all(),
-#     'DRIVER': Driver.objects.all(),
-# }
-#
-# # TODO CHECK Рабочий вариант.
-# class UserSerializer(serializers.ModelSerializer):
-#     owner = serializers.PrimaryKeyRelatedField(
-#         many=True,
-#         queryset=Owner.objects.all(),
-#     )
-#     driver = serializers.PrimaryKeyRelatedField(
-#         many=True,
-#         queryset=Driver.objects.all()
-#     )
-#
-#     class Meta:
-#         model = User
-#         fields = (
-#             'pk',
-#             'id',
-#             'username',
-#             'email',
-#             'first_name',
-#             'last_name',
-#             'groups',
-#             'user_permissions',
-#             'is_staff',
-#             'is_active',
-#             'is_superuser',
-#             'last_login',
-#             'date_joined',
-#             'owner',
-#             'driver'
-#         )
-
-
-
-
-
-
-
-        # class CreateUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('email', 'username', 'password')
-#         extra_kwargs = {'password': {'write_only': True}}
-#
-#     def create(self, validated_data):
-#         user = User(
-#             email=validated_data['email'],
-#             username=validated_data['username']
-#         )
-#         user.set_password(validated_data['password'])
-#         user.save()
-#         return user
