@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block ng_controller %}
-    MyFleetsController
+    GetOwnersFleetsController
 {% endblock %}
 
 {% block page-title %}
@@ -29,7 +29,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>ID</th>
                     <th>Название</th>
                     <th>Количество машин</th>
                     <th>Количество поездок</th>
@@ -41,11 +41,11 @@
                 {% verbatim %}
                 <tr ng-repeat="fleet in fleets">
                     <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>
-                    <td>{[{ fleet.name }]}</td>
+                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
                     <td>{[{ fleet.cars_count }]}</td>
                     <td>{[{ fleet.trips_count }]} </td>
                     <td>{[{ fleet.creation_date }]}</td>
-                    <td><span ng-click="fleet_delete(fleet.id)">id{[{ fleet.id }]}</span></td>
+                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>
                 </tr>
                 {% endverbatim %}
 
@@ -65,38 +65,41 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
                 </div>
+                <form action="/api/fleet/add-fleet/" id="addForm" method="POST" >
                 <div class="modal-body" id="body-createNewFleet">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <p class="headerTit">Название</p>
-                                <p class="headerTit">Описание</p>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="headerTit">Название</p>
+                                    <p class="headerTit">Описание</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <input name="title" type="text" placeholder="Название" class="profile-input">
+                                    <textarea rows="4" form="addForm"></textarea>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <input type="text" placeholder="Название" class="profile-input">
-                                <textarea rows="4"></textarea>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="headerTit">Пригласить</p>
+                                </div>
+                            </div>
+                            <div class="row" id="list-of-drivers">
+                                <div class="col-md-4">
+                                    <input name="drivers" id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput">
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <p class="headerTit">Пригласить</p>
-                            </div>
-                        </div>
-                        <div class="row" id="list-of-drivers">
-                            <div class="col-md-4">
-                                <input id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput">
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="modal-footer">
                     <div class="row" id="creation-buttons">
                         <div class="col-md-8">
-                            <button type="button" class="btn btn-lg btn-success" data-dismiss="modal">Создать</button>
+                            <input class="btn btn-lg btn-success" type="submit" value="Создать">
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>

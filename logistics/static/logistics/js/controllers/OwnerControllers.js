@@ -7,38 +7,32 @@ myApp.config(function($interpolateProvider) {
 });
 
 // Контроллер для страницы myFleets
-myApp.controller('MyFleetsController', function($scope) {
+myApp.controller('GetOwnersFleetsController',[
+    '$scope', '$http', function($scope, $http) {
+        $scope.fleets = [];
+        return $http.get('/api/fleet/').then(function(result) {
+            return angular.forEach(result.data, function(item) {
+                return $scope.fleets.push(item);
+            });
+        });
 
-    $scope.fleets = [
-        {
-            id: 1,
-            name: "Yandex",
-            description: "very good work at Russia",
-            creation_date: "2016-10-22T14:01:23Z",
-            cars_count:1,
-            trips_count:1
-        },
-        {
-            id: 2,
-            name: 'Uber',
-            description: "good at EU",
-            creation_date: "2016-10-22T14:01:23Z",
-            cars_count:21,
-            trips_count:31
-        },
-        {
-            id: 3,
-            name: 'Get',
-            description: "rather good",
-            creation_date: "2016-10-22T14:01:23Z",
-            cars_count:11,
-            trips_count:13
-        }];
 
-    $scope.fleet_delete = function (id) {
-        alert("Delete "+id);
+
     }
-});
+]);
+
+myApp.controller('RemoveFleets',[
+    '$scope', '$http', function($scope, $http) {
+        $scope.fleet_delete = function(id){
+            var index = $scope.fleets.indexOf(id);
+            $scope.fleets.splice(index, 1);
+            return $http.delete('/api/fleet/'+id+'/delete').then(function(result) {
+                console.log(result);
+            });
+        };
+    }
+]);
+
 
 // Контроллер для страницы FleetOwner
 myApp.controller('FleetController', function($scope) {
