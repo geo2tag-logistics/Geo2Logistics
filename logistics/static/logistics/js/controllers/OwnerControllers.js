@@ -35,7 +35,7 @@ myApp.controller('RemoveFleets',[
 
 myApp.controller('getOneById',[
     '$scope', '$http', function($scope, $http) {
-        $http.get('/api/fleet/'+)
+        $http.get('/api/fleet/'+ scope.id);
 
 
 
