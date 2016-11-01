@@ -33,6 +33,23 @@ myApp.controller('RemoveFleets',[
     }
 ]);
 
+myApp.controller('getOneById',[
+    '$scope', '$http', function($scope, $http) {
+        $http.get('/api/fleet/'+)
+
+
+
+        $scope.fleet_delete = function(id){
+            var index = $scope.fleets.indexOf(id);
+            $scope.fleets.splice(index, 1);
+            return $http.delete('/api/fleet/'+id+'/delete').then(function(result) {
+                console.log(result);
+            });
+        };
+    }
+]);
+
+
 
 // Контроллер для страницы FleetOwner
 myApp.controller('FleetController', function($scope) {
