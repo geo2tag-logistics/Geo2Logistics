@@ -124,9 +124,7 @@ class FleetView(APIView):
         current_user = request.user
         print(current_user)
         fleet_for_delete = Fleet.objects.get(id=fleet_id)
-        # TODO Check owner
-        owner = Owner.objects.get(id=fleet_for_delete.owner.id)
-        if owner == fleet_for_delete.owner:
+        if fleet_for_delete in Fleet.objects.filter(owner=request.user.owner):
             fleet_for_delete.delete()
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         else:
@@ -134,6 +132,7 @@ class FleetView(APIView):
 
 
 class FleetInvite(APIView):
+    permission_classes = (IsOwnerPermission,)
     def post(self, request, fleet_id, format=None):
         current_user = request.user
         print(current_user)
@@ -141,21 +140,24 @@ class FleetInvite(APIView):
         print(form_invite)
         if form_invite.is_valid():
             try:
-                # TODO If many drivers_id in request
                 fleet = Fleet.objects.get(id=fleet_id)
-                id = form_invite.cleaned_data.get('driver_id')
-                driver = Driver.objects.get(id=id)
-                driver.fleets.add(fleet)
-                driver.save()
-                print(fleet.id, id, driver.id)
-                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                if fleet in Fleet.objects.filter(owner=request.user.owner):
+                    id = form_invite.cleaned_data.get('driver_id')
+                    driver = Driver.objects.get(id=id)
+                    driver.fleets.add(fleet)
+                    driver.save()
+                    print(fleet.id, id, driver.id)
+                    return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"status": "error", "errors": ["Not owner of fleet"]}, status=status.HTTP_409_CONFLICT)
             except:
                 return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
         else:
-            return Response({"status": "error2"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FleetDismiss(APIView):
+    permission_classes = (IsOwnerPermission,)
     def post(self, request, fleet_id, format=None):
         current_user = request.user
         print(current_user)
@@ -163,15 +165,17 @@ class FleetDismiss(APIView):
         print(form_dismiss)
         if form_dismiss.is_valid():
             try:
-                # TODO If many drivers_id in request
                 fleet = Fleet.objects.get(id=fleet_id)
-                id = form_dismiss.cleaned_data.get('driver_id')
-                driver = Driver.objects.get(id=id)
-                driver.fleets.remove(fleet)
-                driver.save()
-                print(fleet.id, id, driver.id)
-                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                if fleet in Fleet.objects.filter(owner=request.user.owner):
+                    id = form_dismiss.cleaned_data.get('driver_id')
+                    driver = Driver.objects.get(id=id)
+                    driver.fleets.remove(fleet)
+                    driver.save()
+                    print(fleet.id, id, driver.id)
+                    return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"status": "error", "errors": ["Not owner of fleet"]}, status=status.HTTP_409_CONFLICT)
             except:
                 return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
         else:
-            return Response({"status": "error2"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
