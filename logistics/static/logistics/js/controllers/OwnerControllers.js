@@ -34,20 +34,34 @@ myApp.controller('RemoveFleets',[
 ]);
 
 myApp.controller('getOneById',[
-    '$scope', '$http', function($scope, $http) {
-        $http.get('/api/fleet/'+ scope.id);
+    '$scope', '$http', function($scope ,$http) {
+        var myVar = document.getElementById("myVar").value;
+        $scope.intrew = myVar;
+        $http.get('/api/fleet/'+myVar).then(function(result) {
+            return $scope.fleet = result.data;
+        });
+
+        // $scope.fleets = [];
+        // return $http.get('/api/fleet/').then(function(result) {
+        //     return angular.forEach(result.data, function(item) {
+        //         return $scope.fleets.push(item);
+        //     });
+        // });
+
+
+    }]);
 
 
 
-        $scope.fleet_delete = function(id){
-            var index = $scope.fleets.indexOf(id);
-            $scope.fleets.splice(index, 1);
-            return $http.delete('/api/fleet/'+id+'/delete').then(function(result) {
-                console.log(result);
-            });
-        };
-    }
-]);
+//         $scope.fleet_delete = function(id){
+//             var index = $scope.fleets.indexOf(id);
+//             $scope.fleets.splice(index, 1);
+//             return $http.delete('/api/fleet/'+id+'/delete').then(function(result) {
+//                 console.log(result);
+//             });
+//         };
+//     }
+// ]);
 
 
 

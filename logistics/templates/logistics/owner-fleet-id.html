@@ -6,11 +6,12 @@
 {% endblock %}
 
 {% block ng_controller %}
-    FleetController
+    getOneById
 {% endblock %}
 
 {% block page-title %}
-    Fleet {{ fleet_id }}
+    <h1>Fleet {{ fleet_id }}</h1>
+    <input type="hidden" id="myVar" name="variable" value="{{ fleet_id }}">
 {% endblock %}
 
 {% block css %}
@@ -21,20 +22,22 @@
 
 {% block main-content %}
     {% verbatim %}
-    <div class="page-header" ng-app="geo2logistics" ng-controller="getOneById">
-        <h1>{[{fleet.name}]}</h1>
+    <div class="page-header">
+        <h1>{[{fleet}]}</h1>
     </div>
-    {% endverbatim %}
+        {% endverbatim %}
+
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Название</th>
-                    <th>Количество машин</th>
-                    <th>Количество поездок</th>
-                    <th>Дата создания</th>
+                    <th>Карта</th>
+                    <th>Водитель</th>
+                    <th>Машина</th>
+                    <th>Статус</th>
+                    <th>Последние действия</th>
+                    <th></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -110,7 +113,7 @@
 
 
 {% block script %}
-    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></>
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
     <script src="{% static 'logistics/js/controllers/OwnerControllers.js' %}"></script>
 
