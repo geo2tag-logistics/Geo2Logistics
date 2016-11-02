@@ -43,16 +43,10 @@ myApp.controller('getOneById',[
             return $http.get('/api/fleet/' + id).then(function(result) {
 
                 return result;
-            });
-            // return id;
-            }.then(function (result) {
-            $scope.fleet = result.data;
-                console.log(error);
-
             }).then(function (error) {
                 console.log(error);
-
-        });
+                
+            })};
         }]);
 
 
