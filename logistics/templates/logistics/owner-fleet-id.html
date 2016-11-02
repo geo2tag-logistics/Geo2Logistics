@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block page-title %}
-    <h1>Fleet {{ fleet_id }}</h1>
+    <h1 ng-init="id={{ fleet_id }}">Fleet {{ fleet_id }}</h1>
     <input type="hidden" id="myVar" name="variable" value="{{ fleet_id }}">
 {% endblock %}
 
@@ -23,7 +23,7 @@
 {% block main-content %}
     {% verbatim %}
     <div class="page-header">
-        <h1>{[{fleet}]}</h1>
+        <h1>{[{fleet_id}]}</h1>
     </div>
         {% endverbatim %}
 
@@ -38,31 +38,38 @@
                     <th>Статус</th>
                     <th>Последние действия</th>
                     <th></th>
-                    <th></th>
                 </tr>
                 </thead>
 
-                {% verbatim %}
-                <tr ng-repeat="fleet in fleets">
-                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>
-                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
-                    <td>{[{ fleet.cars_count }]}</td>
-                    <td>{[{ fleet.trips_count }]} </td>
-                    <td>{[{ fleet.creation_date }]}</td>
-                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>
-                </tr>
-                {% endverbatim %}
+{#                {% verbatim %}#}
+{#                <tr ng-repeat="fleet in drivers">#}
+{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>#}
+{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>#}
+{#                    <td>{[{ fleet.cars_count }]}</td>#}
+{#                    <td>{[{ fleet.trips_count }]} </td>#}
+{#                    <td>{[{ fleet.creation_date }]}</td>#}
+{#                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>#}
+{#                </tr>#}
+{#                {% endverbatim %}#}
 
+                <tr>
+                    <td>map</td>
+                    <td>Vasya</td>
+                    <td>ford</td>
+                    <td>online</td>
+                    <td>just now</td>
+                    <td><span ng-controller="RemoveDriver" ng-click="driver_delete(driver.id)"><button class="btn btn-danger">Удалить</button></span></td>
+                </tr>
             </table>
         </div>
     </div>
     <div class="buttons">
-        <button type="submit" class="btn btn-lg btn-primary" id="add-new-fleet" data-toggle="modal" data-target="#createNewFleet">Добавить новый</button>
+        <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" data-toggle="modal" data-target="#addDrivers">Добавить нового водителя</button>
     </div>
 
 
     <!-- Modal -->
-    <div class="modal fade" id="createNewFleet" tabindex="-1" role="dialog" aria-labelledby="createNewFleetLabel" aria-hidden="true">
+    <div class="modal fade" id="addDrivers" tabindex="-1" role="dialog" aria-labelledby="createNewFleetLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -75,31 +82,20 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <p class="headerTit">Название</p>
-                                    <p class="headerTit">Описание</p>
+                                    <p class="headerTit">Имя</p>
                                 </div>
                                 <div class="col-md-4">
-                                    <input name="title" type="text" placeholder="Название" class="profile-input">
-                                    <textarea rows="4" form="addForm"></textarea>
+                                    <input name="driverName" type="text" placeholder="Имя" class="profile-input">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <p class="headerTit">Пригласить</p>
-                                </div>
-                            </div>
-                            <div class="row" id="list-of-drivers">
-                                <div class="col-md-4">
-                                    <input name="drivers" id="tag-drivers" type="text" value="Саша,Ваня,Петр,Николай,Иракл" data-role="tagsinput">
-                                </div>
-                            </div>
+
                         </div>
 
                 </div>
                 <div class="modal-footer">
                     <div class="row" id="creation-buttons">
                         <div class="col-md-8">
-                            <input class="btn btn-lg btn-success" type="submit" value="Создать">
+                            <input class="btn btn-lg btn-success" type="submit" value="Добавить">
                         </div>
                     </div>
                 </div>
