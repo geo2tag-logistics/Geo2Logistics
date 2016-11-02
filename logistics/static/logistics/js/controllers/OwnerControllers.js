@@ -34,22 +34,41 @@ myApp.controller('RemoveFleets',[
 ]);
 
 myApp.controller('getOneById',[
-    '$scope', '$http', function($scope ,$http) {
-        var myVar = document.getElementById("myVar").value;
-        $scope.intrew = myVar;
-        $http.get('/api/fleet/'+myVar).then(function(result) {
-            return $scope.fleet = result.data;
-        });
+    '$scope', '$http', function($scope,$http) {
+        // var myVar = document.getElementById("myVar").value;
+        // $scope.intrew = myVar;
+        $scope.getFleet = function (id) {
+            // $scope.fleetName={};
+            return $http.get('/api/fleet/' + id).then(function(result) {
+                return result;
+            });
+            // return id;
+            };
+        }]);
 
-        // $scope.fleets = [];
-        // return $http.get('/api/fleet/').then(function(result) {
-        //     return angular.forEach(result.data, function(item) {
-        //         return $scope.fleets.push(item);
+
+        // $scope.getFleet = function(id) {
+        //     // return id;
+        //     return $http.get('/api/fleet/' + id ).then(function (result) {
+        //         console.log(result);
+        //         return result.data;
+        //     }).then(function (error) {
+        //         console.log(error);
         //     });
-        // });
+        // };
 
+myApp.controller('RemoveDriver',[
+    '$scope', '$http', function($scope, $http) {
+        $scope.driver_delete = function(id){
+            var index = $scope.drivers.indexOf(id);
+            $scope.drivers.splice(index, 1);
+            return $http.delete('/api/fleet/'+id+'/dismiss').then(function(result) {
+                console.log(result);
+            });
+        };
+    }
+]);
 
-    }]);
 
 
 

@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% block page-title %}
-    <h1 ng-init="id={{ fleet_id }}">Fleet {{ fleet_id }}</h1>
-    <input type="hidden" id="myVar" name="variable" value="{{ fleet_id }}">
+    <h1>Fleet {{ fleet_id }}</h1>
+{#    <input type="hidden" id="myVar" name="variable" value="{{ fleet_id }}">#}
 {% endblock %}
 
 {% block css %}
@@ -23,9 +23,10 @@
 {% block main-content %}
     {% verbatim %}
     <div class="page-header">
-        <h1>{[{fleet_id}]}</h1>
+        <h1>{[{ getFleet( 11 ) }]}</h1>
     </div>
-        {% endverbatim %}
+    {% endverbatim %}
+
 
     <div class="row">
         <div class="col-md-12">
@@ -109,7 +110,7 @@
 
 
 {% block script %}
-    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></>
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
     <script src="{% static 'logistics/js/controllers/OwnerControllers.js' %}"></script>
 
