@@ -45,7 +45,7 @@ myApp.controller('getOneById',[
                 return result;
             }).then(function (error) {
                 console.log(error);
-                
+
             })};
         }]);
 
