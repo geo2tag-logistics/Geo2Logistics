@@ -37,13 +37,22 @@ myApp.controller('getOneById',[
     '$scope', '$http', function($scope,$http) {
         // var myVar = document.getElementById("myVar").value;
         // $scope.intrew = myVar;
+        $scope.fleet={};
         $scope.getFleet = function (id) {
             // $scope.fleetName={};
             return $http.get('/api/fleet/' + id).then(function(result) {
+
                 return result;
             });
             // return id;
-            };
+            }.then(function (result) {
+            $scope.fleet = result.data;
+                console.log(error);
+
+            }).then(function (error) {
+                console.log(error);
+
+        });
         }]);
 
 
