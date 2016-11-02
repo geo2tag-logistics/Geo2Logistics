@@ -42,25 +42,25 @@
                 </tr>
                 </thead>
 
-{#                {% verbatim %}#}
-{#                <tr ng-repeat="fleet in drivers">#}
-{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>#}
-{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>#}
-{#                    <td>{[{ fleet.cars_count }]}</td>#}
-{#                    <td>{[{ fleet.trips_count }]} </td>#}
-{#                    <td>{[{ fleet.creation_date }]}</td>#}
-{#                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>#}
-{#                </tr>#}
-{#                {% endverbatim %}#}
-
-                <tr>
-                    <td>map</td>
-                    <td>Vasya</td>
-                    <td>ford</td>
-                    <td>online</td>
-                    <td>just now</td>
+                {% verbatim %}
+                <tr ng-repeat="driver in drivers" ng-controller="GetDriversController">
+                    <td></td>
+                    <td><a ng-href="/fleet/{[{driver.id}]}/">{[{ driver.first_name }]} {[{driver.last_name}]}</a></td>
+                    <td>{[{driver.auto_manufacturer}]} {[{ driver.auto_model }]}</td>
+                    <td>{[{ driver.is_online }]} </td>
+                    <td>{[{ driver.last_seen }]}</td>
                     <td><span ng-controller="RemoveDriver" ng-click="driver_delete(driver.id)"><button class="btn btn-danger">Удалить</button></span></td>
                 </tr>
+                {% endverbatim %}
+
+{#                <tr>#}
+{#                    <td>map</td>#}
+{#                    <td>Vasya</td>#}
+{#                    <td>ford</td>#}
+{#                    <td>online</td>#}
+{#                    <td>just now</td>#}
+{#                    <td><span ng-controller="RemoveDriver" ng-click="driver_delete(driver.id)"><button class="btn btn-danger">Удалить</button></span></td>#}
+{#                </tr>#}
             </table>
         </div>
     </div>

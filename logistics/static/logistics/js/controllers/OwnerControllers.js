@@ -42,13 +42,26 @@ myApp.controller('getOneById',[
             // $scope.fleetName={};
             return $http.get('/api/fleet/' + id).then(function(result) {
 
-                return result;
+                return result.data.name;
             }).then(function (error) {
                 console.log(error);
 
             })};
         }]);
 
+myApp.controller('GetDriversController',[
+    '$scope', '$http', function($scope, $http) {
+        $scope.drivers = [];
+        return $http.get('/api/fleet/'+id+'/drivers').then(function(result) {
+            return angular.forEach(result.data, function(item) {
+                return $scope.drivers.push(item);
+            });
+        });
+
+
+
+    }
+]);
 
         // $scope.getFleet = function(id) {
         //     // return id;
