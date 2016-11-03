@@ -23,10 +23,11 @@ myApp.controller('GetOwnersFleetsController',[
 
 myApp.controller('addNewFleet',[
     '$scope', '$http', function($scope, $http) {
-        console.log($scope.newFleetName);
-        console.log($scope.newFleetDescription);
+
         $scope.addNewFleetClick = function () {
-            $http.post('/api/fleet/add-fleet/', {data: {name: $scope.newFleetName, description: $scope.newFleetDescription}}).then(function (res) {
+            console.log($scope.newFleetName);
+            console.log($scope.newFleetDescription);
+            $http.post('/api/fleet/add-fleet/', {name: $scope.newFleetName, description: $scope.newFleetDescription}).then(function (res) {
                 console.log(res);
 
             }, function (err) {
