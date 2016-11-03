@@ -26,7 +26,7 @@ myApp.controller('RemoveFleets',[
         $scope.fleet_delete = function(id){
             var index = $scope.fleets.indexOf(id);
 
-            return $http.delete('/api/fleet/'+id).then(function(result) {
+            return $http.delete('/api/fleet/'+id+'/delete/').then(function(result) {
                 $scope.fleets.splice(index, 1);
                 console.log(result);
             }, function(error) {

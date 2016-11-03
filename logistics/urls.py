@@ -24,14 +24,14 @@ urlpatterns = [
     url(r'^api/auth/$', api.Auth.as_view(), name='api-auth'),
     url(r'^api/logout/$', api.Logout.as_view(), name='api-logout'),
 
-    url(r'^api/fleet/$', api.FleetList.as_view(), name='fleet-list'),
     url(r'^api/fleet/add-fleet/$', api.FleetList().as_view(), name='fleet-add'),
-    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/$', api.FleetByIdView().as_view(), name='fleet-by-id'),
+    url(r'^api/fleet/$', api.FleetList.as_view(), name='fleet-list'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/drivers/$', api.DriversByFleet().as_view(), name='drivers-by-fleet'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/pending_drivers/$', api.PendingDriversByFleet.as_view(), name='fleet-list'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/delete/$', api.FleetByIdView().as_view(), name='fleet-add'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/invite/$', api.FleetInvite().as_view(), name='drivers-by-fleet'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/dismiss/$', api.FleetDismiss().as_view(), name='drivers-by-fleet'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/$', api.FleetByIdView().as_view(), name='fleet-by-id'),
 
     # default
     url(r'^', views.home, name='home'),

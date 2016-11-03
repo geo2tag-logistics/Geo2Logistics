@@ -1,13 +1,20 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from rest_framework import status
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsOwnerOrDriverPermission
-from .forms import ROLE_CHOICES, SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm
 from .models import Fleet, Driver, Owner, DriverStats
 from .serializers import FleetSerializer, DriverSerializer
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
 
 
 class SignUp(APIView):
@@ -66,6 +73,7 @@ class Logout(APIView):
 
 class FleetList(APIView):
     permission_classes = (IsOwnerOrDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def get(self, request):
         if is_owner(request.user):
@@ -123,6 +131,7 @@ class PendingDriversByFleet(APIView):
 
 class FleetByIdView(APIView):
     permission_classes = (IsOwnerPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def get(self, request, fleet_id):
         fleet = Fleet.objects.get(id=fleet_id)
@@ -143,6 +152,7 @@ class FleetByIdView(APIView):
 
 class FleetInvite(APIView):
     permission_classes = (IsOwnerPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request, fleet_id, format=None):
         current_user = request.user
@@ -171,6 +181,7 @@ class FleetInvite(APIView):
 
 class FleetDismiss(APIView):
     permission_classes = (IsOwnerPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request, fleet_id, format=None):
         current_user = request.user
