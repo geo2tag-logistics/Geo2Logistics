@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block ng_controller %}
-    getOneById
+    driversController
 {% endblock %}
 
 {% block page-title %}
@@ -21,7 +21,7 @@
 
 {% block main-content %}
 
-    <div data-ng-controller="getOneById" data-ng-init="init('{{ fleet_id }}')"></div>
+    <div data-ng-controller="driversController" data-ng-init="init('{{ fleet_id }}')"></div>
 
     <div class="page-header">
         <h1><span ng-bind="getFleetName()"></span></h1>
@@ -33,6 +33,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Карта</th>
                     <th>Водитель</th>
                     <th>Машина</th>
@@ -44,23 +45,24 @@
 
 
                 {#  TODO сделать и таблицу#}
-                <tr ng-repeat="fleet in getDrivers()">
-                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>
-                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
-                    <td>{[{ fleet.cars_count }]}</td>
-                    <td>{[{ fleet.trips_count }]} </td>
-                    <td>{[{ fleet.creation_date }]}</td>
-                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Delete</button></span></td>
+                <tr ng-repeat="driver in getDrivers()">
+                    <td>{[{driver.id}]}</td>
+                    <td>map</td>
+                    <td><a ng-href="/drivers/{[{driver.id}]}/">{[{ driver.first_name }]} {[{driver.last_name}]}</a></td>
+                    <td>{[{ driver.auto_model }]}  {[{ driver.auto_manufacturer }]}</td>
+                    <td>{[{ driver.is_online }]}</td>
+                    <td>{[{ driber.last_seen }]}</td>
+                    <td><span ng-controller="driversController" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Delete</button></span></td>
                 </tr>
 
-                <tr>
-                    <td>map</td>
-                    <td>Vasya</td>
-                    <td>ford</td>
-                    <td>online</td>
-                    <td>just now</td>
-                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Удалить</button></span></td>
-                </tr>
+{#                <tr>#}
+{#                    <td>map</td>#}
+{#                    <td>Vasya</td>#}
+{#                    <td>ford</td>#}
+{#                    <td>online</td>#}
+{#                    <td>just now</td>#}
+{#                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Удалить</button></span></td>#}
+{#                </tr>#}
             </table>
         </div>
     </div>
@@ -77,7 +79,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
                 </div>
-                <form action="/api/fleet/add-fleet/" id="addForm" method="POST" >
+                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST" >
                 <div class="modal-body" id="body-createNewFleet">
 
                         <div class="container">
