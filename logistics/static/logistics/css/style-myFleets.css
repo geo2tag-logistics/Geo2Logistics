@@ -71,3 +71,8 @@ textarea{
     width: 300px;
     margin-left: 150px;
 }
+
+#textarea-description {
+    resize: none;
+    width: 180px;
+}
