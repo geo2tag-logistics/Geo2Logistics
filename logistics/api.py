@@ -154,11 +154,8 @@ class FleetInvite(APIView):
     permission_classes = (IsOwnerPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    def post(self, request, fleet_id, format=None):
-        current_user = request.user
-        print(current_user)
+    def post(self, request, fleet_id):
         form_invite = FleetInviteDismissForm(request.data)
-        print(form_invite)
         if form_invite.is_valid():
             try:
                 fleet = Fleet.objects.get(id=fleet_id)
@@ -169,12 +166,11 @@ class FleetInvite(APIView):
                             driver = Driver.objects.get(id=driver_id)
                             driver.fleets.add(fleet)
                             driver.save()
-                            print(fleet.id, id, driver.id)
-                            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                    return Response({"status": "ok"}, status=status.HTTP_200_OK)
                 else:
                     return Response({"status": "error", "errors": ["Not owner of fleet"]}, status=status.HTTP_409_CONFLICT)
-            except:
-                return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -183,11 +179,8 @@ class FleetDismiss(APIView):
     permission_classes = (IsOwnerPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    def post(self, request, fleet_id, format=None):
-        current_user = request.user
-        print(current_user)
+    def post(self, request, fleet_id):
         form_dismiss = FleetInviteDismissForm(request.data)
-        print(form_dismiss)
         if form_dismiss.is_valid():
             try:
                 fleet = Fleet.objects.get(id=fleet_id)

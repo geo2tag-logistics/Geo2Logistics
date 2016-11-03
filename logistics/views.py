@@ -37,7 +37,7 @@ def ownerFleets(request):
 
 @permission_classes((IsOwnerPermission, ))
 def ownerFleetId(request, fleet_id):
-    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id})
+    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id, "username": request.user.username})
 
 
 @permission_classes((IsOwnerPermission, ))
@@ -47,7 +47,7 @@ def ownerProfile(request):
 
 @permission_classes((IsOwnerPermission, ))
 def map(request):
-    return render(request, 'logistics/map.html')
+    return render(request, 'logistics/map.html', {'username': request.user.username})
 
 
 def home(request):

@@ -26,6 +26,7 @@ myApp.controller('RemoveFleets',[
         $scope.fleet_delete = function(id){
             var index = $scope.fleets.indexOf(id);
 
+            // TODO add csrftoken cookie
             return $http.delete('/api/fleet/'+id+'/delete/').then(function(result) {
                 $scope.fleets.splice(index, 1);
                 console.log(result);
@@ -38,7 +39,7 @@ myApp.controller('RemoveFleets',[
 ]);
 
 myApp.controller('driversController',[
-        '$scope', '$http', 'fleetStorage', function($scope,$http, fleetStorage) {
+        '$scope', '$http', 'fleetStorage', function($scope, $http, fleetStorage) {
 
             $scope.init = function (_fleet_id) {
                 $scope.loadFleet(_fleet_id);
@@ -86,15 +87,18 @@ myApp.controller('driversController',[
                 var index = $scope.drivers.indexOf(driver_id);
 
                 return $http({
-                    url: '/api/fleet/'+fleet_id+'/dismiss',
+                    url: '/api/fleet/'+fleet_id+'/dismiss/',
                     method: 'POST',
                     data: {
                         driver_id: driver_id
                     },
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8"
-                    }
+                    // TODO add csrftoken cookie
+                    // headers: {
+                    //     "Content-Type": "application/json;charset=utf-8",
+                    //     'X-CSRFToken': $cookies['csrftoken']
+                    // }
                 }).then(function(res) {
+                    // TODO обновить список водителей, ожидающих приглашения
                     $scope.drivers.splice(index, 1);
                     console.log(res + " dismiss "+ driver_id);
                 }, function(error) {
@@ -134,12 +138,26 @@ myApp.controller('driversController',[
                 });
             };
 
-            $scope.pendDriver = function (fleetId,driverId) {
-                return $http.post('/api/fleet/'+fleetId+'/invite/', {driver_id: driverId}).then(function (res) {
-                    console.log(res);
-                }, function (error) {
-                    console.log(error);
+            $scope.pendDriver = function (fleetId, driverIdList) {
+                driverId = "";
+                driverIdList.forEach(function(item) {
+                    driverId += (item + ",");
                 });
+                return $http({
+                    method: 'POST',
+                    url: '/api/fleet/'+fleetId+'/invite/',
+                    data: {driver_id: driverId},
+                    // TODO add csrftoken cookie
+                    // headers: {
+                    //     "Content-Type": "application/json;charset=utf-8",
+                    //     'X-CSRFToken': $cookies['csrftoken']
+                    // }
+                }).success(function(res) {
+                    console.log(res);
+                    location.reload()
+                }).error(function (err) {
+                    console.log(err);
+                })
             }
 
         }]
