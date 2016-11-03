@@ -40,7 +40,7 @@ input[type="text"],input[type="password"] {
     border:none;
     background-color: red;
     margin-bottom: 20px;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
 #sign-up:hover {
