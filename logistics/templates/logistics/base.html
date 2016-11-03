@@ -39,7 +39,7 @@
                     <li class="active"><a href="#">Мои автопарки</a></li>
                     <li><a href="#">Личный кабинет</a></li>
                     {% if username %}
-                        <li><a href="{% url 'login' %}">Выйти ({{ username }})</a></li>
+                        <li><a href="{% url 'logout' %}">Выйти ({{ username }})</a></li>
                     {% else %}
                         <li><a href='{% url 'login' %}'>Войти</a></li>
                     {% endif %}

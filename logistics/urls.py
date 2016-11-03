@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^driverProfile/$', views.driverProfile, name='driverProfile'),
     url(r'^reg/$', views.registration, name='registration'),
     url(r'^login/$', views.login_user, name='login'),
+    url(r'^logout/$', views.logout_user, name='logout'),
     url(r'^myFleets/$', views.ownerFleets, name='ownerFleets'),
     url(r'^fleet/(?P<fleet_id>[-\w]+)/$', views.ownerFleetId, name='ownerFleetId'),
     url(r'^ownerProfile/$', views.ownerProfile, name='ownerProfile'),
