@@ -78,23 +78,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
+                    <h4 class="modal-title" id="createNewFleetLabel">Добавление новых водителей</h4>
                 </div>
 {#                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST"{% csrf_token %} >#}
                     <div class="modal-body" id="body-createNewFleet">
 
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <p class="headerTit">Имя</p>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="sel2">Выберите водителя</label>
+                                <div class="col-md-4" id="add-driver-div">
+                                    <label for="sel2">Выберите водителей</label>
 
                                     <select name="multipleSelect"  multiple ng-model="data.multipleSelect" class="form-control" id="sel2" ng-init="showPendingDrivers('{{ fleet_id }}')">
                                         <option ng-repeat = "pdriver in pdrivers" ng-value="pdriver.id" >  {[{pdriver.first_name}]}    </option>
                                     </select>
-                                    <tt>multipleSelect = {[{ data.multipleSelect | json }]}</tt>
+{#                                    <tt>multipleSelect = {[{ data.multipleSelect | json }]}</tt>#}
                                 </div>
                             </div>
 

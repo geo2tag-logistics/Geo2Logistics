@@ -58,12 +58,12 @@
     <!-- Modal -->
     <div class="modal fade" id="createNewFleet" tabindex="-1" role="dialog" aria-labelledby="createNewFleetLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" ng-app="geo2logistics" ng-controller="addNewFleet">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
                 </div>
-                <form action="/api/fleet/add-fleet/" id="addForm" method="POST" >
+{#                <form action="/api/fleet/add-fleet/" id="addForm" method="POST" >#}
                 <div class="modal-body" id="body-createNewFleet">
 
                         <div class="container">
@@ -72,9 +72,9 @@
                                     <p class="headerTit">Название</p>
                                     <p class="headerTit">Описание</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <input name="name" type="text" placeholder="Название" class="profile-input">
-                                    <textarea name="description" placeholder="Описание" rows="4" form="addForm"></textarea>
+                                <div class="col-md-4" >
+                                    <input ng-model="newFleetName" name="name" type="text" placeholder="Название" class="profile-input">
+                                    <textarea ng-model="newFleetDescription" name="description" placeholder="Описание" rows="4"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -93,11 +93,11 @@
                 <div class="modal-footer">
                     <div class="row" id="creation-buttons">
                         <div class="col-md-8">
-                            <input class="btn btn-lg btn-success" type="submit" value="Создать">
+                            <input ng-click="addNewFleetClick()" class="btn btn-lg btn-success" type="submit" value="Создать">
                         </div>
                     </div>
                 </div>
-                </form>
+{#                </form>#}
             </div>
         </div>
     </div>

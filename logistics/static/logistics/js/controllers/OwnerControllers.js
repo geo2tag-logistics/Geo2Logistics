@@ -21,6 +21,21 @@ myApp.controller('GetOwnersFleetsController',[
     }
 ]);
 
+myApp.controller('addNewFleet',[
+    '$scope', '$http', function($scope, $http) {
+        console.log($scope.newFleetName);
+        console.log($scope.newFleetDescription);
+        $scope.addNewFleetClick = function () {
+            $http.post('/api/fleet/add-fleet/', {data: {name: $scope.newFleetName, description: $scope.newFleetDescription}}).then(function (res) {
+                console.log(res);
+
+            }, function (err) {
+                console.log(err);
+            })
+
+        };
+    }
+]);
 myApp.controller('RemoveFleets',[
     '$scope', '$http', function($scope, $http) {
         $scope.fleet_delete = function(id){
