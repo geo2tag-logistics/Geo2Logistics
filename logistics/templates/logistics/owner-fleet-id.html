@@ -44,7 +44,7 @@
 
 
                 {#  TODO сделать и таблицу#}
-                <tr ng-repeat="fleet in drivers">
+                <tr ng-repeat="fleet in getDrivers()">
                     <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>
                     <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
                     <td>{[{ fleet.cars_count }]}</td>

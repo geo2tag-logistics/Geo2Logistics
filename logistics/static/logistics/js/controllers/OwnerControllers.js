@@ -44,7 +44,7 @@ myApp.controller('getOneById',[
             return $http.get('/api/fleet/'+id+'/').then(
                 function(result) {
                     fleetStorage.setFleet(result.data);
-                    $scope.getDriversData()
+                    $scope.loadDriversData();
                 },
                 function(error) {
                     console.log(error);
@@ -62,13 +62,18 @@ myApp.controller('getOneById',[
             return fleet != null ? fleet.name : "NoName";
         }
 
-        $scope.drivers = [];
-        $scope.getDriversData = function () {
-            $http.get('/api/fleet/'+$scope.getFleetId()+'/drivers/').then(function(result) {
+        $scope.loadDriversData = function () {
+            return $http.get('/api/fleet/'+$scope.getFleetId()+'/drivers/').then(function(result) {
                 return angular.forEach(result.data, function(item) {
-                    return $scope.drivers.push(item);
+                    return fleetStorage.getDrivers().push(item);
                 });
+            },function (error){
+                console.log(error);
             });
+        }
+
+        $scope.getDrivers = function(){
+            return fleetStorage.getDrivers();
         }
 
         $scope.driver_dismiss = function(fleet_id, driver_id){
@@ -78,22 +83,29 @@ myApp.controller('getOneById',[
             return $http.delete('/api/fleet/'+fleet_id+'/dismiss/').then(function(result) {
                 //TODO реализовать удаление и протестить
                 console.log("dismiss "+id);
-            }).then(function(error) {
+            }, function(error) {
                 console.log(error);
             });
         };
 
 }]
 ).service('fleetStorage', function () {
-   var _fleet = null;
+    var _fleet = null;
+    var _drivers = [];
 
-   return {
-       setFleet: function (fleet) {
-         _fleet = fleet;
-       },
-      getFleet: function () {
-         return _fleet;
-      }
+    return {
+        setFleet: function (fleet) {
+            _fleet = fleet;
+        },
+        getFleet: function () {
+            return _fleet;
+        },
+        setDrivers: function (drivers) {
+            _drivers = drivers;
+        },
+        getDrivers: function () {
+            return _drivers;
+        }
     }
 });
 
