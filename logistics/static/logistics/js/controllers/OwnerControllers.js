@@ -29,7 +29,7 @@ myApp.controller('addNewFleet',[
             console.log($scope.newFleetDescription);
             $http.post('/api/fleet/add-fleet/', {name: $scope.newFleetName, description: $scope.newFleetDescription}).then(function (res) {
                 console.log(res);
-
+                location.reload()
             }, function (err) {
                 console.log(err);
             })
