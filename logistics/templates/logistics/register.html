@@ -11,42 +11,43 @@
 
 {% block main-content %}
     <div class="container">
-        <form action="{% url 'registration' %}" method="POST">
-            {% csrf_token %}
-            <div class="row">
-                <h3 id="mainTit">Регистрация</h3><br>
-                <div class="col-xs-6 col-md-4">
-                    <p class="headerTit">Логин</p>
-                    <p class="headerTit">Пароль</p>
-                    <p class="headerTit">Повторите пароль</p>
-                    <p class="headerTit">Статус</p>
+        <div class="fieldWrapper">
+            <form action="{% url 'registration' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <h3 id="mainTit">Регистрация</h3><br>
+                    <p class="mainTit">
+                        {% if error_reg %}
+                            <br> <label> {{ error_reg }} </label>
+                        {% endif %}</p>
+                    <div class="col-xs-6 col-md-4">
+                        <p class="headerTit">Логин</p>
+                        <p class="headerTit">E-mail</p>
+                        <p class="headerTit">Пароль</p>
+                        <p class="headerTit">Статус</p>
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                        <p class="profile-input">{{ form.login }}</p>
+                        <p class="profile-input">{{ form.email }}</p>
+                        <p class="profile-input">{{ form.password }}</p>
+                        <p class="profile-input">{{ form.role }}</p>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-md-4">
-                    <input type="text" placeholder="Логин" name="loginname" class="profile-input">
-                    <input type="password" placeholder="Пароль" name="passfirst" class="profile-input">
-                    <input type="password" placeholder="Повторите пароль" name="passsecond" class="profile-input">
-                    <input type="text" placeholder="Статус (1 - owner, 2 - driver)" name="status" class="profile-input">
+                <div class="row">
+                    <div class="col-xs-6 col-md-4">
+                        <p class="headerTit">Имя</p>
+                        <p class="headerTit">Фамилия</p>
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                        <p class="profile-input">{{ form.first_name }}</p>
+                        <p class="profile-input">{{ form.last_name }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6 col-md-4">
-                    <p class="headerTit">Имя</p>
-                    <p class="headerTit">Фамилия</p>
-                    <p class="headerTit">Отчество</p>
-                    <p class="headerTit">e-mail</p>
+                <div>
+                    <input class="btn-login" type="submit" value="Sign Up" name="sign-up" id="sign-up">
                 </div>
-                <div class="col-xs-6 col-md-4">
-                    <input type="text" placeholder="Имя" name="firstname" class="profile-input">
-                    <input type="text" placeholder="Фамилия" name="lastname" class="profile-input">
-                    <input type="text" placeholder="Отчество" name="secondname" class="profile-input">
-                    <input type="text" placeholder="e-mail" name="mail" class="profile-input">
-                </div>
-            </div>
-            <div>
-                <input class="btn-login" type="submit" value="Sign Up" name="sign-up" id="sign-up">
-                <input class="btn-login" type="submit" value="LOG OUT" name="logout" id="logout">
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock %}
 {% block script %}
