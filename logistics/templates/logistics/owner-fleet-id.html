@@ -47,8 +47,8 @@
                 {#  TODO сделать и таблицу#}
                 <tr ng-repeat="driver in getDrivers()">
                     <td>{[{driver.id}]}</td>
-                    <td>map</td>
-                    <td><a ng-href="/drivers/{[{driver.id}]}/">{[{ driver.first_name }]} {[{driver.last_name}]}</a></td>
+                    <td><a href="/map/">map</a></td>
+                    <td>{[{ driver.first_name }]} {[{driver.last_name}]}</td>
                     <td>{[{ driver.auto_model }]}  {[{ driver.auto_manufacturer }]}</td>
                     <td>{[{ driver.is_online }]}</td>
                     <td>{[{ driber.last_seen }]}</td>
