@@ -66,6 +66,7 @@ class Logout(APIView):
 
 class FleetList(APIView):
     permission_classes = (IsOwnerOrDriverPermission,)
+
     def get(self, request):
         if is_owner(request.user):
             fleets = Fleet.objects.filter(owner=request.user.owner)
@@ -78,31 +79,6 @@ class FleetList(APIView):
         else:
             return Response({"status": "error", "errors": ["Not authorized"]}, status=status.HTTP_400_BAD_REQUEST)
 
-
-class DriversByFleet(APIView):
-    permission_classes = (IsOwnerPermission,)
-    def get(self, request, fleet_id):
-        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
-            drivers = Driver.objects.filter(fleets=fleet_id)
-            serialized_drivers = DriverSerializer(drivers, many=True)
-            return Response(serialized_drivers.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"status": "error", "errors": ["Wrong fleet_id"]}, status=status.HTTP_409_CONFLICT)
-
-
-class PendingDriversByFleet(APIView):
-    permission_classes = (IsOwnerPermission,)
-    def get(self, request, fleet_id):
-        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
-            drivers = Driver.objects.exclude(fleets=fleet_id).exclude(pending_fleets=fleet_id)
-            serialized_drivers = DriverSerializer(drivers, many=True)
-            return Response(serialized_drivers.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"status": "error", "errors": ["Wrong fleet_id"]}, status=status.HTTP_409_CONFLICT)
-
-
-class FleetView(APIView):
-    permission_classes = (IsOwnerPermission,)
     def post(self, request):
         current_user = request.user
         print(current_user)
@@ -120,9 +96,43 @@ class FleetView(APIView):
         else:
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, fleet_id, format=None):
-        current_user = request.user
-        print(current_user)
+
+class DriversByFleet(APIView):
+    permission_classes = (IsOwnerPermission,)
+
+    def get(self, request, fleet_id):
+        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
+            drivers = Driver.objects.filter(fleets=fleet_id)
+            serialized_drivers = DriverSerializer(drivers, many=True)
+            return Response(serialized_drivers.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error", "errors": ["Wrong fleet_id"]}, status=status.HTTP_409_CONFLICT)
+
+
+class PendingDriversByFleet(APIView):
+    permission_classes = (IsOwnerPermission,)
+
+    def get(self, request, fleet_id):
+        if Fleet.objects.get(pk=fleet_id) in Fleet.objects.filter(owner=request.user.owner):
+            drivers = Driver.objects.exclude(fleets=fleet_id).exclude(pending_fleets=fleet_id)
+            serialized_drivers = DriverSerializer(drivers, many=True)
+            return Response(serialized_drivers.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error", "errors": ["Wrong fleet_id"]}, status=status.HTTP_409_CONFLICT)
+
+
+class FleetByIdView(APIView):
+    permission_classes = (IsOwnerPermission,)
+
+    def get(self, request, fleet_id):
+        fleet = Fleet.objects.get(id=fleet_id)
+        if fleet in Fleet.objects.filter(owner=request.user.owner):
+            serialized_fleet = FleetSerializer(fleet, many=False)
+            return Response(serialized_fleet.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, fleet_id):
         fleet_for_delete = Fleet.objects.get(id=fleet_id)
         if fleet_for_delete in Fleet.objects.filter(owner=request.user.owner):
             fleet_for_delete.delete()
@@ -133,6 +143,7 @@ class FleetView(APIView):
 
 class FleetInvite(APIView):
     permission_classes = (IsOwnerPermission,)
+
     def post(self, request, fleet_id, format=None):
         current_user = request.user
         print(current_user)
@@ -158,6 +169,7 @@ class FleetInvite(APIView):
 
 class FleetDismiss(APIView):
     permission_classes = (IsOwnerPermission,)
+
     def post(self, request, fleet_id, format=None):
         current_user = request.user
         print(current_user)

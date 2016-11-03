@@ -10,8 +10,7 @@
 {% endblock %}
 
 {% block page-title %}
-    <h1>Fleet {{ fleet_id }}</h1>
-{#    <input type="hidden" id="myVar" name="variable" value="{{ fleet_id }}">#}
+    Fleet {{ fleet_id }}
 {% endblock %}
 
 {% block css %}
@@ -21,11 +20,12 @@
 {% endblock %}
 
 {% block main-content %}
-    {% verbatim %}
+
+    <div data-ng-controller="getOneById" data-ng-init="init('{{ fleet_id }}')"></div>
+
     <div class="page-header">
-        <h1>{[{ getFleet(11) }]}</h1>
+        <h1><span ng-bind="getFleetName()"></span></h1>
     </div>
-    {% endverbatim %}
 
 
     <div class="row">
@@ -42,16 +42,16 @@
                 </tr>
                 </thead>
 
-{#                {% verbatim %}#}
-{#                <tr ng-repeat="fleet in drivers">#}
-{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>#}
-{#                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>#}
-{#                    <td>{[{ fleet.cars_count }]}</td>#}
-{#                    <td>{[{ fleet.trips_count }]} </td>#}
-{#                    <td>{[{ fleet.creation_date }]}</td>#}
-{#                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>#}
-{#                </tr>#}
-{#                {% endverbatim %}#}
+
+                {#  TODO сделать и таблицу#}
+                <tr ng-repeat="fleet in drivers">
+                    <td><a ng-href="/fleet/{[{fleet.id}]}/">id{[{ fleet.id }]}</a></td>
+                    <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
+                    <td>{[{ fleet.cars_count }]}</td>
+                    <td>{[{ fleet.trips_count }]} </td>
+                    <td>{[{ fleet.creation_date }]}</td>
+                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Delete</button></span></td>
+                </tr>
 
                 <tr>
                     <td>map</td>
@@ -59,7 +59,7 @@
                     <td>ford</td>
                     <td>online</td>
                     <td>just now</td>
-                    <td><span ng-controller="RemoveDriver" ng-click="driver_delete(driver.id)"><button class="btn btn-danger">Удалить</button></span></td>
+                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Удалить</button></span></td>
                 </tr>
             </table>
         </div>
