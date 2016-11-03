@@ -58,3 +58,7 @@ textarea{
 .even {
   color: blue;
 }
+
+#sel2 {
+    width: 100px;
+}

@@ -55,18 +55,19 @@
                     <td><span ng-controller="driversController" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Delete</button></span></td>
                 </tr>
 
-{#                <tr>#}
-{#                    <td>map</td>#}
-{#                    <td>Vasya</td>#}
-{#                    <td>ford</td>#}
-{#                    <td>online</td>#}
-{#                    <td>just now</td>#}
-{#                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Удалить</button></span></td>#}
-{#                </tr>#}
+                {#                <tr>#}
+                {#                    <td>map</td>#}
+                {#                    <td>Vasya</td>#}
+                {#                    <td>ford</td>#}
+                {#                    <td>online</td>#}
+                {#                    <td>just now</td>#}
+                {#                    <td><span ng-controller="getOneById" ng-click="driver_dismiss('{{ fleet_id }}', driver.id)"><button class="btn btn-danger">Удалить</button></span></td>#}
+                {#                </tr>#}
             </table>
         </div>
     </div>
     <div class="buttons">
+{#        <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" ng-click="showPendingDrivers('{{ fleet_id }}')"> test</button>#}
         <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" data-toggle="modal" data-target="#addDrivers">Добавить нового водителя</button>
     </div>
 
@@ -79,8 +80,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createNewFleetLabel">Создание нового автопарка</h4>
                 </div>
-                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST" >
-                <div class="modal-body" id="body-createNewFleet">
+{#                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST"{% csrf_token %} >#}
+                    <div class="modal-body" id="body-createNewFleet">
 
                         <div class="container">
                             <div class="row">
@@ -88,21 +89,26 @@
                                     <p class="headerTit">Имя</p>
                                 </div>
                                 <div class="col-md-4">
-                                    <input name="driverName" type="text" placeholder="Имя" class="profile-input">
+                                    <label for="sel2">Выберите водителя</label>
+
+                                    <select name="multipleSelect"  multiple ng-model="data.multipleSelect" class="form-control" id="sel2" ng-init="showPendingDrivers('{{ fleet_id }}')">
+                                        <option ng-repeat = "pdriver in pdrivers" ng-value="pdriver.id" >  {[{pdriver.first_name}]}    </option>
+                                    </select>
+                                    <tt>multipleSelect = {[{ data.multipleSelect | json }]}</tt>
                                 </div>
                             </div>
 
                         </div>
 
-                </div>
-                <div class="modal-footer">
-                    <div class="row" id="creation-buttons">
-                        <div class="col-md-8">
-                            <input class="btn btn-lg btn-success" type="submit" value="Добавить">
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row" id="creation-buttons">
+                            <div class="col-md-8">
+                                <input class="btn btn-lg btn-success" type="submit" value="Добавить" ng-click="pendDriver('{{ fleet_id }}', data.multipleSelect)">
+                            </div>
                         </div>
                     </div>
-                </div>
-                </form>
+{#                </form>#}
             </div>
         </div>
     </div>

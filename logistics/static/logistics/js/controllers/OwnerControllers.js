@@ -25,9 +25,13 @@ myApp.controller('RemoveFleets',[
     '$scope', '$http', function($scope, $http) {
         $scope.fleet_delete = function(id){
             var index = $scope.fleets.indexOf(id);
-            $scope.fleets.splice(index, 1);
-            return $http.delete('/api/fleet/'+id+'/delete').then(function(result) {
+
+            return $http.delete('/api/fleet/'+id).then(function(result) {
+                $scope.fleets.splice(index, 1);
                 console.log(result);
+            }, function(error) {
+                console.log(error);
+
             });
         };
     }
@@ -82,8 +86,8 @@ myApp.controller('driversController',[
                 var index = $scope.drivers.indexOf(driver_id);
 
                 return $http({
-                    url: '/api/fleet/'+fleet_id+'/dismiss/',
-                    method: 'DELETE',
+                    url: '/api/fleet/'+fleet_id+'/dismiss',
+                    method: 'POST',
                     data: {
                         driver_id: driver_id
                     },
@@ -117,6 +121,26 @@ myApp.controller('driversController',[
 //                     console.log(error);
 //                 });
             };
+
+            $scope.showPendingDrivers = function(fleetId){
+                $scope.pdrivers =[];
+
+                return $http.get('/api/fleet/'+fleetId+'/pending_drivers/').then(function (res) {
+                    return angular.forEach(res.data, function(item) {
+                        return $scope.pdrivers.push(item);
+                    });
+                }, function (error) {
+                    console.log(error);
+                });
+            };
+
+            $scope.pendDriver = function (fleetId,driverId) {
+                return $http.post('/api/fleet/'+fleetId+'/invite/', {driver_id: driverId}).then(function (res) {
+                    console.log(res);
+                }, function (error) {
+                    console.log(error);
+                });
+            }
 
         }]
 ).service('fleetStorage', function () {
