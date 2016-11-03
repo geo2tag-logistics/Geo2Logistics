@@ -37,7 +37,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 {% block userData %}
-                    <li class="active"><a href="#">Мои автопарки</a></li>
+                    <li class="active"><a href="/myFleets/">Мои автопарки</a></li>
                     <li><a href="#">Личный кабинет</a></li>
                     {% if username %}
                         <li class="login-button"><a href="{% url 'logout' %}">Выйти ({{ username }})</a></li>
