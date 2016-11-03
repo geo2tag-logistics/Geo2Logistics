@@ -146,7 +146,7 @@ myApp.controller('driversController',[
                 return $http({
                     method: 'POST',
                     url: '/api/fleet/'+fleetId+'/invite/',
-                    data: {driver_id: driverId},
+                    data: {driver_id: driverId}
                     // TODO add csrftoken cookie
                     // headers: {
                     //     "Content-Type": "application/json;charset=utf-8",

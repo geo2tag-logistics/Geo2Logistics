@@ -60,5 +60,14 @@ textarea{
 }
 
 #sel2 {
-    width: 100px;
+    width: 300px;
+}
+
+#sel2 p {
+    text-align: center;
+}
+
+#add-driver-div {
+    width: 300px;
+    margin-left: 150px;
 }
