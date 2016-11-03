@@ -45,6 +45,7 @@ myApp.controller('RemoveFleets',[
             // TODO add csrftoken cookie
             return $http.delete('/api/fleet/'+id+'/delete/').then(function(result) {
                 $scope.fleets.splice(index, 1);
+                location.reload();
                 console.log(result);
             }, function(error) {
                 console.log(error);
