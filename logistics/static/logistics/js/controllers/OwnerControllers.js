@@ -114,7 +114,7 @@ myApp.controller('driversController',[
                     //     'X-CSRFToken': $cookies['csrftoken']
                     // }
                 }).then(function(res) {
-                    // TODO обновить список водителей, ожидающих приглашения
+                    location.reload();
                     $scope.drivers.splice(index, 1);
                     console.log(res + " dismiss "+ driver_id);
                 }, function(error) {
