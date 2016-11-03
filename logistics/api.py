@@ -153,12 +153,14 @@ class FleetInvite(APIView):
             try:
                 fleet = Fleet.objects.get(id=fleet_id)
                 if fleet in Fleet.objects.filter(owner=request.user.owner):
-                    id = form_invite.cleaned_data.get('driver_id')
-                    driver = Driver.objects.get(id=id)
-                    driver.fleets.add(fleet)
-                    driver.save()
-                    print(fleet.id, id, driver.id)
-                    return Response({"status": "ok"}, status=status.HTTP_200_OK)
+                    ids = form_invite.cleaned_data.get('driver_id')
+                    for driver_id in ids.split(sep=','):
+                        if driver_id != '':
+                            driver = Driver.objects.get(id=driver_id)
+                            driver.fleets.add(fleet)
+                            driver.save()
+                            print(fleet.id, id, driver.id)
+                            return Response({"status": "ok"}, status=status.HTTP_200_OK)
                 else:
                     return Response({"status": "error", "errors": ["Not owner of fleet"]}, status=status.HTTP_409_CONFLICT)
             except:
