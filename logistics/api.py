@@ -5,7 +5,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsOwnerOrDriverPermission
+from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
 from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm
 from .models import Fleet, Driver, Owner, DriverStats
 from .serializers import FleetSerializer, DriverSerializer
@@ -197,3 +197,107 @@ class FleetDismiss(APIView):
                 return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
         else:
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# DRIVER API
+class DriverPendingFleets(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        #GET /api/driver/pending_fleets/
+        pass
+
+    def post(self, request):
+        #POST /api/driver/pending_fleets/
+        pass
+
+
+class DriverFleets(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        #GET /api/driver/fleets/
+        pass
+
+
+class DriverFleetAvailableTrips(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request, fleet_id):
+        #GET /api/driver/fleet/<fleet_id>/available_trips/
+        pass
+
+
+class DriverAvailableTrips(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        #GET /api/driver/available_trips/
+        pass
+
+
+class DriverFleetTrips(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request, fleet_id):
+        #GET /api/driver/fleet/<fleet_id>/trips/
+        pass
+
+
+class DriverTrips(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        #GET /api/driver/trips/
+        pass
+
+
+class DriverAcceptTrip(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request, trip_id):
+        #POST /api/driver/accept_trip/<trip_id>/
+        pass
+
+
+class DriverAddTrip(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request, fleet_id):
+        #POST /api/driver/fleet/<fleet_id>/add_trip/
+        pass
+
+
+class DriverCurrentTrip(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        #GET GET /api/driver/current_trip/
+        pass
+
+
+class DriverReportProblem(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request, fleet_id):
+        #POST /api/driver/report_problem/
+        pass
+
+
+class DriverFinishTrip(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request, fleet_id):
+        #POST /api/driver/finish_trip/
+        pass

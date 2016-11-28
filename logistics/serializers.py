@@ -64,6 +64,21 @@ class DriverSerializer(serializers.ModelSerializer):
         )
 
 
+class TripSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Trip
+        fields = (
+            'id',
+            'name',
+            'description',
+            'start_date',
+            'end_date',
+            'is_finished',
+            'problem',
+        )
+
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
