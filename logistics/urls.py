@@ -36,6 +36,8 @@ urlpatterns = [
 
     # Driver API
     url(r'^api/driver/pending_fleets/$', api.DriverPendingFleets.as_view(), name='driver-pending-fleets'),
+    url(r'^api/driver/pending_fleets/accept/$', api.DriverPendingFleetsAccept.as_view(), name='driver-pf-accept'),
+    url(r'^api/driver/pending_fleets/decline/$', api.DriverPendingFleetsDecline.as_view(), name='driver-pf-decline'),
     url(r'^api/driver/fleets/$', api.DriverFleets.as_view(), name='driver-fleets'),
     url(r'^api/driver/fleet/(?P<fleet_id>[-\w]+)/available_trips/$', api.DriverFleetAvailableTrips.as_view(), name='driver-fleet-available-trips'),
     url(r'^api/driver/available_trips/$', api.DriverAvailableTrips.as_view(), name='driver-available-trips'),

@@ -210,8 +210,13 @@ class DriverPendingFleets(APIView):
         serialized_pending_fleets = FleetSerializer(pending_fleets, many=True)
         return Response(serialized_pending_fleets.data, status=status.HTTP_200_OK)
 
+
+class DriverPendingFleetsAccept(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
     def post(self, request):
-        #POST /api/driver/pending_fleets/
+        # POST /api/driver/pending_fleets/accept/
         form_pending_to_fleet = PendingFleetAddToFleet(request.data)
         if form_pending_to_fleet.is_valid():
             try:
@@ -238,6 +243,15 @@ class DriverPendingFleets(APIView):
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DriverPendingFleetsDecline(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        # POST /api/driver/pending_fleets/decline/
+        pass
 
 
 class DriverFleets(APIView):
