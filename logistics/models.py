@@ -64,7 +64,7 @@ class Trip(models.Model):
     )
     problem = models.IntegerField(choices=PROBLEM, default=1)
 
-    driver = models.ForeignKey(Driver)
+    driver = models.ForeignKey(Driver, null=True, blank=True)
     fleet = models.ForeignKey(Fleet)
 
     def __str__(self):

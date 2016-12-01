@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
-from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm
-from .models import Fleet, Driver, Owner, DriverStats
-from .serializers import FleetSerializer, DriverSerializer
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet
+from .models import Fleet, Driver, Owner, DriverStats, Trip
+from .serializers import FleetSerializer, DriverSerializer, TripSerializer
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -206,11 +206,38 @@ class DriverPendingFleets(APIView):
 
     def get(self, request):
         #GET /api/driver/pending_fleets/
-        pass
+        pending_fleets = request.user.driver.pending_fleets
+        serialized_pending_fleets = FleetSerializer(pending_fleets, many=True)
+        return Response(serialized_pending_fleets.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         #POST /api/driver/pending_fleets/
-        pass
+        form_pending_to_fleet = PendingFleetAddToFleet(request.data)
+        if form_pending_to_fleet.is_valid():
+            try:
+                fleets = request.user.driver.fleets
+                pending_fleets = request.user.driver.pending_fleets
+                print(fleets.all())
+                print(pending_fleets.all())
+                ids = form_pending_to_fleet.cleaned_data.get('fleet_id')
+                for fleet_id in ids.split(sep=','):
+                    waited_fleet = None
+                    try:
+                        waited_fleet = Fleet.objects.get(id=fleet_id)
+                        print(waited_fleet.id)
+                    except:
+                        pass
+                    if waited_fleet is not None:
+                        if waited_fleet in pending_fleets.all():
+                            fleets.add(waited_fleet)
+                            pending_fleets.remove(waited_fleet)
+                print(fleets.all())
+                print(pending_fleets.all())
+                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DriverFleets(APIView):
@@ -219,7 +246,9 @@ class DriverFleets(APIView):
 
     def get(self, request):
         #GET /api/driver/fleets/
-        pass
+        fleets = request.user.driver.fleets
+        serialized_fleets = FleetSerializer(fleets, many=True)
+        return Response(serialized_fleets.data, status=status.HTTP_200_OK)
 
 
 class DriverFleetAvailableTrips(APIView):
@@ -228,7 +257,15 @@ class DriverFleetAvailableTrips(APIView):
 
     def get(self, request, fleet_id):
         #GET /api/driver/fleet/<fleet_id>/available_trips/
-        pass
+        try:
+            fleet = Fleet.objects.get(id=fleet_id)
+        except:
+            return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        trips = Trip.objects.none()
+        if fleet in request.user.driver.fleets.all():
+            trips = Trip.objects.filter(fleet=fleet, driver=None, is_finished=False)
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
 class DriverAvailableTrips(APIView):
@@ -237,7 +274,13 @@ class DriverAvailableTrips(APIView):
 
     def get(self, request):
         #GET /api/driver/available_trips/
-        pass
+        fleets = request.user.driver.fleets
+        trips = Trip.objects.none()
+        for fleet in fleets.all():
+            trips_add = Trip.objects.filter(fleet=fleet, driver=None, is_finished=False)
+            trips = trips | trips_add
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
 class DriverFleetTrips(APIView):
@@ -246,7 +289,16 @@ class DriverFleetTrips(APIView):
 
     def get(self, request, fleet_id):
         #GET /api/driver/fleet/<fleet_id>/trips/
-        pass
+        try:
+            fleet = Fleet.objects.get(id=fleet_id)
+            print(fleet)
+        except:
+            return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+        trips = Trip.objects.none()
+        if fleet in request.user.driver.fleets.all():
+            trips = Trip.objects.filter(fleet=fleet, driver=request.user.driver)
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
 class DriverTrips(APIView):
@@ -255,7 +307,13 @@ class DriverTrips(APIView):
 
     def get(self, request):
         #GET /api/driver/trips/
-        pass
+        fleets = request.user.driver.fleets
+        trips = Trip.objects.none()
+        for fleet in fleets.all():
+            trips_add = Trip.objects.filter(fleet=fleet, driver=request.user.driver)
+            trips = trips | trips_add
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
 class DriverAcceptTrip(APIView):
