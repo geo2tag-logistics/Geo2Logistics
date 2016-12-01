@@ -25,6 +25,50 @@
                     <div class="tab-pane active" id="tab1">
                         <div class="container" id="search-fleet-bar">
                             <div class="row">
+                                <div class="buttons">
+                                    <button type="submit" class="btn btn-lg btn-primary" id="create-new-trip" data-toggle="modal" data-target="#createNewTrip">Создать поездку</button>
+                                </div>
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="createNewTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Описание поездки</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="col-xs-6 col-md-4">
+                                                    <p class="headerTit">Откуда</p>
+                                                    <p class="headerTit">Куда</p>
+                                                    <p class="headerTit">Телефон пассажира</p>
+                                                </div>
+                                                <div class="col-xs-6 col-md-4">
+                                                    <input type="text" placeholder="" class="profile-input">
+                                                    <input type="text" placeholder="" class="profile-input">
+                                                    <input type="tel" placeholder="" class="profile-input">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-xs-6 col-md-4">
+                                                    <div class="col-md-8">
+                                                        <input class="btn btn-success" type="submit" value="Создать" ng-click="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-8 col-md-6">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="row">
                                 <h3>Выбор автопарка:</h3>
                             </div>
                         </div>
@@ -199,11 +243,11 @@
                                     <p>Выбор рейса</p>
                                 </div>
                                 <div class="col-xs-6 col-sm-3">
-                                     <select class="selectpicker" multiple id="my-trips">
-                                                            <option>Таксовичкофф</option>
-                                                            <option>ЯндексТакси</option>
-                                                            <option>Uber</option>
-                                     </select>
+                                    <select class="selectpicker" multiple id="my-trips">
+                                        <option>Таксовичкофф</option>
+                                        <option>ЯндексТакси</option>
+                                        <option>Uber</option>
+                                    </select>
                                     <form action="" class="search-form">
                                         <div class="form-group has-feedback">
                                             <label for="search" class="sr-only">Search</label>
@@ -217,35 +261,35 @@
                             </div>
 
                             <div>
-                            <table id="driver-fleets-table" class="tablesorter">
-                                <thead>
-                                <tr>
-                                    <th>Дата</th>
-                                    <th>ID рейса</th>
-                                    <th>Статус</th>
-                                    <th>Описание маршрута</th>
-                                    <th>Карта</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>05.09.1992</td>
-                                    <td>123456</td>
-                                    <td>Выполнен</td>
-                                    <td>-</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>05.09.2212</td>
-                                    <td>12233</td>
-                                    <td>Не выполнен</td>
-                                    <td>-</td>
-                                    <td>No</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                <table id="driver-fleets-table" class="tablesorter">
+                                    <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>ID рейса</th>
+                                        <th>Статус</th>
+                                        <th>Описание маршрута</th>
+                                        <th>Карта</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>05.09.1992</td>
+                                        <td>123456</td>
+                                        <td>Выполнен</td>
+                                        <td>-</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>05.09.2212</td>
+                                        <td>12233</td>
+                                        <td>Не выполнен</td>
+                                        <td>-</td>
+                                        <td>No</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-                        </div>
+                            </div>
 
                         </div>
 
