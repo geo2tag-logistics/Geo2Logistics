@@ -1,3 +1,4 @@
+
 # Compiled source #
 ###################
 *.com
@@ -70,3 +71,7 @@ atlassian-ide-plugin.xml
 #Frontend
 node_modules
 *.pyc
+Geo2Logistics/__pycache__/
+logistics/__pycache__/
+logistics/migrations/__pycache__/
+db.sqlite3
