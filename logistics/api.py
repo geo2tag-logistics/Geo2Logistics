@@ -1,12 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
-from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet, DriverAddTripForm, DriverReportProblemForm
 from .models import Fleet, Driver, Owner, DriverStats, Trip
 from .serializers import FleetSerializer, DriverSerializer, TripSerializer
 
@@ -336,7 +338,40 @@ class DriverAcceptTrip(APIView):
 
     def post(self, request, trip_id):
         #POST /api/driver/accept_trip/<trip_id>/
-        pass
+        driver = request.user.driver
+        trip = get_object_or_404(Trip, id=trip_id)
+        try:
+            print(trip, trip.id, trip.fleet, trip.driver, trip.is_finished)
+            print(driver, driver.fleets.all())
+            if trip.driver == driver and trip.is_finished:
+                return Response({"status": "error", "errors": "You have already been finished this trip"},
+                                status=status.HTTP_409_CONFLICT)
+            elif trip.driver == driver:
+                # TODO Redirect to page with current trip
+                return Response({"status": "error", "errors": "It's your current trip"},
+                                status=status.HTTP_409_CONFLICT)
+            elif trip.driver is not None:
+                return Response({"status": "error", "errors": "This trip has already been accepted"},
+                                status=status.HTTP_409_CONFLICT)
+            elif trip.is_finished:
+                return Response({"status": "error", "errors": "This trip is finished but don't have a driver!!!"},
+                                status=status.HTTP_409_CONFLICT)
+            if trip.fleet not in driver.fleets.all():
+                return Response({"status": "error", "errors": "You are not a member in that fleet"},
+                                status=status.HTTP_409_CONFLICT)
+            if Trip.objects.filter(driver=driver, is_finished=False).exists():
+                # TODO Redirect to page with current trip
+                return Response({"status": "error", "errors": "You have already accepted current trip"},
+                                status=status.HTTP_409_CONFLICT)
+            # TODO Change 1 to static variable
+            if trip.problem is not 1:
+                return Response({"status": "error", "errors": "The trip has a problem"},
+                                status=status.HTTP_409_CONFLICT)
+            trip.driver = driver
+            trip.save()
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
 
 
 class DriverAddTrip(APIView):
@@ -345,7 +380,27 @@ class DriverAddTrip(APIView):
 
     def post(self, request, fleet_id):
         #POST /api/driver/fleet/<fleet_id>/add_trip/
-        pass
+        form_driver_add_trip = DriverAddTripForm(request.data)
+        if form_driver_add_trip.is_valid():
+            try:
+                fleet = get_object_or_404(Fleet, id=fleet_id)
+                print(fleet)
+                trip = form_driver_add_trip.save(commit=False)
+                trip.start_date = timezone.now()
+                # Добавить, когда водитель сможет выбирать currentTrip
+                # trip.driver = request.user.driver
+                if fleet in request.user.driver.fleets.all():
+                    trip.fleet = fleet
+                else:
+                    return Response({"status": "error", "errors": "You are not a member in that fleet"},
+                                    status=status.HTTP_409_CONFLICT)
+                trip.save()
+                print(trip.name, trip.description, trip.driver, trip.fleet, trip.start_date, trip.id)
+                return Response({"status": "ok"}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DriverCurrentTrip(APIView):
@@ -354,22 +409,58 @@ class DriverCurrentTrip(APIView):
 
     def get(self, request):
         #GET GET /api/driver/current_trip/
-        pass
+        try:
+            trip = Trip.objects.get(driver=request.user.driver, is_finished=False)
+        except:
+            return Response({"status": "error", "errors": "You have not current trip"},
+                            status=status.HTTP_409_CONFLICT)
+        print(trip, trip.id, trip.fleet)
+        try:
+            serialized_trip = TripSerializer(trip)
+            return Response(serialized_trip.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
 
 
 class DriverReportProblem(APIView):
     permission_classes = (IsDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    def post(self, request, fleet_id):
+    def post(self, request):
         #POST /api/driver/report_problem/
-        pass
+        try:
+            trip = Trip.objects.get(driver=request.user.driver, is_finished=False)
+        except:
+            return Response({"status": "error", "errors": "You have not current trip"},
+                            status=status.HTTP_409_CONFLICT)
+        form_report_problem = DriverReportProblemForm(request.data, instance=trip)
+        if form_report_problem.is_valid():
+            try:
+                print(trip.problem)
+                form_report_problem.save()
+                print(trip.problem)
+                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DriverFinishTrip(APIView):
     permission_classes = (IsDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    def post(self, request, fleet_id):
+    def post(self, request):
         #POST /api/driver/finish_trip/
-        pass
+        try:
+            trip = Trip.objects.get(driver=request.user.driver, is_finished=False)
+        except:
+            return Response({"status": "error", "errors": "You have not current trip"},
+                            status=status.HTTP_409_CONFLICT)
+        print(trip, trip.id, trip.fleet)
+        try:
+            trip.is_finished = True
+            trip.save()
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)

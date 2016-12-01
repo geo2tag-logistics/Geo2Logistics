@@ -1,5 +1,5 @@
 from django import forms
-from logistics.models import Fleet
+from logistics.models import Fleet, Trip
 
 ROLE_CHOICES = (
     ("1", "OWNER"),
@@ -38,3 +38,18 @@ class FleetInviteDismissForm(forms.Form):
 
 class PendingFleetAddToFleet(forms.Form):
     fleet_id = forms.CharField(label='Select pending fleets:', max_length=100)
+
+
+class DriverAddTripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = [
+            'name',
+            'description'
+        ]
+class DriverReportProblemForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = [
+            'problem'
+        ]
