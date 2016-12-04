@@ -27,6 +27,8 @@ def driverFleets(request):
 
 @permission_classes((IsDriverPermission, ))
 def driverProfile(request):
+    if request.user.is_authenticated:
+        return render(request, 'logistics/driver-profile.html', {'username': request.user.username})
     return render(request, 'logistics/driver-profile.html')
 
 

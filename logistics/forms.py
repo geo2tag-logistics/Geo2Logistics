@@ -47,6 +47,8 @@ class DriverAddTripForm(forms.ModelForm):
             'name',
             'description'
         ]
+
+
 class DriverReportProblemForm(forms.ModelForm):
     class Meta:
         model = Trip
