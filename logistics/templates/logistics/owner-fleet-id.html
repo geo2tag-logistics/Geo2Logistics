@@ -44,9 +44,7 @@
                 </thead>
 
 
-                {#  TODO сделать и таблицу#}
                 <tr ng-repeat="driver in getDrivers()">
-{#                    <td>{[{driver.id}]}</td>#}
                     <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                     <td>{[{ driver.first_name }]} {[{driver.last_name}]}</td>
                     <td>{[{ driver.auto_model }]}  {[{ driver.auto_manufacturer }]}</td>

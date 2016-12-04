@@ -129,13 +129,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>05.09.1992</td>
-                                    <td>123456</td>
-                                    <td>15</td>
-                                    <td>1500</td>
-                                    <td>-</td>
-                                    <td>No</td>
+                                <tr ng-repeat="trip in getTrips()">
+                                    <td>{[{trip.start_date}]}</td>
+                                    <td>{[{trip.id}]}</td>
+                                    <td>{[{trip.end_date}]}</td>
+                                    <td>{[{trip.end_position}]}</td>
+                                    <td>{[{trip.description}]}</td>
+                                    <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                                 </tr>
                                 <tr>
                                     <td>05.09.2212</td>

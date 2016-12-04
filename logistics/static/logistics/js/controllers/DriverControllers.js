@@ -36,6 +36,20 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
             document.getElementById('create-new-trip').style.display = 'block';
         }
         $scope.fleetId = fleet;
+    };
+
+    $scope.getTrips = function () {
+        console.log(123);
+        // $scope.trips = [];
+        // $http.get('/api/driver/available_trips/').then(function(result) {
+        //     console.log(result.data);
+        //     return angular.forEach(result.data, function(item) {
+        //         console.log(item);
+        //         $scope.trips.push(item);
+        //     });
+        // });
+        // return $scope.trips;
+
     }
 
 }]);
@@ -44,12 +58,9 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
 dApp.controller('createTrip',[
     '$scope', '$http', function($scope, $http) {
-        console.log(123);
         $scope.createTripClick = function () {
-            console.log(321);
-
             console.log($scope.passenger_name);
-            $http.post('/api/driver/fleet/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+            $http.post('/api/driver/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
                 console.log(res);
                 location.reload()
             }, function (err) {
@@ -59,3 +70,4 @@ dApp.controller('createTrip',[
         };
     }
 ]);
+
