@@ -75,7 +75,7 @@ class TripSerializer(serializers.ModelSerializer):
             'passenger_phone',
             'passenger_name',
             'start_position',
-            'end_position'
+            'end_position',
             'start_date',
             'end_date',
             'is_finished',
