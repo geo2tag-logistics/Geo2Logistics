@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="{% static 'logistics/themes/blue/style.css' %}">
 {% endblock %}
 
+{% block ng_app %}
+    geo2logistics
+{% endblock %}
+
+{% block ng_controller %}
+    createTrip
+{% endblock %}
+
 {% block page-title %}
     Driver fleets
 {% endblock %}
@@ -24,6 +32,16 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1">
                         <div class="container" id="search-fleet-bar">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4" id="add-driver-div" ng-controller="driverFleets">
+                                        <label for="sel2"> Выберите автопарк: </label><br>
+                                        <select name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
+                                            <option ng-repeat = "dfleet in dleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
+                                        </select><br>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="buttons">
                                     <button type="submit" class="btn btn-lg btn-primary" id="create-new-trip" data-toggle="modal" data-target="#createNewTrip">Создать поездку</button>
@@ -33,27 +51,31 @@
                                 <!-- Modal -->
                                 <div class="modal fade" id="createNewTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
+                                        <div class="modal-content" ng-app="geo2logistics" ng-controller="createTrip">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 <h4 class="modal-title" id="myModalLabel">Описание поездки</h4>
                                             </div>
-                                            <div class="modal-body">
+                                            <div class="modal-body" >
                                                 <div class="col-xs-6 col-md-4">
+                                                    <p class="headerTit">Имя пассажира</p>
+                                                    <p class="headerTit">Телефон пассажира</p>
                                                     <p class="headerTit">Откуда</p>
                                                     <p class="headerTit">Куда</p>
-                                                    <p class="headerTit">Телефон пассажира</p>
+                                                    <p class="headerTit">Описание поездки</p>
                                                 </div>
                                                 <div class="col-xs-6 col-md-4">
-                                                    <input type="text" placeholder="" class="profile-input">
-                                                    <input type="text" placeholder="" class="profile-input">
-                                                    <input type="tel" placeholder="" class="profile-input">
+                                                    <input ng-model="passenger_name" name="passenger_name" type="text" placeholder="" class="profile-input">
+                                                    <input ng-model="passenger_phone" name="passenger_phone" type="tel" placeholder="" class="profile-input">
+                                                    <input ng-model="start_position" name="start_position" type="text" placeholder="" class="profile-input">
+                                                    <input ng-model="end_position" name="end_position" type="text" placeholder="" class="profile-input">
+                                                    <input ng-model="description" name="description" type="text" placeholder="" class="profile-input">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="col-xs-6 col-md-4">
-                                                    <div class="col-md-8">
-                                                        <input class="btn btn-success" type="submit" value="Создать" ng-click="">
+                                                    <div class="col">
+                                                        <input class="btn btn-success" type="submit" value="Создать" ng-click="createTripClick()">
                                                     </div>
                                                 </div>
 
@@ -305,13 +327,8 @@
 
 {% endblock %}
 {% block script %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="{% static 'logistics/js/bootstrap.min.js' %}"></script>
-    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
-    <script src="{% static 'logistics/js/bootstrap-select.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'logistics/js/jquery-latest.js' %}"></script>
-    <script type="text/javascript" src="{% static 'logistics/js/jquery.tablesorter.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'logistics/js/my-table.js' %}"></script>
-    <script type="text/javascript" src="{% static 'logistics/js/driver-fleets.js' %}"></script>
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
+    <script src="{% static 'logistics/js/controllers/DriverControllers.js' %}"></script>
+
 {% endblock %}
