@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block ng_controller %}
-    createTrip
+    driverFleets
 {% endblock %}
 
 {% block page-title %}
@@ -34,10 +34,10 @@
                         <div class="container" id="search-fleet-bar">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-md-4" id="add-driver-div" ng-controller="driverFleets">
+                                    <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
-                                        <select name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
-                                            <option ng-repeat = "dfleet in dleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
+                                        <select ng-change="check(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
+                                            <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                         </select><br>
                                     </div>
                                 </div>

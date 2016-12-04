@@ -20,22 +20,27 @@ dApp.controller('getPendings', ['$scope', '$http', function ($scope, $http) {
 dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.showDriversFleets = function(){
-                $scope.dfleets =[];
+        $scope.dfleets =[];
 
-                return $http.get('/api/driver/fleets').then(function (res) {
-                    return angular.forEach(res.data, function(item) {
-                        console.log(item);
-                        if(!item || item == 0 || item == undefined) {
-                            document.getElementById('create-new-trip').style.display = 'block';
-                        }
-                        return $scope.dfleets.push(item);
-                    });
-                }, function (error) {
-                    console.log(error);
-                });
-            };
+        $http.get('/api/driver/fleets/').then(function (res) {
+            return angular.forEach(res.data, function(item) {
+                return $scope.dfleets.push(item);
+            });
+        }, function (error) {
+            console.log(error);
+        });
+    };
+
+    $scope.check = function (fleet) {
+        if(fleet){
+            document.getElementById('create-new-trip').style.display = 'block';
+        }
+        $scope.fleetId = fleet;
+    }
 
 }]);
+
+
 
 dApp.controller('createTrip',[
     '$scope', '$http', function($scope, $http) {
