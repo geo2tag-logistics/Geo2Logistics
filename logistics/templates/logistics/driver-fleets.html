@@ -117,8 +117,8 @@
                                         <tr>
                                             <th>Дата</th>
                                             <th>ID рейса</th>
-                                            <th>Длительность</th>
-                                            <th>Расстояние</th>
+                                            <th>Пункт A</th>
+                                            <th>Пункт B</th>
                                             <th>Описание маршрута</th>
                                             <th>Карта</th>
                                             <th>Взять</th>
@@ -126,9 +126,9 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="trip in trips">
-                                            <td>{[{trip.start_date}]}</td>
+                                            <td>{[{trip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
                                             <td>{[{trip.id}]}</td>
-                                            <td>{[{trip.end_date}]}</td>
+                                            <td>{[{trip.start_position}]}</td>
                                             <td>{[{trip.end_position}]}</td>
                                             <td>{[{trip.description}]}</td>
                                             <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>

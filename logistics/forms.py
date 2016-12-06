@@ -44,8 +44,11 @@ class DriverAddTripForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = [
-            'name',
-            'description'
+            'description',
+            'passenger_phone',
+            'passenger_name',
+            'start_position',
+            'end_position'
         ]
 
 

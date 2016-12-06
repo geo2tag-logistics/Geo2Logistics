@@ -386,6 +386,8 @@ class DriverAddTrip(APIView):
     def post(self, request, fleet_id):
         #POST /api/driver/fleet/<fleet_id>/add_trip/
         form_driver_add_trip = DriverAddTripForm(request.data)
+        print(request.data)
+        #print(form_driver_add_trip.cleaned_data)
         if form_driver_add_trip.is_valid():
             try:
                 fleet = get_object_or_404(Fleet, id=fleet_id)
@@ -394,11 +396,14 @@ class DriverAddTrip(APIView):
                 trip.start_date = timezone.now()
                 # Добавить, когда водитель сможет выбирать currentTrip
                 # trip.driver = request.user.driver
+                # TODO добавить проверку, является ли пользователь владельцем, создающим поездку
                 if fleet in request.user.driver.fleets.all():
                     trip.fleet = fleet
                 else:
                     return Response({"status": "error", "errors": "You are not a member in that fleet"},
                                     status=status.HTTP_409_CONFLICT)
+                trip.save()
+                trip.name = str(fleet.name)+"#"+str(trip.id)
                 trip.save()
                 print(trip.name, trip.description, trip.driver, trip.fleet, trip.start_date, trip.id)
                 return Response({"status": "ok"}, status=status.HTTP_201_CREATED)
