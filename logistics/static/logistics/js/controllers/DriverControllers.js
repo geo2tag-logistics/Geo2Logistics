@@ -64,7 +64,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.takeTrip = function (id) {
-        $http.post('/api/driver/accept_trip/'+id, {tip_id:id}).then(function (res) {
+        $http.post('/api/driver/accept_trip/', {trip_id:id}).then(function (res) {
             console.log(res);
             location.reload();
         }, function (err) {
@@ -72,7 +72,6 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         })
 
     }
-
 }]);
 
 
@@ -82,6 +81,41 @@ dApp.controller('createTrip',[
         $scope.createTripClick = function () {
             console.log($scope.passenger_name);
             $http.post('/api/driver/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+                console.log(res);
+                location.reload()
+            }, function (err) {
+                console.log(err);
+            })
+
+        };
+    }
+]);
+
+
+dApp.controller('currentTripController',[
+    '$scope', '$http', function($scope, $http) {
+        $scope.getCurrentTrip = function () {
+            $scope.currentTrip = [];
+            $http.get('/api/driver/current_trip/').then(function(result) {
+                return angular.forEach(result.data, function(item) {
+                    $scope.finishedTrips.push(item);
+                });
+            });
+            return $scope.currentTrip;
+        };
+
+        $scope.finishTrip = function () {
+            $http.post('/api/driver/finish_trip/', {}).then(function (res) {
+                console.log(res);
+                location.reload()
+            }, function (err) {
+                console.log(err);
+            })
+
+        };
+
+        $scope.reportTrip = function () {
+            $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
                 console.log(res);
                 location.reload()
             }, function (err) {

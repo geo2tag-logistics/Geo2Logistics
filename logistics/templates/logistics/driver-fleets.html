@@ -143,8 +143,8 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane" id="tab2">
-                        <div class="container" id="cur-trip">
+                    <div class="tab-pane" id="tab2" ng-controller="currentTripController">
+                        <div class="container" id="cur-trip" ng-init="getCurrentTrip()">
                             <div class="row">
                                 <div class="col-md-4">
                                     <p class="category">ID рейса</p>
@@ -153,12 +153,12 @@
                                     <p class="category">Длительность</p>
                                     <p class="category">Дальность</p>
                                 </div>
-                                <div class="col-md-8">
-                                    <p>ABCDF</p>
-                                    <p>02.01.2017 01:21</p>
-                                    <p>no</p>
-                                    <p>3:25</p>
-                                    <p>105.21</p>
+                                <div class="col-md-8" >
+                                    <p>{[{currentTrip.indexOf(0).id}]}</p>
+                                    <p>{[{ currentTrip.indexOf(0).start_date }]}</p>
+                                    <p>{[{currentTrip.indexOf(0).start_position}]}</p>
+                                    <p>{[{currentTrip.indexOf(0).end_date}]}</p>
+                                    <p>{[{currentTrip.indexOf(0).end_position}]}</p>
                                 </div>
                             </div>
                             <!-- Button trigger modal -->
@@ -180,7 +180,7 @@
                                                     <h4 class="modal-title" id="myModalLabel">Описание маршрута</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Подробное описание...
+                                                    {[{currentTrip.indexOf(0).description}]}
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -191,13 +191,13 @@
 
                                     <div class="buttons" >
                                         <div class="row">
-                                            <button class="btn btn-success btn-lg" id="close-trip">
+                                            <button class="btn btn-success btn-lg" id="close-trip" ng-click="finishTrip()">
                                                 Завершить рейс
                                             </button>
                                         </div>
                                     </div>
                                     <div class="buttons">
-                                        <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#trouble">
+                                        <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#trouble" NG-CLICK="reportTrip()">
                                             Сообщить о проблеме
                                         </button>
                                     </div>
