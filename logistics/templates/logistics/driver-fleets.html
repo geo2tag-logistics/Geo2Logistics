@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
-                                        <select ng-change="check(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
+                                        <select ng-change="getTrips(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
                                             <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                         </select><br>
                                     </div>
@@ -86,12 +86,9 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                             <div class="row">
-                                <h3>Выбор автопарка:</h3>
+                                <h3>Выбор поездки:</h3>
                             </div>
                         </div>
                         <div class="container">
@@ -117,7 +114,7 @@
                         </div>
 
                         <div>
-                            <table id="myTable" class="tablesorter" >
+                            <table id="myTable" class="tablesorter" ng-controller="driverFleets">
                                 <thead>
                                 <tr>
                                     <th>Дата</th>
@@ -129,21 +126,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="trip in getTrips()">
+                                <tr ng-repeat="trip in trips">
                                     <td>{[{trip.start_date}]}</td>
                                     <td>{[{trip.id}]}</td>
                                     <td>{[{trip.end_date}]}</td>
                                     <td>{[{trip.end_position}]}</td>
                                     <td>{[{trip.description}]}</td>
                                     <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
-                                </tr>
-                                <tr>
-                                    <td>05.09.2212</td>
-                                    <td>12233</td>
-                                    <td>123</td>
-                                    <td>131400</td>
-                                    <td>-</td>
-                                    <td>No</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -261,15 +250,19 @@
                         <div class="container">
                             <div class="row" id="choose-category">
                                 <div class="col-xs-6 col-sm-3">
-                                    <p>Выбор автопарка</p>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-4" id="add-driver-div">
+                                                <label for="sel2"> Выберите автопарк: </label><br>
+                                                <select ng-change="getFinishedTrips(data.getByFleet)" name="singleSelect" ng-model="data.getByFleet" class="form-control" id="sel2" ng-init="showDriversFleets()">
+                                                    <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
+                                                </select><br>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <p>Выбор рейса</p>
                                 </div>
                                 <div class="col-xs-6 col-sm-3">
-                                    <select class="selectpicker" multiple id="my-trips">
-                                        <option>Таксовичкофф</option>
-                                        <option>ЯндексТакси</option>
-                                        <option>Uber</option>
-                                    </select>
                                     <form action="" class="search-form">
                                         <div class="form-group has-feedback">
                                             <label for="search" class="sr-only">Search</label>
@@ -294,23 +287,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>05.09.1992</td>
-                                        <td>123456</td>
-                                        <td>Выполнен</td>
-                                        <td>-</td>
-                                        <td>No</td>
-                                    </tr>
-                                    <tr>
-                                        <td>05.09.2212</td>
-                                        <td>12233</td>
-                                        <td>Не выполнен</td>
-                                        <td>-</td>
-                                        <td>No</td>
+                                    <tr ng-repeat="trip in finishedTrips">
+                                        <td>{[{trip.start_date}]}</td>
+                                        <td>{[{trip.id}]}</td>
+                                        <td>{[{trip.is_finished}]}</td>
+                                        <td>{[{trip.description}]}</td>
+                                        <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                                     </tr>
                                     </tbody>
                                 </table>
-
                             </div>
 
                         </div>
