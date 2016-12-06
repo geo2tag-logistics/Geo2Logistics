@@ -55,3 +55,7 @@ class DriverReportProblemForm(forms.ModelForm):
         fields = [
             'problem'
         ]
+
+
+class DriverAcceptTripForm(forms.Form):
+    trip_id = forms.CharField(max_length=50)

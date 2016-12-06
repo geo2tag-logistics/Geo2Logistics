@@ -66,6 +66,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     $scope.takeTrip = function (id) {
         $http.post('/api/driver/accept_trip/', {trip_id:id}).then(function (res) {
             console.log(res);
+            // TODO redirect на "Текущий рейс"
             location.reload();
         }, function (err) {
             console.log(err);

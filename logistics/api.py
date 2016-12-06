@@ -8,7 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
-from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet, DriverAddTripForm, DriverReportProblemForm
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet, DriverAddTripForm, DriverReportProblemForm, \
+    DriverAcceptTripForm
 from .models import Fleet, Driver, Owner, DriverStats, Trip
 from .serializers import FleetSerializer, DriverSerializer, TripSerializer
 
@@ -336,9 +337,13 @@ class DriverAcceptTrip(APIView):
     permission_classes = (IsDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    def post(self, request, trip_id):
-        #POST /api/driver/accept_trip/<trip_id>/
+    def post(self, request):
+        #POST /api/driver/accept_trip/
         driver = request.user.driver
+        trip_id_form = DriverAcceptTripForm(request.data)
+        if not trip_id_form.is_valid():
+            return Response({"status": "trip_id_form not valid"}, status=status.HTTP_400_BAD_REQUEST)
+        trip_id = trip_id_form.cleaned_data.get('trip_id')
         trip = get_object_or_404(Trip, id=trip_id)
         try:
             print(trip, trip.id, trip.fleet, trip.driver, trip.is_finished)
