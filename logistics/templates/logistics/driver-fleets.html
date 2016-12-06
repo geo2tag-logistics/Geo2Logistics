@@ -123,6 +123,7 @@
                                     <th>Расстояние</th>
                                     <th>Описание маршрута</th>
                                     <th>Карта</th>
+                                    <th>Взять</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -133,7 +134,9 @@
                                     <td>{[{trip.end_position}]}</td>
                                     <td>{[{trip.description}]}</td>
                                     <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
+                                    <td ng-click="takeTrip(trip.id)">взять</td>
                                 </tr>
+{#                                <a href="/api/driver/accept_trip/{[{trip.id}]}/"></a>#}
                                 </tbody>
                             </table>
 
