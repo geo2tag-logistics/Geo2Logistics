@@ -125,8 +125,8 @@ tr + tr { border-top: 1px solid; }
 }
 
 .headerTit {
-    margin: 20px;
-    text-align: right;
+  margin: 20px;
+  text-align: right;
 }
 
 .modal-body {
@@ -139,5 +139,23 @@ tr + tr { border-top: 1px solid; }
 
 #create-new-trip {
   display: none;
+}
+
+.clickable-img {
+  cursor: pointer;
+}
+
+#takeTrBut {
+  margin-left: 30%;
+  margin-right: 100px;
+
+}
+
+.col p {
+  text-align: center;
+}
+
+#myTable {
+  margin-left: -50px;
 }
 

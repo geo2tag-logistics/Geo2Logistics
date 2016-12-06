@@ -71,7 +71,38 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
             console.log(err);
         })
 
-    }
+    };
+
+    $scope.refreshPendings = function () {
+        $scope.pendings = [];
+        $http.get('/api/driver/pending_fleets/').then(function(result) {
+            return angular.forEach(result.data, function(item) {
+                $scope.pendings.push(item);
+            });
+        });
+        return $scope.pendings;
+
+    };
+
+    $scope.acceptPending = function (id) {
+        $http.post('/api/driver/pending_fleets/accept/', {fleet_id:id}).then(function (res) {
+            console.log(res);
+            location.reload();
+        }, function (err) {
+            console.log(err);
+        })
+
+    };
+    $scope.declinePending = function (id) {
+        $http.post('/api/driver/pending_fleets/decline/', {fleet_id:id}).then(function (res) {
+            console.log(res);
+            location.reload();
+        }, function (err) {
+            console.log(err);
+        })
+
+    };
+
 }]);
 
 
