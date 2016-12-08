@@ -39,18 +39,52 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
 
-    $scope.getTrips = function (fleet) {
-        if(fleet){
+    $scope.saveSelection = function (fleetId) {
+        if (fleetId) {
             document.getElementById('create-new-trip').style.display = 'block';
         }
-        $scope.fleetId = fleet;
+        $scope.fleetId = fleetId;
+    };
+
+    $scope.getTrips = function () {
+        console.log($scope.fleetId);
         $scope.trips = [];
-        $http.get('/api/driver/available_trips/').then(function(result) { // можно сделать выборку по конкретному автопарку
+        $http.get('/api/driver/fleet/'+ $scope.fleetId +'/available_trips/').then(function(result) { // можно сделать выборку по конкретному автопарку
+            console.log(result.data);
             return angular.forEach(result.data, function(item) {
                 $scope.trips.push(item);
             });
         });
         return $scope.trips;
+    };
+
+    $scope.getTripsOld = function (fleetId) {
+        if (fleetId) {
+            document.getElementById('create-new-trip').style.display = 'block';
+        }
+        $scope.fleetId = fleetId;
+        console.log($scope.fleetId);
+        $scope.trips = [];
+        $http.get('/api/driver/fleet/'+ $scope.fleetId +'/available_trips/').then(function(result) { // можно сделать выборку по конкретному автопарку
+            console.log(result.data);
+            return angular.forEach(result.data, function(item) {
+                $scope.trips.push(item);
+            });
+        });
+        return $scope.trips;
+    };
+
+    $scope.getPrevTrips = function () {
+        console.log($scope.fleetId);
+        $scope.trips = [];
+        $http.get('/api/driver/fleet/'+ $scope.fleetId +'/available_trips/').then(function(result) { // можно сделать выборку по конкретному автопарку
+            console.log(result.data);
+            return angular.forEach(result.data, function(item) {
+                $scope.trips.push(item);
+            });
+        });
+        return $scope.trips;
+
     };
 
     $scope.getFinishedTrips = function(fleet) {
@@ -64,6 +98,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.takeTrip = function (id) {
+        console.log(id);
         $http.post('/api/driver/accept_trip/', {trip_id:id}).then(function (res) {
             console.log(res);
             // TODO redirect на "Текущий рейс"
@@ -71,6 +106,15 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         }, function (err) {
             console.log(err);
         })
+
+    };
+
+    $scope.haveTrip = function () {
+        if ($scope.currentTrip != null){
+            console.log($scope.currentTrip);
+
+        }
+
 
     };
 
@@ -104,58 +148,56 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     };
 
-}]);
+    $scope.createTripClick = function () {
+        console.log($scope.passenger_name);
+        $http.post('/api/driver/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+            console.log(res);
+            location.reload()
+        }, function (err) {
+            console.log(err);
+        })
 
+    };
 
+    $scope.getCurrentTrip = function () {
+        $scope.currentTrip = null;
+        $http.get('/api/driver/current_trip/').then(function(result) {
+            $scope.currentTrip = result.data;
+        }, function (err) {
+            console.log("No current trip");
+        });
+        return $scope.currentTrip;
+    };
 
-dApp.controller('createTrip',[
-    '$scope', '$http', function($scope, $http) {
-        $scope.createTripClick = function () {
-            console.log($scope.passenger_name);
-            $http.post('/api/driver/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
-                console.log(res);
-                location.reload()
-            }, function (err) {
-                console.log(err);
-            })
+    $scope.finishTrip = function () {
+        $http.post('/api/driver/finish_trip/', {}).then(function (res) {
+            console.log(res);
+            location.reload()
+        }, function (err) {
+            console.log(err);
+        })
 
-        };
-    }
-]);
+    };
 
+    $scope.changeColor = function(param){
+        if(param == 1)
+            document.getElementById('cur-trip-li').style.backgroundColor = "darkred";
 
-dApp.controller('currentTripController',[
-    '$scope', '$http', function($scope, $http) {
-        $scope.getCurrentTrip = function () {
-            $scope.currentTrip = null;
-            $http.get('/api/driver/current_trip/').then(function(result) {
-                $scope.currentTrip = result.data;
-            }, function (err) {
-                console.log("No current trip");
-            });
-            return $scope.currentTrip;
-        };
+        else
+            document.getElementById('cur-trip-li').style.backgroundColor = "white";
 
-        $scope.finishTrip = function () {
-            $http.post('/api/driver/finish_trip/', {}).then(function (res) {
-                console.log(res);
-                location.reload()
-            }, function (err) {
-                console.log(err);
-            })
+    };
 
-        };
+    $scope.reportTrip = function () {
+        console.log("report")
+        $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
+            console.log(res);
+            //location.reload()
+        }, function (err) {
+            console.log(err);
+        })
 
-        $scope.reportTrip = function () {
-            console.log("report")
-            $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
-                console.log(res);
-                //location.reload()
-            }, function (err) {
-                console.log(err);
-            })
-
-        };
-    }
+    };
+}
 ]);
 

@@ -26,7 +26,7 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">Новый рейс</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Текущий рейс</a></li>
+                    <li ><a id="cur-trip-li" href="#tab2" data-toggle="tab">Текущий рейс</a></li>
                     <li><a href="#tab3" data-toggle="tab">Мои рейсы</a></li>
                 </ul>
                 <div class="tab-content">
@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
-                                        <select ng-change="getTrips(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
+                                        <select ng-change="getTripsOld(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
                                             <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                         </select><br>
                                     </div>
@@ -51,7 +51,7 @@
                                 <!-- Modal -->
                                 <div class="modal fade" id="createNewTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <div class="modal-content" ng-app="geo2logistics" ng-controller="createTrip">
+                                        <div class="modal-content" ng-controller="driverFleets">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 <h4 class="modal-title" id="myModalLabel">Описание поездки</h4>
@@ -96,19 +96,19 @@
                                 </div>
                             </div>
                         </div>
-{#                        <div class="container">#}
-{#                            <div class="row">#}
-{#                                <div class="col-md-4">#}
-{#                                    <form action="" class="search-form">#}
-{#                                        <div class="form-group has-feedback">#}
-{#                                            <label for="search" class="sr-only">Search</label>#}
-{#                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">#}
-{#                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>#}
-{#                                        </div>#}
-{#                                    </form>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="container">#}
+                        {#                            <div class="row">#}
+                        {#                                <div class="col-md-4">#}
+                        {#                                    <form action="" class="search-form">#}
+                        {#                                        <div class="form-group has-feedback">#}
+                        {#                                            <label for="search" class="sr-only">Search</label>#}
+                        {#                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">#}
+                        {#                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>#}
+                        {#                                        </div>#}
+                        {#                                    </form>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-8">
@@ -132,12 +132,14 @@
                                             <td>{[{trip.end_position}]}</td>
                                             <td>{[{trip.description}]}</td>
                                             <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
-                                            <td data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
+{#                                            <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>#}
+
+                                            <td ng-click="haveTrip()" data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="takeTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content" ng-app="geo2logistics" ng-controller="createTrip">
+                                                    <div class="modal-content">
                                                         <div class="modal-body" style="height: 150px" >
                                                             <div class="col">
                                                                 <p>Действительно ли вы хотите взять эту поездку? {[{trip.name}]}</p>
@@ -181,13 +183,13 @@
 
 
                     </div>
-                    <div class="tab-pane" id="tab2" ng-controller="currentTripController">
+                    <div class="tab-pane" id="tab2" ng-controller="driverFleets">
                         <div class="container" id="cur-trip" ng-init="getCurrentTrip()">
                             <div ng-if="currentTrip === null ">
-                                    <p>You have no current trip</p>
+                                <p ng-init="changeColor(0)">You have no current trip</p>
                             </div>
                             <div ng-if="currentTrip !== null ">
-                                <div class="row">
+                                <div class="row" ng-init="changeColor(1)">
                                     <div class="col-md-2">
                                         <p class="category">ID рейса</p>
                                         <p class="category">Название</p>
