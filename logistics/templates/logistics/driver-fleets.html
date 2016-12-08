@@ -352,7 +352,7 @@
                                         <td>{[{trip.is_finished ? 'Завершена' : 'В процессе'}]}</td>
                                         <td>{[{trip.start_position}]}</td>
                                         <td>{[{trip.end_position}]}</td>
-                                        <td><a href="/map/"><img src="{% static 'logistics/img/taxi.png' %}" alt="map" height="35" width="auto"></a></td>
+                                        <td><a ng-href="/trip/{[{trip.id}]}/"><img src="{% static 'logistics/img/taxi.png' %}" alt="map" height="35" width="auto"></a></td>
                                     </tr>
                                     </tbody>
                                 </table>

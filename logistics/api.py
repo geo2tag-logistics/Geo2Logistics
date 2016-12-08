@@ -333,6 +333,18 @@ class DriverTrips(APIView):
         return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
+class DriverTripId(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request, trip_id):
+        #GET /api/driver/trips/
+        fleets = request.user.driver.fleets
+        trip = Trip.objects.get(id=trip_id, driver=request.user.driver)
+        serialized_trips = TripSerializer(trip)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
+
+
 class DriverAcceptTrip(APIView):
     permission_classes = (IsDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)

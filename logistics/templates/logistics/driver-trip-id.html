@@ -1,0 +1,78 @@
+{% extends 'logistics/base.html' %}
+{% load staticfiles %}
+
+{% block ng_app %}
+    geo2logistics
+{% endblock %}
+
+{% block ng_controller %}
+    tripController
+{% endblock %}
+
+{% block page-title %}
+    Trip {{ trip_id }}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'logistics/css/style-myFleets.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-tagsinput.css' %}">
+{% endblock %}
+
+{% block main-content %}
+
+    <div data-ng-controller="tripController" data-ng-init="init('{{ trip_id }}')"></div>
+
+    <div class="page-header">
+        <h1><span ng-bind="getTripName()"></span></h1>
+    </div>
+
+    <div class="container" id="cur-trip" ng-model="getTrip()">
+
+        <div ng-if="currentTrip !== null ">
+            <div class="row">
+                <div class="col-md-2">
+                    <p class="category">ID рейса</p>
+                    <p class="category">Название</p>
+                    <p class="category">Пассажир</p>
+                    <p class="category">Телефон пассажира</p>
+                    <p class="category">Дата начала</p>
+                    <p class="category">Дата окончания</p>
+                    <p class="category">Точка A</p>
+                    <p class="category">Точка B</p>
+                    <p class="category">Описание</p>
+                    <div ng-if="currentTrip.problem != 1 ">
+                        <p class="category">Проблема</p>
+                        <p class="category">Описание проблемы</p>
+                    </div>
+                </div>
+                <div class="col-md-8" >
+                    <p> '{[{currentTrip.id}]}</p>
+                    <p> '{[{currentTrip.name}]}</p>
+                    <p> '{[{currentTrip.passenger_name}]}</p>
+                    <p> '{[{currentTrip.passenger_phone}]}</p>
+                    <p> '{[{currentTrip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</p>
+                    <p> '{[{currentTrip.end_date | date:'MM/dd/yyyy @ hh:mm'}]}</p>
+                    <p> '{[{currentTrip.start_position}]}</p>
+                    <p> '{[{currentTrip.end_position}]}</p>
+                    <p> '{[{currentTrip.description}]}</p>
+                    <div ng-if="currentTrip.problem != 1 ">
+                        <p> '{[{currentTrip.problem}]}</p>
+                        <p> '{[{currentTrip.problem_description}]}</p>
+                    </div>
+                </div>
+            </div>
+                <div class="container">
+                <iframe src="https://api-maps.yandex.ru/frame/v1/-/CZg4aJm8" width="560" height="400" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
+    <script src="{% static 'logistics/js/controllers/DriverControllers.js' %}"></script>
+
+{% endblock %}

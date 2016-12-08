@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^fleet/(?P<fleet_id>[-\w]+)/$', views.ownerFleetId, name='ownerFleetId'),
     url(r'^ownerProfile/$', views.ownerProfile, name='ownerProfile'),
     url(r'^map/$', views.map, name='map'),
+    url(r'^trip/(?P<trip_id>[-\w]+)/$', views.tripId, name='tripId'),
 
     # API
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -44,6 +45,7 @@ urlpatterns = [
     url(r'^api/driver/available_trips/$', api.DriverAvailableTrips.as_view(), name='driver-available-trips'),
     url(r'^api/driver/fleet/(?P<fleet_id>[-\w]+)/trips/$', api.DriverFleetTrips.as_view(), name='driver-fleet-trips'),
     url(r'^api/driver/trips/$', api.DriverTrips.as_view(), name='driver-trips'),
+    url(r'^api/driver/trip/(?P<trip_id>[-\w]+)/$', api.DriverTripId.as_view(), name='driver-trip-id'),
     url(r'^api/driver/accept_trip/$', api.DriverAcceptTrip.as_view(), name='driver-accept-trip'),
     url(r'^api/driver/fleet/(?P<fleet_id>[-\w]+)/add_trip/$', api.DriverAddTrip.as_view(), name='driver-add-trip'),
     url(r'^api/driver/current_trip/$', api.DriverCurrentTrip.as_view(), name='driver-current-trip'),
