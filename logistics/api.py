@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
-from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, PendingFleetAddToFleet, DriverAddTripForm, DriverReportProblemForm, \
+from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, DriverPendingFleetAddDeclineForm, DriverAddTripForm, DriverReportProblemForm, \
     DriverAcceptTripForm
 from .models import Fleet, Driver, Owner, DriverStats, Trip
 from .serializers import FleetSerializer, DriverSerializer, TripSerializer
@@ -237,8 +237,8 @@ class DriverPendingFleetsAccept(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request):
-        # POST /api/driver/pending_fleets/accept/
-        form_pending_to_fleet = PendingFleetAddToFleet(request.data)
+        # POST /api/driver/pending_fleets/decline/
+        form_pending_to_fleet = DriverPendingFleetAddDeclineForm(request.data)
         if form_pending_to_fleet.is_valid():
             try:
                 fleets = request.user.driver.fleets
@@ -246,6 +246,39 @@ class DriverPendingFleetsAccept(APIView):
                 print(fleets.all())
                 print(pending_fleets.all())
                 ids = form_pending_to_fleet.cleaned_data.get('fleet_id')
+                for fleet_id in ids.split(sep=','):
+                    waited_fleet = None
+                    try:
+                        waited_fleet = Fleet.objects.get(id=fleet_id)
+                        print(waited_fleet.id)
+                    except:
+                        pass
+                    if waited_fleet is not None:
+                        if waited_fleet in pending_fleets.all():
+                            pending_fleets.remove(waited_fleet)
+                print(fleets.all())
+                print(pending_fleets.all())
+                return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DriverPendingFleetsDecline(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        # POST /api/driver/pending_fleets/decline/
+        form_pending_decline = DriverPendingFleetAddDeclineForm(request.data)
+        if form_pending_decline.is_valid():
+            try:
+                fleets = request.user.driver.fleets
+                pending_fleets = request.user.driver.pending_fleets
+                print(fleets.all())
+                print(pending_fleets.all())
+                ids = form_pending_decline.cleaned_data.get('fleet_id')
                 for fleet_id in ids.split(sep=','):
                     waited_fleet = None
                     try:
@@ -264,15 +297,6 @@ class DriverPendingFleetsAccept(APIView):
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DriverPendingFleetsDecline(APIView):
-    permission_classes = (IsDriverPermission,)
-    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
-
-    def post(self, request):
-        # POST /api/driver/pending_fleets/decline/
-        pass
 
 
 class DriverFleets(APIView):
