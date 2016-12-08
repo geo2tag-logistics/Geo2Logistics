@@ -190,10 +190,10 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.changeColor = function(param){
         if(param == 1)
-            document.getElementById('cur-trip-li').style.backgroundColor = "darkred";
+            document.getElementById('cur-trip-li').style.borderColor = "darkred";
 
         else
-            document.getElementById('cur-trip-li').style.backgroundColor = "white";
+            document.getElementById('cur-trip-li').style.borderColor = "white";
 
     };
 

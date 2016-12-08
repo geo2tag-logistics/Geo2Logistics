@@ -37,3 +37,8 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #8dbdd8;
 }
+
+#cur-trip-li {
+	border: 2px solid;
+	border-color: white;
+}
