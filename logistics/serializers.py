@@ -80,6 +80,7 @@ class TripSerializer(serializers.ModelSerializer):
             'end_date',
             'is_finished',
             'problem',
+            'problem_description'
         )
 
 

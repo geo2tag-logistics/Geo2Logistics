@@ -122,6 +122,7 @@
                                             <th>Пункт B</th>
                                             <th>Описание маршрута</th>
                                             <th>Карта</th>
+                                            <th>Взять(тест)</th>
                                             <th>Взять</th>
                                         </tr>
                                         </thead>
@@ -133,7 +134,7 @@
                                             <td>{[{trip.end_position}]}</td>
                                             <td>{[{trip.description}]}</td>
                                             <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
-{#                                            <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>#}
+                                            <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
 
                                             <td ng-click="haveTrip()" data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
 
@@ -198,14 +199,22 @@
                                         <p class="category">Точка A</p>
                                         <p class="category">Точка B</p>
                                         <p class="category">Описание</p>
+                                        <div ng-if="currentTrip.problem != 1 ">
+                                            <p class="category">Проблема</p>
+                                            <p class="category">Описание проблемы</p>
+                                        </div>
                                     </div>
                                     <div class="col-md-8" >
                                         <p>{[{currentTrip.id}]}</p>
                                         <p>{[{currentTrip.name}]}</p>
-                                        <p>{[{ currentTrip.start_date }]}</p>
+                                        <p>{[{currentTrip.start_date }]}</p>
                                         <p>{[{currentTrip.start_position}]}</p>
                                         <p>{[{currentTrip.end_position}]}</p>
                                         <p>{[{currentTrip.description}]}</p>
+                                        <div ng-if="currentTrip.problem != 1 ">
+                                            <p>{[{currentTrip.problem}]}</p>
+                                            <p>{[{currentTrip.problem_description}]}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Button trigger modal -->

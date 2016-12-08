@@ -56,7 +56,8 @@ class DriverReportProblemForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = [
-            'problem'
+            'problem',
+            'problem_description'
         ]
 
 
