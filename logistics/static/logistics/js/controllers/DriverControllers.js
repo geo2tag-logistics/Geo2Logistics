@@ -182,8 +182,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     $scope.getCurrentTrip = function () {
         $scope.currentTrip = null;
         $http.get('/api/driver/current_trip/').then(function(result) {
-                        document.getElementById('cur-trip-lili').style.display = 'block';
-
+            document.getElementById('cur-trip-lili').style.display = 'block';
             $scope.currentTrip = result.data;
         }, function (err) {
             document.getElementById('cur-trip-lili').style.display = 'none';
