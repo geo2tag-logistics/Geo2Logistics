@@ -315,21 +315,12 @@
                                             <div class="col-md-4" id="add-driver-div">
                                                 <label for="sel2"> Выберите автопарк: </label><br>
                                                 <select ng-change="getFinishedTrips(data.getByFleet)" name="singleSelect" ng-model="data.getByFleet" class="form-control" id="sel2" >
+                                                    <option ng-selected="" ng-value="-1">Все</option>
                                                     <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                                 </select><br>
                                             </div>
                                         </div>
                                     </div>
-                                    <p>Выбор рейса</p>
-                                </div>
-                                <div class="col-xs-6 col-sm-3">
-                                    <form action="" class="search-form">
-                                        <div class="form-group has-feedback">
-                                            <label for="search" class="sr-only">Search</label>
-                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">
-                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                                        </div>
-                                    </form>
                                 </div>
                                 <div class="col-xs-6 col-sm-3"></div>
                                 <div class="col-xs-6 col-sm-3"></div>
@@ -339,20 +330,22 @@
                                 <table id="driver-fleets-table" class="tablesorter">
                                     <thead>
                                     <tr>
-                                        <th>Дата</th>
                                         <th>ID рейса</th>
-                                        <th>Статус</th>
-                                        <th>Описание маршрута</th>
-                                        <th>Карта</th>
+                                        <th>Дата завершения</th>
+                                        <th>Статус завершения</th>
+                                        <th>Начальная позиция</th>
+                                        <th>Конечная позиция</th>
+                                        <th>Детали</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="trip in finishedTrips">
-                                        <td>{[{trip.start_date}]}</td>
-                                        <td>{[{trip.id}]}</td>
-                                        <td>{[{trip.is_finished}]}</td>
-                                        <td>{[{trip.description}]}</td>
-                                        <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
+                                        <td>{[{trip.name}]}</td>
+                                        <td>{[{trip.end_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
+                                        <td>{[{trip.is_finished ? 'Завершена' : 'В процессе'}]}</td>
+                                        <td>{[{trip.start_position}]}</td>
+                                        <td>{[{trip.end_position}]}</td>
+                                        <td><a href="/map/"><img src="{% static 'logistics/img/taxi.png' %}" alt="map" height="35" width="auto"></a></td>
                                     </tr>
                                     </tbody>
                                 </table>
