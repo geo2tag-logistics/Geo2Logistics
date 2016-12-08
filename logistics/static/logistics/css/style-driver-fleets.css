@@ -159,3 +159,9 @@ tr + tr { border-top: 1px solid; }
   margin-left: -50px;
 }
 
+#scroll-table {
+  width: 90%;
+  overflow: auto;
+  height: 300px;
+}
+
