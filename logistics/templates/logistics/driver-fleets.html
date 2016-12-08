@@ -140,39 +140,38 @@
                                             <th>ID рейса</th>
                                             <th>Пункт A</th>
                                             <th>Пункт B</th>
+                                            <th>Пассажир</th>
+                                            <th>Телефон</th>
                                             <th>Описание маршрута</th>
-                                            <th>Карта</th>
-                                            <th>Взять(тест)</th>
                                             <th>Взять</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="trip in trips">
                                             <td>{[{trip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
-                                            <td>{[{trip.id}]}</td>
+                                            <td>{[{trip.name}]}</td>
                                             <td>{[{trip.start_position}]}</td>
                                             <td>{[{trip.end_position}]}</td>
+                                            <td>{[{trip.passenger_name}]}</td>
+                                            <td>{[{trip.passenger_phone}]}</td>
                                             <td>{[{trip.description}]}</td>
-                                            <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                                             <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
 
-                                            <td ng-click="haveTrip()" data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
-
+{#                                            <td ng-click="haveTrip()" data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>#}
                                             <!-- Modal -->
-                                            <div class="modal fade" id="takeTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body" style="height: 150px" >
-                                                            <div class="col">
-                                                                <p>Действительно ли вы хотите взять эту поездку? {[{trip.name}]}</p>
-                                                                <button type="button" id="takeTrBut" class="btn btn-success" ng-click="takeTrip(trip.id)">Да</button>
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+{#                                            <div class="modal fade" id="takeTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
+{#                                                <div class="modal-dialog">#}
+{#                                                    <div class="modal-content">#}
+{#                                                        <div class="modal-body" style="height: 150px" >#}
+{#                                                            <div class="col">#}
+{#                                                                <p>Действительно ли вы хотите взять эту поездку? {[{trip.name}]}</p>#}
+{#                                                                <button type="button" id="takeTrBut" class="btn btn-success" ng-click="takeTrip(trip.id)">Да</button>#}
+{#                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
 
                                         </tr>
                                         </tbody>
@@ -221,31 +220,6 @@
                                 <!-- Button trigger modal -->
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="buttons">
-                                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                                Описание
-                                            </button>
-                                        </div>
-
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Описание маршрута</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        {[{currentTrip.description}]}
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <div class="buttons" >
                                             <div class="row">
                                                 <button class="btn btn-success btn-lg" id="close-trip" ng-click="finishTrip()">
@@ -258,7 +232,6 @@
                                                 Сообщить о проблеме
                                             </button>
                                         </div>
-
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="trouble" tabindex="-1" role="dialog" aria-labelledby="troubleLabel" aria-hidden="true">

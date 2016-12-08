@@ -243,21 +243,19 @@ class DriverPendingFleetsAccept(APIView):
             try:
                 fleets = request.user.driver.fleets
                 pending_fleets = request.user.driver.pending_fleets
-                print(fleets.all())
-                print(pending_fleets.all())
                 ids = form_pending_to_fleet.cleaned_data.get('fleet_id')
                 for fleet_id in ids.split(sep=','):
                     waited_fleet = None
                     try:
                         waited_fleet = Fleet.objects.get(id=fleet_id)
                         print(waited_fleet.id)
-                    except:
-                        pass
+                    except Exception as e:
+                        return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
                     if waited_fleet is not None:
                         if waited_fleet in pending_fleets.all():
                             pending_fleets.remove(waited_fleet)
-                print(fleets.all())
-                print(pending_fleets.all())
+                            fleets.add(waited_fleet)
+                print("accepted " + str(waited_fleet.id) + " by " + str(request.user.username))
                 return Response({"status": "ok"}, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
@@ -276,22 +274,18 @@ class DriverPendingFleetsDecline(APIView):
             try:
                 fleets = request.user.driver.fleets
                 pending_fleets = request.user.driver.pending_fleets
-                print(fleets.all())
-                print(pending_fleets.all())
                 ids = form_pending_decline.cleaned_data.get('fleet_id')
                 for fleet_id in ids.split(sep=','):
                     waited_fleet = None
                     try:
                         waited_fleet = Fleet.objects.get(id=fleet_id)
                         print(waited_fleet.id)
-                    except:
-                        pass
+                    except Exception as e:
+                        return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
                     if waited_fleet is not None:
                         if waited_fleet in pending_fleets.all():
-                            fleets.add(waited_fleet)
                             pending_fleets.remove(waited_fleet)
-                print(fleets.all())
-                print(pending_fleets.all())
+                print("declined " + str(waited_fleet.id) + " by " + str(request.user.username))
                 return Response({"status": "ok"}, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
