@@ -198,9 +198,10 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     };
 
-    $scope.reportTrip = function () {
+    $scope.reportTrip = function (id, desc) {
         console.log("report");
-        $http.post('/api/driver/report_problem/', {problem: 4, problem_description:"problem"}).then(function (res) {
+        console.log(id);
+        $http.post('/api/driver/report_problem/', {problem: id, problem_description:desc}).then(function (res) {
             console.log(res);
             //location.reload()
         }, function (err) {
@@ -208,6 +209,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         })
 
     };
+
 }
 ]);
 
