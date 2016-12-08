@@ -96,19 +96,19 @@
                                 </div>
                             </div>
                         </div>
-                        {#                        <div class="container">#}
-                        {#                            <div class="row">#}
-                        {#                                <div class="col-md-4">#}
-                        {#                                    <form action="" class="search-form">#}
-                        {#                                        <div class="form-group has-feedback">#}
-                        {#                                            <label for="search" class="sr-only">Search</label>#}
-                        {#                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">#}
-                        {#                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>#}
-                        {#                                        </div>#}
-                        {#                                    </form>#}
-                        {#                                </div>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
+{#                        <div class="container">#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-4">#}
+{#                                    <form action="" class="search-form">#}
+{#                                        <div class="form-group has-feedback">#}
+{#                                            <label for="search" class="sr-only">Search</label>#}
+{#                                            <input type="text" class="form-control" name="search" id="search" placeholder="search">#}
+{#                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>#}
+{#                                        </div>#}
+{#                                    </form>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-8">
@@ -132,18 +132,16 @@
                                             <td>{[{trip.end_position}]}</td>
                                             <td>{[{trip.description}]}</td>
                                             <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
-{#                                            <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>#}
-
-                                            <td ng-click="takeId(trip.id)" data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
+                                            <td data-toggle="modal" data-target="#takeTrip"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="takeTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content">
+                                                    <div class="modal-content" ng-app="geo2logistics" ng-controller="createTrip">
                                                         <div class="modal-body" style="height: 150px" >
                                                             <div class="col">
                                                                 <p>Действительно ли вы хотите взять эту поездку? {[{trip.name}]}</p>
-                                                                <button type="button" id="takeTrBut" class="btn btn-success" ng-click="takeTrip(takeTripId)">Да</button>
+                                                                <button type="button" id="takeTrBut" class="btn btn-success" ng-click="takeTrip(trip.id)">Да</button>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                                                             </div>
                                                         </div>
@@ -186,19 +184,21 @@
                     <div class="tab-pane" id="tab2" ng-controller="currentTripController">
                         <div class="container" id="cur-trip" ng-init="getCurrentTrip()">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <p class="category">ID рейса</p>
-                                    <p class="category">Дата</p>
-                                    <p class="category">Маршрут</p>
-                                    <p class="category">Длительность</p>
-                                    <p class="category">Дальность</p>
+                                    <p class="category">Название</p>
+                                    <p class="category">Дата начала</p>
+                                    <p class="category">Точка A</p>
+                                    <p class="category">Точка B</p>
+                                    <p class="category">Описание</p>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-8" >
                                     <p>{[{currentTrip.id}]}</p>
-                                    <p>{[{ currentTrip.indexOf(0).start_date }]}</p>
-                                    <p>{[{currentTrip.indexOf(0).start_position}]}</p>
-                                    <p>{[{currentTrip.indexOf(0).end_date}]}</p>
-                                    <p>{[{currentTrip.indexOf(0).end_position}]}</p>
+                                    <p>{[{currentTrip.name}]}</p>
+                                    <p>{[{ currentTrip.start_date }]}</p>
+                                    <p>{[{currentTrip.start_position}]}</p>
+                                    <p>{[{currentTrip.end_position}]}</p>
+                                    <p>{[{currentTrip.description}]}</p>
                                 </div>
                             </div>
                             <!-- Button trigger modal -->
@@ -220,7 +220,7 @@
                                                     <h4 class="modal-title" id="myModalLabel">Описание маршрута</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {[{currentTrip.indexOf(0).description}]}
+                                                    {[{currentTrip.description}]}
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -324,8 +324,7 @@
                                     <tr>
                                         <th>Дата</th>
                                         <th>ID рейса</th>
-                                        <th>Пункт A</th>
-                                        <th>Пункт B</th>
+                                        <th>Статус</th>
                                         <th>Описание маршрута</th>
                                         <th>Карта</th>
                                     </tr>
@@ -334,8 +333,7 @@
                                     <tr ng-repeat="trip in finishedTrips">
                                         <td>{[{trip.start_date}]}</td>
                                         <td>{[{trip.id}]}</td>
-                                        <td>{[{trip.start_position}]}</td>
-                                        <td>{[{trip.end_position}]}</td>
+                                        <td>{[{trip.is_finished}]}</td>
                                         <td>{[{trip.description}]}</td>
                                         <td><a href="/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                                     </tr>

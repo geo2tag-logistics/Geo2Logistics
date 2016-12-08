@@ -11,8 +11,7 @@ dApp.controller('getPendings', ['$scope', '$http', function ($scope, $http) {
     return $http.get('/api/driver/pending_fleets').then(function(result) {
         return angular.forEach(result.data, function(item) {
             console.log(item);
-            if(item)
-                return $scope.fleets.push(item);
+            return $scope.fleets.push(item);
         });
     });
 
@@ -25,8 +24,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
         $http.get('/api/driver/fleets/').then(function (res) {
             return angular.forEach(res.data, function(item) {
-                if(item)
-                    return $scope.dfleets.push(item);
+                return $scope.dfleets.push(item);
             });
         }, function (error) {
             console.log(error);
@@ -48,10 +46,8 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         $scope.fleetId = fleet;
         $scope.trips = [];
         $http.get('/api/driver/available_trips/').then(function(result) { // можно сделать выборку по конкретному автопарку
-            console.log(result.data);
             return angular.forEach(result.data, function(item) {
-                if(item)
-                    $scope.trips.push(item);
+                $scope.trips.push(item);
             });
         });
         return $scope.trips;
@@ -67,15 +63,8 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         return $scope.finishedTrips;
     };
 
-    $scope.takeId = function (id) {
-      $scope.takeTripId = id;
-        console.log($scope.takeTripId);
-    };
-
     $scope.takeTrip = function (id) {
-                console.log($scope.takeTripId);
-        console.log(id);
-        $http.post('/api/driver/accept_trip/', {trip_id:$scope.id}).then(function (res) {
+        $http.post('/api/driver/accept_trip/', {trip_id:id}).then(function (res) {
             console.log(res);
             // TODO redirect на "Текущий рейс"
             location.reload();
@@ -138,13 +127,9 @@ dApp.controller('createTrip',[
 dApp.controller('currentTripController',[
     '$scope', '$http', function($scope, $http) {
         $scope.getCurrentTrip = function () {
-            $scope.currentTrip = [];
+            $scope.currentTrip = {};
             $http.get('/api/driver/current_trip/').then(function(result) {
-                console.log(result.data);
-                return angular.forEach(result.data, function(item) {
-                    if(item)
-                        $scope.currentTrip.push(item);
-                });
+                $scope.currentTrip = result.data;
             });
             return $scope.currentTrip;
         };
@@ -160,9 +145,10 @@ dApp.controller('currentTripController',[
         };
 
         $scope.reportTrip = function () {
+            console.log("report")
             $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
                 console.log(res);
-                location.reload()
+                //location.reload()
             }, function (err) {
                 console.log(err);
             })
