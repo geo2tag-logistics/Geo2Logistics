@@ -4,9 +4,7 @@ from rest_framework.decorators import permission_classes
 from logistics.forms import SignUpForm
 from django.contrib.auth.models import User, Group
 from .models import Driver, Owner, DriverStats
-from logistics.permissions import is_driver, is_owner
-
-from logistics.permissions import IsOwnerPermission, IsDriverPermission
+from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
 
 
 @permission_classes((IsOwnerPermission, ))
@@ -20,6 +18,16 @@ def base(request):
     return render(request, 'logistics/base.html')
 
 
+@permission_classes((IsOwnerOrDriverPermission, ))
+def checkFleets(request):
+    if request.user.is_authenticated:
+        if is_driver(request.user):
+            return redirect('/driverFleets/')
+        if is_owner(request.user):
+            return redirect('/ownerFleets/')
+    return redirect('/login/')
+
+
 @permission_classes((IsDriverPermission, ))
 def driverFleets(request):
     return render(request, 'logistics/driver-fleets.html')
@@ -27,8 +35,6 @@ def driverFleets(request):
 
 @permission_classes((IsDriverPermission, ))
 def driverProfile(request):
-    if request.user.is_authenticated:
-        return render(request, 'logistics/driver-profile.html', {'username': request.user.username})
     return render(request, 'logistics/driver-profile.html')
 
 

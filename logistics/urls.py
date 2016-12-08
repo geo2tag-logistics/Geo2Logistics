@@ -8,6 +8,7 @@ urlpatterns = [
     # PAGES
     url(r'^addFleet/$', views.addFleet, name='addFleet'),
     url(r'^base/$', views.base, name='base'),
+    url(r'^checkFleets/$', views.checkFleets, name='checkFleets'),
     url(r'^driverFleets/$', views.driverFleets, name='driverFleets'),
     url(r'^driverProfile/$', views.driverProfile, name='driverProfile'),
     url(r'^reg/$', views.registration, name='registration'),
