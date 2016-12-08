@@ -127,9 +127,11 @@ dApp.controller('createTrip',[
 dApp.controller('currentTripController',[
     '$scope', '$http', function($scope, $http) {
         $scope.getCurrentTrip = function () {
-            $scope.currentTrip = {};
+            $scope.currentTrip = null;
             $http.get('/api/driver/current_trip/').then(function(result) {
                 $scope.currentTrip = result.data;
+            }, function (err) {
+                console.log("No current trip");
             });
             return $scope.currentTrip;
         };
