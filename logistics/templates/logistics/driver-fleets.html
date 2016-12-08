@@ -41,6 +41,29 @@
                                             <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                         </select><br>
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <label>Ожидают рассмотрения:</label>
+
+                                        <table id="waitTable" class="table table-striped table-hover" >
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody ng-init="refreshPendings()">
+                                            <tr id="scroll-table" ng-repeat="pend in pendings" >
+                                                <td>{[{pend.id}]}</td>
+                                                <td>{[{pend.name}]}</td>
+                                                <td ng-click="acceptPending(pend.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
+                                                <td ng-click="declinePending(pend.id)"><img class="clickable-img" src="{% static 'logistics/img/dis.png' %}" alt="dismiss"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -91,9 +114,6 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <h3>Выбор поездки:</h3>
-                                </div>
-                                <div class="col-md-4">
-                                    <h3>Ожидают рассмотрения:</h3>
                                 </div>
                             </div>
                         </div>
@@ -160,26 +180,7 @@
 
                                 </div>
 
-                                <div class="col-md-4">
-                                    <table id="waitTable" class="table table-striped table-hover" >
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Название</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="pend in pendings" ng-controller="driverFleets" ng-init="refreshPendings()">
-                                            <td>{[{pend.id}]}</td>
-                                            <td>{[{pend.name}]}</td>
-                                            <td ng-click="acceptPending(pend.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
-                                            <td ng-click="declinePending(pend.id)"><img class="clickable-img" src="{% static 'logistics/img/dis.png' %}" alt="dismiss"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+
                             </div>
                         </div>
 
@@ -326,6 +327,7 @@
                                                     <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                                 </select><br>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

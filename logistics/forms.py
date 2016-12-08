@@ -36,7 +36,7 @@ class FleetInviteDismissForm(forms.Form):
     driver_id = forms.CharField(label='Driver id', max_length=100)
 
 
-class PendingFleetAddToFleet(forms.Form):
+class DriverPendingFleetAddDeclineForm(forms.Form):
     fleet_id = forms.CharField(label='Select pending fleets:', max_length=100)
 
 
