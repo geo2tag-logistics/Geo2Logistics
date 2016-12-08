@@ -262,19 +262,26 @@
                                         <!-- Modal -->
                                         <div class="modal fade" id="trouble" tabindex="-1" role="dialog" aria-labelledby="troubleLabel" aria-hidden="true">
                                             <div class="modal-dialog">
-                                                <div class="modal-content">
+                                                <div class="modal-content" ng-controller="driverFleets">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         <h4 class="modal-title" id="troubleLabel">Описание проблемы</h4>
                                                     </div>
                                                     <div class="modal-body" id="body-trouble">
-                                                        <div class="container" id="container-trouble">
-                                                            <select class="selectpicker" multiple id="trouble-report-list">
-                                                                <option>Авария</option>
-                                                                <option>Ограбление</option>
-                                                                <option>Иное</option>
-                                                            </select>
-                                                            <textarea rows="10" id="trouble-text">
+                                                        <div class="container" id="container-trouble" >
+                                                            <div class="radio" ng-init="tripTrouble = 1">
+                                                                <label><input ng-model="tripTrouble" value="1" type="radio" name="optradio">Устранена</label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <label><input ng-model="tripTrouble" value="2" type="radio" name="optradio">Авария</label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <label><input ng-model="tripTrouble" value="3" type="radio" name="optradio">Затор</label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <label><input ng-model="tripTrouble" value="4" type="radio" name="optradio">Иное</label>
+                                                            </div>
+                                                            <textarea ng-model="troubleDesc" rows="10" id="trouble-text">
 
                                                             </textarea>
 
@@ -284,7 +291,7 @@
                                                     <div class="modal-footer">
                                                         <div class="row" id="trouble-buttons">
                                                             <div class="col-md-1">
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Отправить</button>
+                                                                <button type="button" ng-click="reportTrip(tripTrouble, troubleDesc)" class="btn btn-danger" data-dismiss="modal">Отправить</button>
 
                                                             </div>
                                                             <div class="col-md-4">
