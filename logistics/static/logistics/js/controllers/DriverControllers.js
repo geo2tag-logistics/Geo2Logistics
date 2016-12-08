@@ -127,11 +127,9 @@ dApp.controller('createTrip',[
 dApp.controller('currentTripController',[
     '$scope', '$http', function($scope, $http) {
         $scope.getCurrentTrip = function () {
-            $scope.currentTrip = [];
+            $scope.currentTrip = {};
             $http.get('/api/driver/current_trip/').then(function(result) {
-                return angular.forEach(result.data, function(item) {
-                    $scope.finishedTrips.push(item);
-                });
+                $scope.currentTrip = result.data;
             });
             return $scope.currentTrip;
         };
@@ -147,9 +145,10 @@ dApp.controller('currentTripController',[
         };
 
         $scope.reportTrip = function () {
+            console.log("report")
             $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
                 console.log(res);
-                location.reload()
+                //location.reload()
             }, function (err) {
                 console.log(err);
             })
