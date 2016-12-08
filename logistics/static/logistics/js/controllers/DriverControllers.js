@@ -198,7 +198,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.reportTrip = function () {
-        console.log("report")
+        console.log("report");
         $http.post('/api/driver/report_problem/', {problem: 4}).then(function (res) {
             console.log(res);
             //location.reload()
