@@ -21,7 +21,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.showDriversFleets = function(){
         $scope.dfleets =[];
-
+        
         $http.get('/api/driver/fleets/').then(function (res) {
             return angular.forEach(res.data, function(item) {
                 return $scope.dfleets.push(item);
@@ -29,6 +29,8 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         }, function (error) {
             console.log(error);
         });
+
+
     };
 
     $scope.check = function (fleet) {
