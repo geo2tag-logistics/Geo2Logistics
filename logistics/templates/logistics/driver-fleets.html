@@ -54,8 +54,8 @@
                                                 <th></th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr id="scroll-table" ng-repeat="pend in pendings" ng-controller="driverFleets" ng-init="refreshPendings()">
+                                            <tbody ng-init="refreshPendings()">
+                                            <tr id="scroll-table" ng-repeat="pend in pendings" >
                                                 <td>{[{pend.id}]}</td>
                                                 <td>{[{pend.name}]}</td>
                                                 <td ng-click="acceptPending(pend.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>

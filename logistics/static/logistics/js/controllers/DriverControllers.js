@@ -141,8 +141,11 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.refreshPendings = function () {
+                    console.log(123);
+
         $scope.pendings = [];
         $http.get('/api/driver/pending_fleets/').then(function(result) {
+            console.log(result.data);
             return angular.forEach(result.data, function(item) {
                 $scope.pendings.push(item);
             });
