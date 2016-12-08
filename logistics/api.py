@@ -153,25 +153,43 @@ class FleetByIdView(APIView):
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# OWNER API
 class FleetInvite(APIView):
     permission_classes = (IsOwnerPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
+    # /api/fleet/(?P<fleet_id>[-\w]+)/offer/invite/
     def post(self, request, fleet_id):
-        form_invite = FleetInviteDismissForm(request.data)
-        if form_invite.is_valid():
+        form_offer_invite = FleetInviteDismissForm(request.data)
+        if form_offer_invite.is_valid():
             try:
                 fleet = Fleet.objects.get(id=fleet_id)
                 if fleet in Fleet.objects.filter(owner=request.user.owner):
-                    ids = form_invite.cleaned_data.get('driver_id')
+                    ids = form_offer_invite.cleaned_data.get('driver_id')
+                    failed = False
+                    ids_fleet_failed = []
+                    ids_pending_failed = []
                     for driver_id in ids.split(sep=','):
                         if driver_id != '':
                             driver = Driver.objects.get(id=driver_id)
-                            driver.fleets.add(fleet)
-                            driver.save()
+                            if fleet in driver.fleets.all():
+                                ids_fleet_failed.append(driver_id)
+                                failed = True
+                            elif fleet in driver.pending_fleets.all():
+                                ids_pending_failed.append(driver_id)
+                                failed = True
+                            else:
+                                driver.pending_fleets.add(fleet)
+                                driver.save()
+                    if failed:
+                        return Response({"status": "error",
+                                         "errors": {"Drivers is already in fleet": ids_fleet_failed,
+                                                    "Drivers is already in pending fleet": ids_pending_failed}},
+                                        status=status.HTTP_409_CONFLICT)
                     return Response({"status": "ok"}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"status": "error", "errors": ["Not owner of fleet"]}, status=status.HTTP_409_CONFLICT)
+                    return Response({"status": "error", "errors": ["Not owner of fleet"]},
+                                    status=status.HTTP_409_CONFLICT)
             except Exception as e:
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
         else:
