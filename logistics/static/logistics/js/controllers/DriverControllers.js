@@ -99,12 +99,22 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.getFinishedTrips = function(fleet) {
         $scope.finishedTrips = [];
-        $http.get('/api/driver/fleet/'+fleet+'/trips/').then(function(result) {
-            return angular.forEach(result.data, function(item) {
-                $scope.finishedTrips.push(item);
+
+        if(fleet == -1) {
+            $http.get('/api/driver/trips/').then(function (result) { // можно сделать выборку по конкретному автопарку
+                return angular.forEach(result.data, function (item) {
+                    $scope.finishedTrips.push(item);
+                });
             });
-        });
-        return $scope.finishedTrips;
+        }
+        else {
+            $http.get('/api/driver/fleet/' + fleet + '/trips/').then(function (result) {
+                return angular.forEach(result.data, function (item) {
+                    $scope.finishedTrips.push(item);
+                });
+            });
+            return $scope.finishedTrips;
+        }
     };
 
     $scope.takeTrip = function (id) {

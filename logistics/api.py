@@ -470,6 +470,7 @@ class DriverFinishTrip(APIView):
         print(trip, trip.id, trip.fleet)
         try:
             trip.is_finished = True
+            trip.end_date = timezone.now()
             trip.save()
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         except Exception as e:
