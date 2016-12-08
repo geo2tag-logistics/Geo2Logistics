@@ -37,7 +37,7 @@
                                     <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
                                         <select ng-change="getTripsOld(data.singleSelect)" name="singleSelect" ng-model="data.singleSelect" class="form-control" id="sel2" ng-init="showDriversFleets()">
-                                            <option ng-selected="toBeTruthy()" ng-value="-1">Все</option>
+                                            <option ng-selected="" ng-value="-1">Все</option>
                                             <option ng-repeat = "dfleet in dfleets" ng-value="dfleet.id" >  {[{dfleet.name}]}    </option>
                                         </select><br>
                                     </div>

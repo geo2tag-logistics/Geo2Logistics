@@ -59,13 +59,13 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.getTripsOld = function (fleetId) {
-        if (fleetId) {
-            document.getElementById('create-new-trip').style.display = 'block';
-        }
+
         $scope.fleetId = fleetId;
         console.log($scope.fleetId);
         $scope.trips = [];
         if(fleetId == -1) {
+            document.getElementById('create-new-trip').style.display = 'none';
+
             $http.get('/api/driver/available_trips/').then(function (result) { // можно сделать выборку по конкретному автопарку
                 console.log(result.data);
                 return angular.forEach(result.data, function (item) {
@@ -73,6 +73,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
                 });
             });
         } else {
+            document.getElementById('create-new-trip').style.display = 'block';
             $http.get('/api/driver/fleet/' + $scope.fleetId + '/available_trips/').then(function (result) { // можно сделать выборку по конкретному автопарку
                 console.log(result.data);
                 return angular.forEach(result.data, function (item) {
