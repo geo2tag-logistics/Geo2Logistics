@@ -450,7 +450,7 @@ class DriverAcceptTrip(APIView):
 
 
 class DriverAddTrip(APIView):
-    permission_classes = (IsDriverPermission,)
+    permission_classes = (IsOwnerOrDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request, fleet_id):
