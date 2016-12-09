@@ -50,7 +50,7 @@ def ownerFleetId(request, fleet_id):
 
 @permission_classes((IsDriverPermission, ))
 def tripId(request, trip_id):
-    return render(request, 'logistics/driver-trip-id.html', {"trip_id": trip_id, "username": request.user.username})
+    return render(request, 'logistics/trip-id.html', {"trip_id": trip_id, "username": request.user.username})
 
 
 @permission_classes((IsOwnerPermission, ))

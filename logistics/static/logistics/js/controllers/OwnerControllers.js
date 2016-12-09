@@ -198,7 +198,7 @@ myApp.controller('driversController',[
 
             $scope.createTripClick = function (id) {
                 console.log(id);
-                $http.post('/api/driver/fleet/'+id+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+                $http.post('/api/fleet/'+id+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
                     console.log(res);
                     location.reload()
                 }, function (err) {

@@ -27,7 +27,7 @@
         <h1><span ng-bind="getTripName()"></span></h1>
     </div>
 
-    <div class="container" id="cur-trip" ng-model="getTrip()">
+    <div class="container" id="cur-trip" ng-value="getTrip()">
 
         <div ng-if="currentTrip !== null ">
             <div class="row">
@@ -73,6 +73,6 @@
 {% block script %}
     <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
-    <script src="{% static 'logistics/js/controllers/DriverControllers.js' %}"></script>
+    <script src="{% static 'logistics/js/controllers/OwnerDriverControllers.js' %}"></script>
 
 {% endblock %}

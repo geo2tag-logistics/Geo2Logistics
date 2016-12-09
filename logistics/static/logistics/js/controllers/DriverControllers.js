@@ -175,7 +175,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.createTripClick = function () {
         console.log($scope.passenger_name);
-        $http.post('/api/driver/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+        $http.post('/api/driver/fleet/'+$scope.fleetId+'/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
             console.log(res);
             location.reload()
         }, function (err) {
@@ -228,51 +228,3 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
 }]);
-
-dApp.controller('tripController',[
-        '$scope', '$http', 'tripStorage', function($scope, $http, tripStorage) {
-
-        $scope.init = function (_trip_id) {
-            $scope.loadTrip(_trip_id);
-        };
-
-        $scope.loadTrip = function (id) {
-            return $http.get('/api/driver/trip/'+id+'/').then(
-                function (result) {
-                    tripStorage.setTrip(result.data);
-                },
-                function (error) {
-                    console.log(error);
-                }
-            );
-        };
-
-        $scope.getTrip = function(){
-            $scope.currentTrip = tripStorage.getTrip();
-            console.log($scope.currentTrip)
-            console.log($scope.currentTrip.name)
-            return $scope.currentTrip;
-        };
-
-        $scope.getTripId = function () {
-            var trip = tripStorage.getTrip();
-            return trip != null ? trip.id : -1;
-        };
-
-        $scope.getTripName = function () {
-            var trip = tripStorage.getTrip();
-            return trip != null ? trip.name : "NoName";
-        };
-}]).service('tripStorage', function () {
-    var _trip = null;
-
-    return {
-        setTrip: function (trip) {
-            _trip = trip;
-        },
-        getTrip: function () {
-            return _trip;
-        }
-    }
-});
-

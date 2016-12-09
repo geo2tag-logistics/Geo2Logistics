@@ -391,14 +391,18 @@ class DriverTrips(APIView):
         return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
 
-class DriverTripId(APIView):
-    permission_classes = (IsDriverPermission,)
+class TripById(APIView):
+    permission_classes = (IsOwnerOrDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def get(self, request, trip_id):
         #GET /api/driver/trips/
-        fleets = request.user.driver.fleets
-        trip = Trip.objects.get(id=trip_id, driver=request.user.driver)
+        trip = get_object_or_404(Trip, id=trip_id)
+        current_user = request.user
+        if is_driver(current_user) and trip.driver!=current_user.driver:
+            return Response({"status": "error", "errors": "Not your trip"},status=status.HTTP_409_CONFLICT)
+        if is_owner(current_user) and (trip.fleet.owner!=current_user.owner):
+            return Response({"status": "error", "errors": "Not your trip"}, status=status.HTTP_409_CONFLICT)
         serialized_trips = TripSerializer(trip)
         return Response(serialized_trips.data, status=status.HTTP_200_OK)
 
@@ -449,7 +453,7 @@ class DriverAcceptTrip(APIView):
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
 
 
-class DriverAddTrip(APIView):
+class AddTrip(APIView):
     permission_classes = (IsOwnerOrDriverPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
