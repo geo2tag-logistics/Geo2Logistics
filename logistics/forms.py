@@ -40,7 +40,7 @@ class DriverPendingFleetAddDeclineForm(forms.Form):
     fleet_id = forms.CharField(label='Select pending fleets:', max_length=100)
 
 
-class DriverAddTripForm(forms.ModelForm):
+class AddTripForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = [
