@@ -32,7 +32,7 @@ h1{
 
 input.profile-input {
     display: block;
-    margin: 15px 0 15px 0;
+    margin: 20px 0 15px 0;
     width: 180px;
 }
 
@@ -75,4 +75,24 @@ textarea{
 #textarea-description {
     resize: none;
     width: 180px;
+}
+
+#add-drivers{
+    margin-bottom: 50px;
+}
+
+.row label {
+    margin-top: 20px;
+}
+.headerTit {
+  margin: 20px;
+  text-align: right;
+}
+
+.modal-body {
+  height: 310px;
+}
+
+.profile-input {
+  margin-top: 23px;
 }

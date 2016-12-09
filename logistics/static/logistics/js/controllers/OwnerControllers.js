@@ -175,7 +175,37 @@ myApp.controller('driversController',[
                 }).error(function (err) {
                     console.log(err);
                 })
-            }
+            };
+            $scope.getTrips = function (id) {
+                $scope.trips = [];
+                $http.get('/api/fleet/'+id+'/trips/unaccepted/').then(function (result) { // можно сделать выборку по конкретному автопарку
+                    return angular.forEach(result.data, function (item) {
+                        $scope.trips.push(item);
+                    });
+                });
+                return $scope.trips;
+            };
+
+            $scope.getFinishedTrips = function (id) {
+                $scope.finishedTrips = [];
+                $http.get('/api/fleet/'+id+'/trips/finished/').then(function (result) { // можно сделать выборку по конкретному автопарку
+                    return angular.forEach(result.data, function (item) {
+                        $scope.finishedTrips.push(item);
+                    });
+                });
+                return $scope.finishedTrips;
+            };
+
+            $scope.createTripClick = function (id) {
+                console.log(id);
+                $http.post('api/driver/fleet/'+id+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+                    console.log(res);
+                    location.reload()
+                }, function (err) {
+                    console.log(err);
+                })
+
+            };
 
         }]
 ).service('fleetStorage', function () {
