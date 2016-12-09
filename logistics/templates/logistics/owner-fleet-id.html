@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="{% static 'logistics/css/style-myFleets.css' %}">
     <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
     <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-tagsinput.css' %}">
-    <link rel="stylesheet" href="{% static 'logistics/themes/blue/style.css' %}">
-
 {% endblock %}
 
 {% block main-content %}
@@ -35,7 +33,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    {#                    <th>ID</th>#}
+{#                    <th>ID</th>#}
                     <th>Карта</th>
                     <th>Водитель</th>
                     <th>Машина</th>
@@ -66,77 +64,10 @@
             </table>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                {#        <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" ng-click="showPendingDrivers('{{ fleet_id }}')"> test</button>#}
-                <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" data-toggle="modal" data-target="#addDrivers">Добавить нового водителя</button>
-            </div>
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-                <button ng-click="addNewTrip()" type="submit" class="btn btn-sm btn-success" id="add-drivers">Создать поездку</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label>Свободные поездки</label>
-                <table id="myTable" class="tablesorter" ng-controller="driverFleets">
-                    <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>ID рейса</th>
-                        <th>Пункт A</th>
-                        <th>Пункт B</th>
-                        <th>Пассажир</th>
-                        <th>Телефон</th>
-                        <th>Описание маршрута</th>
-                        <th>Взять</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="trip in trips">
-                        <td>{[{trip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
-                        <td>{[{trip.name}]}</td>
-                        <td>{[{trip.start_position}]}</td>
-                        <td>{[{trip.end_position}]}</td>
-                        <td>{[{trip.passenger_name}]}</td>
-                        <td>{[{trip.passenger_phone}]}</td>
-                        <td>{[{trip.description}]}</td>
-                        <td ng-click="takeTrip(trip.id)"><img class="clickable-img" src="{% static 'logistics/img/tick.png' %}" alt="take"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <label>Завершенные поездки</label>
-
-                <table id="driver-fleets-table" class="tablesorter">
-                    <thead>
-                    <tr>
-                        <th>ID рейса</th>
-                        <th>Дата завершения</th>
-                        <th>Статус завершения</th>
-                        <th>Начальная позиция</th>
-                        <th>Конечная позиция</th>
-                        <th>Детали</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="trip in finishedTrips">
-                        <td>{[{trip.name}]}</td>
-                        <td>{[{trip.end_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
-                        <td>{[{trip.is_finished ? 'Завершена' : 'В процессе'}]}</td>
-                        <td>{[{trip.start_position}]}</td>
-                        <td>{[{trip.end_position}]}</td>
-                        <td><a ng-href="/trip/{[{trip.id}]}/"><img src="{% static 'logistics/img/taxi.png' %}" alt="map" height="35" width="auto"></a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="buttons">
+{#        <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" ng-click="showPendingDrivers('{{ fleet_id }}')"> test</button>#}
+        <button type="submit" class="btn btn-sm btn-primary" id="add-drivers" data-toggle="modal" data-target="#addDrivers">Добавить нового водителя</button>
     </div>
-
 
 
     <!-- Modal -->
@@ -147,32 +78,32 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="createNewFleetLabel">Добавление новых водителей</h4>
                 </div>
-                {#                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST"{% csrf_token %} >#}
-                <div class="modal-body" id="body-createNewFleet">
+{#                <form action="/api/fleet/{{ fleet_id }}/invite/" id="addForm" method="POST"{% csrf_token %} >#}
+                    <div class="modal-body" id="body-createNewFleet">
 
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-4" id="add-driver-div">
-                                <label for="sel2">Выберите водителей</label>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4" id="add-driver-div">
+                                    <label for="sel2">Выберите водителей</label>
 
-                                <select name="multipleSelect"  multiple ng-model="data.multipleSelect" class="form-control" id="sel2" ng-init="showPendingDrivers('{{ fleet_id }}')">
-                                    <option ng-repeat = "pdriver in pdrivers" ng-value="pdriver.id" >  {[{pdriver.first_name}]}    </option>
-                                </select>
-                                {#                                    <tt>multipleSelect = {[{ data.multipleSelect | json }]}</tt>#}
+                                    <select name="multipleSelect"  multiple ng-model="data.multipleSelect" class="form-control" id="sel2" ng-init="showPendingDrivers('{{ fleet_id }}')">
+                                        <option ng-repeat = "pdriver in pdrivers" ng-value="pdriver.id" >  {[{pdriver.first_name}]}    </option>
+                                    </select>
+{#                                    <tt>multipleSelect = {[{ data.multipleSelect | json }]}</tt>#}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row" id="creation-buttons">
+                            <div class="col-md-8">
+                                <input class="btn btn-lg btn-success" type="submit" value="Добавить" ng-click="pendDriver('{{ fleet_id }}', data.multipleSelect)">
                             </div>
                         </div>
-
                     </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div class="row" id="creation-buttons">
-                        <div class="col-md-8">
-                            <input class="btn btn-lg btn-success" type="submit" value="Добавить" ng-click="pendDriver('{{ fleet_id }}', data.multipleSelect)">
-                        </div>
-                    </div>
-                </div>
-                {#                </form>#}
+{#                </form>#}
             </div>
         </div>
     </div>
