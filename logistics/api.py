@@ -158,8 +158,8 @@ class FleetInvite(APIView):
     permission_classes = (IsOwnerPermission,)
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
-    # /api/fleet/(?P<fleet_id>[-\w]+)/offer/invite/
     def post(self, request, fleet_id):
+        # POST /api/fleet/(?P<fleet_id>[-\w]+)/invite/
         form_offer_invite = FleetInviteDismissForm(request.data)
         if form_offer_invite.is_valid():
             try:
@@ -201,6 +201,7 @@ class FleetDismiss(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request, fleet_id):
+        # POST /api/fleet/(?P<fleet_id>[-\w]+)/dismiss/
         form_dismiss = FleetInviteDismissForm(request.data)
         if form_dismiss.is_valid():
             try:
@@ -220,6 +221,30 @@ class FleetDismiss(APIView):
             return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class TripsByFleetUnaccepted(APIView):
+    permission_classes = (IsOwnerPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request, fleet_id):
+        # GET /api/fleet/(?P<fleet_id>[-\w]+)/trips/unaccepted/
+        fleet = get_object_or_404(Fleet, id=fleet_id, owner=request.user.owner)
+        trips = Trip.objects.filter(fleet=fleet, driver=None, is_finished=False)
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
+
+
+class TripsByFleetFinished(APIView):
+    permission_classes = (IsOwnerPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request, fleet_id):
+        # GET /api/fleet/(?P<fleet_id>[-\w]+)/trips/finished/
+        fleet = get_object_or_404(Fleet, id=fleet_id, owner=request.user.owner)
+        trips = Trip.objects.filter(fleet=fleet, is_finished=True)
+        serialized_trips = TripSerializer(trips, many=True)
+        return Response(serialized_trips.data, status=status.HTTP_200_OK)
+
+
 # DRIVER API
 class DriverPendingFleets(APIView):
     permission_classes = (IsDriverPermission,)
@@ -237,7 +262,7 @@ class DriverPendingFleetsAccept(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request):
-        # POST /api/driver/pending_fleets/decline/
+        # POST /api/driver/pending_fleets/accept/
         form_pending_to_fleet = DriverPendingFleetAddDeclineForm(request.data)
         if form_pending_to_fleet.is_valid():
             try:
@@ -245,7 +270,6 @@ class DriverPendingFleetsAccept(APIView):
                 pending_fleets = request.user.driver.pending_fleets
                 ids = form_pending_to_fleet.cleaned_data.get('fleet_id')
                 for fleet_id in ids.split(sep=','):
-                    waited_fleet = None
                     try:
                         waited_fleet = Fleet.objects.get(id=fleet_id)
                         print(waited_fleet.id)
@@ -255,7 +279,7 @@ class DriverPendingFleetsAccept(APIView):
                         if waited_fleet in pending_fleets.all():
                             pending_fleets.remove(waited_fleet)
                             fleets.add(waited_fleet)
-                print("accepted " + str(waited_fleet.id) + " by " + str(request.user.username))
+                    print("accepted " + str(waited_fleet.id) + " by " + str(request.user.username))
                 return Response({"status": "ok"}, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
@@ -272,11 +296,9 @@ class DriverPendingFleetsDecline(APIView):
         form_pending_decline = DriverPendingFleetAddDeclineForm(request.data)
         if form_pending_decline.is_valid():
             try:
-                fleets = request.user.driver.fleets
                 pending_fleets = request.user.driver.pending_fleets
                 ids = form_pending_decline.cleaned_data.get('fleet_id')
                 for fleet_id in ids.split(sep=','):
-                    waited_fleet = None
                     try:
                         waited_fleet = Fleet.objects.get(id=fleet_id)
                         print(waited_fleet.id)
@@ -285,7 +307,7 @@ class DriverPendingFleetsDecline(APIView):
                     if waited_fleet is not None:
                         if waited_fleet in pending_fleets.all():
                             pending_fleets.remove(waited_fleet)
-                print("declined " + str(waited_fleet.id) + " by " + str(request.user.username))
+                    print("declined " + str(waited_fleet.id) + " by " + str(request.user.username))
                 return Response({"status": "ok"}, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
@@ -313,7 +335,7 @@ class DriverFleetAvailableTrips(APIView):
         try:
             fleet = Fleet.objects.get(id=fleet_id)
         except:
-            return Response({"status": "error"}, status=status.HTTP_409_CONFLICT)
+            return Response({"status": "error"}, status=status.HTTP_404_NOT_FOUND)
         trips = Trip.objects.none()
         if fleet in request.user.driver.fleets.all():
             trips = Trip.objects.filter(fleet=fleet, driver=None, is_finished=False)

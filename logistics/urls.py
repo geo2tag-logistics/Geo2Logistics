@@ -34,6 +34,10 @@ urlpatterns = [
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/delete/$', api.FleetByIdView().as_view(), name='fleet-add'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/invite/$', api.FleetInvite().as_view(), name='drivers-by-fleet'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/dismiss/$', api.FleetDismiss().as_view(), name='drivers-by-fleet'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/trips/unaccepted/$', api.TripsByFleetUnaccepted().as_view(),
+        name='trips-by-fleet-unaccepted'),
+    url(r'^api/fleet/(?P<fleet_id>[-\w]+)/trips/finished/$', api.TripsByFleetFinished().as_view(),
+        name='trips-by-fleet-finished'),
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/$', api.FleetByIdView().as_view(), name='fleet-by-id'),
 
     # Driver API
