@@ -43,8 +43,8 @@
                     <td><a ng-href="/fleet/{[{fleet.id}]}/">{[{ fleet.name }]}</a></td>
                     <td>{[{ fleet.cars_count }]}</td>
                     <td>{[{ fleet.trips_count }]} </td>
-                    <td>{[{ fleet.creation_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
-                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Delete</button></span></td>
+                    <td>{[{ fleet.creation_date | date:'MM/dd/yyyy @ HH:mm'}]}</td>
+                    <td><span ng-controller="RemoveFleets" ng-click="fleet_delete(fleet.id)"><button class="btn btn-danger">Удалить</button></span></td>
                 </tr>
 
             </table>

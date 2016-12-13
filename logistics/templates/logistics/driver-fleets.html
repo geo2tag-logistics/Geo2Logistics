@@ -148,7 +148,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="trip in trips">
-                                            <td>{[{trip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
+                                            <td>{[{trip.start_date | date:'MM/dd/yyyy @ HH:mm'}]}</td>
                                             <td>{[{trip.name}]}</td>
                                             <td>{[{trip.start_position}]}</td>
                                             <td>{[{trip.end_position}]}</td>
@@ -207,7 +207,7 @@
                                     <div class="col-md-8" >
                                         <p>{[{currentTrip.id}]}</p>
                                         <p>{[{currentTrip.name}]}</p>
-                                        <p>{[{currentTrip.start_date | date:'MM/dd/yyyy @ hh:mm'}]}</p>
+                                        <p>{[{currentTrip.start_date | date:'MM/dd/yyyy @ HH:mm'}]}</p>
                                         <p>{[{currentTrip.start_position}]}</p>
                                         <p>{[{currentTrip.end_position}]}</p>
                                         <p>{[{currentTrip.description}]}</p>
@@ -323,7 +323,7 @@
                                     <tbody>
                                     <tr ng-repeat="trip in finishedTrips">
                                         <td>{[{trip.name}]}</td>
-                                        <td>{[{trip.end_date | date:'MM/dd/yyyy @ hh:mm'}]}</td>
+                                        <td>{[{trip.end_date | date:'MM/dd/yyyy @ HH:mm'}]}</td>
                                         <td>{[{trip.is_finished ? 'Завершена' : 'В процессе'}]}</td>
                                         <td>{[{trip.start_position}]}</td>
                                         <td>{[{trip.end_position}]}</td>

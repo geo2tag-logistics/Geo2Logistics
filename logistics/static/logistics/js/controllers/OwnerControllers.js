@@ -37,6 +37,7 @@ myApp.controller('addNewFleet',[
         };
     }
 ]);
+
 myApp.controller('RemoveFleets',[
     '$scope', '$http', function($scope, $http) {
         $scope.fleet_delete = function(id){
@@ -55,8 +56,8 @@ myApp.controller('RemoveFleets',[
     }
 ]);
 
-myApp.controller('driversController',[
-        '$scope', '$http', 'fleetStorage', function($scope, $http, fleetStorage) {
+myApp.controller('ownerFleetController',[
+        '$scope', '$http', 'driversStorage', function($scope, $http, driversStorage) {
 
             $scope.init = function (_fleet_id) {
                 $scope.loadFleet(_fleet_id);
@@ -65,7 +66,7 @@ myApp.controller('driversController',[
             $scope.loadFleet = function (id) {
                 return $http.get('/api/fleet/'+id+'/').then(
                     function(result) {
-                        fleetStorage.setFleet(result.data);
+                        driversStorage.setFleet(result.data);
                         $scope.loadDriversData();
                     },
                     function(error) {
@@ -75,19 +76,19 @@ myApp.controller('driversController',[
             };
 
             $scope.getFleetId = function () {
-                var fleet = fleetStorage.getFleet();
+                var fleet = driversStorage.getFleet();
                 return fleet != null ? fleet.id : -1;
             };
 
             $scope.getFleetName = function () {
-                var fleet = fleetStorage.getFleet();
+                var fleet = driversStorage.getFleet();
                 return fleet != null ? fleet.name : "NoName";
             };
 
             $scope.loadDriversData = function () {
                 return $http.get('/api/fleet/'+$scope.getFleetId()+'/drivers/').then(function(result) {
                     return angular.forEach(result.data, function(item) {
-                        return fleetStorage.getDrivers().push(item);
+                        return driversStorage.getDrivers().push(item);
                     });
                 },function (error){
                     console.log(error);
@@ -95,12 +96,12 @@ myApp.controller('driversController',[
             };
 
             $scope.getDrivers = function(){
-                return fleetStorage.getDrivers();
+                return driversStorage.getDrivers();
             };
 
             $scope.driver_dismiss = function(fleet_id, driver_id){
 
-                $scope.drivers = fleetStorage.getDrivers();
+                $scope.drivers = driversStorage.getDrivers();
                 var index = $scope.drivers.indexOf(driver_id);
 
                 return $http({
@@ -121,26 +122,6 @@ myApp.controller('driversController',[
                 }, function(error) {
                     console.log(error);
                 });
-
-// по идее мы не через scope работаем
-//             var drivers = fleetStorage.getDrivers();
-//             var index = drivers.indexOf(driver_id);
-//
-//             return  $http({
-//                     url: '/api/fleet/'+fleet_id+'/dismiss/',
-//                     method: 'DELETE',
-//                     data: {
-//                         driver_id: driver_id
-//                     },
-//                     headers: {
-//                         "Content-Type": "application/json;charset=utf-8"
-//                     }
-//                 }).then(function(res) {
-//                     $scope.drivers.splice(index, 1);
-//                     console.log(res + " dismiss "+ driver_id);
-//                 }, function(error) {
-//                     console.log(error);
-//                 });
             };
 
             $scope.showPendingDrivers = function(fleetId){
@@ -208,7 +189,7 @@ myApp.controller('driversController',[
             };
 
         }]
-).service('fleetStorage', function () {
+).service('driversStorage', function () {
     var _fleet = null;
     var _drivers = [];
 
@@ -228,8 +209,44 @@ myApp.controller('driversController',[
     }
 });
 
+myApp.controller('mapController',[
+        '$scope', '$http', 'fleetStorage', function($scope, $http, fleetStorage) {
 
-// Контроллер для страницы FleetOwner
-myApp.controller('FleetController', function($scope) {
+            $scope.init = function (_fleet_id) {
+                $scope.loadFleet(_fleet_id);
+            };
 
+            $scope.loadFleet = function (id) {
+                return $http.get('/api/fleet/'+id+'/').then(
+                    function(result) {
+                        fleetStorage.setFleet(result.data);
+                    },
+                    function(error) {
+                        console.log(error);
+                    }
+                );
+            };
+
+            $scope.getFleetId = function () {
+                var fleet = fleetStorage.getFleet();
+                return fleet != null ? fleet.id : -1;
+            };
+
+            $scope.getFleetName = function () {
+                var fleet = fleetStorage.getFleet();
+                return fleet != null ? fleet.name : "NoName";
+            };
+        }]
+).service('fleetStorage', function () {
+    var _fleet = null;
+    var _drivers = [];
+
+    return {
+        setFleet: function (fleet) {
+            _fleet = fleet;
+        },
+        getFleet: function () {
+            return _fleet;
+        }
+    }
 });

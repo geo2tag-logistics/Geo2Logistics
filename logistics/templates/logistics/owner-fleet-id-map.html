@@ -1,25 +1,44 @@
 {% extends 'logistics/base.html' %}
 {% load staticfiles %}
 
-{% block css %}
+{% block ng_app %}
+    geo2logistics
+{% endblock %}
 
+{% block ng_controller %}
+    mapController
 {% endblock %}
 
 {% block page-title %}
     Map {{ fleet_id }}
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'logistics/css/style-myFleets.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/css/bootstrap-tagsinput.css' %}">
+    <link rel="stylesheet" href="{% static 'logistics/themes/blue/style.css' %}">
+
+{% endblock %}
 
 {% block main-content %}
+
+    <div data-ng-controller="mapController" data-ng-init="init('{{ fleet_id }}')"></div>
+
     <div class="page-header">
-        <h1>Карта</h1>
+        <h1><span ng-bind="getFleetName()"></span></h1>
     </div>
+
     <div class="container">
-    <iframe src="https://api-maps.yandex.ru/frame/v1/-/CZg4aJm8" width="560" height="400" frameborder="0"></iframe>
+        <iframe src="https://api-maps.yandex.ru/frame/v1/-/CZg4aJm8" width="560" height="400" frameborder="0"></iframe>
     </div>
+
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
+    <script src="{% static 'logistics/js/controllers/OwnerControllers.js' %}"></script>
 
 {% endblock %}
 
