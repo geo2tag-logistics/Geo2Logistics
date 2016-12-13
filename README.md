@@ -1,4 +1,4 @@
-This project is built on Python-Django-MongoDB stack.
+This project is built on Python-Django stack.
 
 Task
 ----
@@ -8,7 +8,7 @@ https://geo2tag.atlassian.net/wiki/pages/viewpage.action?pageId=45514805
 Getting Started
 ---------------
 
-You need to download and install Python 3.5.2, PyCharm 2016 professional, MongoDB 3.2.9
+You need to download and install Python 3.5.x, PyCharm 2016 professional
 
 Then install django
 

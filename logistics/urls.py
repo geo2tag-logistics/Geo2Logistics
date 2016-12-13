@@ -6,7 +6,6 @@ from logistics import views
 urlpatterns = [
 
     # PAGES
-    url(r'^addFleet/$', views.addFleet, name='addFleet'),
     url(r'^base/$', views.base, name='base'),
     url(r'^checkFleets/$', views.checkFleets, name='checkFleets'),
     url(r'^driverFleets/$', views.driverFleets, name='driverFleets'),
@@ -16,8 +15,8 @@ urlpatterns = [
     url(r'^logout/$', views.logout_user, name='logout'),
     url(r'^myFleets/$', views.ownerFleets, name='ownerFleets'),
     url(r'^fleet/(?P<fleet_id>[-\w]+)/$', views.ownerFleetId, name='ownerFleetId'),
+    url(r'^fleet/(?P<fleet_id>[-\w]+)/map/$', views.map, name='map'),
     url(r'^ownerProfile/$', views.ownerProfile, name='ownerProfile'),
-    url(r'^map/$', views.map, name='map'),
     url(r'^trip/(?P<trip_id>[-\w]+)/$', views.tripId, name='tripId'),
 
     # API

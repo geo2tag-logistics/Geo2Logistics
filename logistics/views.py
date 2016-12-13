@@ -48,6 +48,11 @@ def ownerFleetId(request, fleet_id):
     return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id, "username": request.user.username})
 
 
+@permission_classes((IsOwnerPermission, ))
+def map(request, fleet_id):
+    return render(request, 'logistics/owner-fleet-id-map.html', {"fleet_id": fleet_id, "username": request.user.username})
+
+
 @permission_classes((IsDriverPermission, ))
 def tripId(request, trip_id):
     return render(request, 'logistics/trip-id.html', {"trip_id": trip_id, "username": request.user.username})
@@ -56,11 +61,6 @@ def tripId(request, trip_id):
 @permission_classes((IsOwnerPermission, ))
 def ownerProfile(request):
     return render(request, 'logistics/owner-profile.html')
-
-
-@permission_classes((IsOwnerPermission, ))
-def map(request):
-    return render(request, 'logistics/map.html', {'username': request.user.username})
 
 
 def home(request):

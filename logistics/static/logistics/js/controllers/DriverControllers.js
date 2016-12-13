@@ -126,6 +126,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
             // TODO redirect на "Текущий рейс"
             location.reload();
         }, function (err) {
+            alert("Невозможно принять поездку");
             console.log(err);
         })
 
@@ -175,7 +176,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
     $scope.createTripClick = function () {
         console.log($scope.passenger_name);
-        $http.post('/api/driver/fleet/'+$scope.fleetId+'/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
+        $http.post('/api/fleet/'+$scope.fleetId+'/add_trip/', {description: $scope.description, passenger_phone: $scope.passenger_phone, passenger_name: $scope.passenger_name, start_position: $scope.start_position, end_position: $scope.end_position}).then(function (res) {
             console.log(res);
             location.reload()
         }, function (err) {
