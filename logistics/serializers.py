@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from django.utils import timezone
 from rest_framework import serializers
 
 from .models import Owner, Fleet, Driver, Trip
@@ -47,6 +48,7 @@ class OwnerSerializer(serializers.ModelSerializer):
 class DriverSerializer(serializers.ModelSerializer):
     login = serializers.ReadOnlyField(source='user.username')
     email = serializers.ReadOnlyField(source='user.email')
+    is_online = serializers.SerializerMethodField()
 
     class Meta:
         model = Driver
@@ -62,6 +64,13 @@ class DriverSerializer(serializers.ModelSerializer):
             'login',
             'email'
         )
+
+    def get_is_online(self, obj):
+        if obj.last_seen is not None:
+            diff = timezone.now() - obj.last_seen
+            if diff.seconds < 2 * 60: # two minutes
+                return True
+        return False
 
 
 class TripSerializer(serializers.ModelSerializer):

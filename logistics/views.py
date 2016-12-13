@@ -139,6 +139,9 @@ def login_user(request):
                 if is_owner(request.user):
                     print("Owner")
                     return redirect('/ownerFleets/', {'username': request.user.username})
+                if user.is_superuser:
+                    print("Admin")
+                    return redirect('/admin/')
                 return redirect('/base/')
             return render(request, 'logistics/login.html', {
                 'error_login': "Your account is disabled!"
