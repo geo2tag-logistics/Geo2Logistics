@@ -250,3 +250,7 @@ myApp.controller('mapController',[
         }
     }
 });
+
+getFakeData = function(){
+    return [{id: 10, name: "Vasya", coord:[55.73, 37.75]}, {id: 10, name: "Petya", coord:[55.81, 37.75]}, {id: 10, name: "Stepan", coord:[55.73, 37.65]}];
+}

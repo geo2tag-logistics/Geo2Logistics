@@ -29,16 +29,15 @@
         <h1><span ng-bind="getFleetName()"></span></h1>
     </div>
 
-    <div class="container">
-        <iframe src="https://api-maps.yandex.ru/frame/v1/-/CZg4aJm8" width="560" height="400" frameborder="0"></iframe>
-    </div>
+    <div id="map" style="width: 600px; height: 400px"></div>
 
 {% endblock %}
 
 {% block script %}
+    <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
     <script src="{% static 'logistics/js/bower_components/angular/angular.min.js' %}"></script>
     <script src="{% static 'logistics/js/bootstrap-tagsinput.min.js' %}"></script>
     <script src="{% static 'logistics/js/controllers/OwnerControllers.js' %}"></script>
-
+    <script src="{% static 'logistics/js/controllers/YandexMap.js' %}"></script>
 {% endblock %}
 
