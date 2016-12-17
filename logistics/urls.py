@@ -52,7 +52,6 @@ urlpatterns = [
     url(r'^api/driver/current_trip/$', api.DriverCurrentTrip.as_view(), name='driver-current-trip'),
     url(r'^api/driver/report_problem/$', api.DriverReportProblem.as_view(), name='driver-report-problem'),
     url(r'^api/driver/finish_trip/$', api.DriverFinishTrip.as_view(), name='driver-finish-trip'),
-
     url(r'^api/driver/update_pos/$', api.DriverUpdatePos.as_view(), name='driver-update-pos'),
 
     # Driver&Owner API

@@ -49,6 +49,7 @@ class DriverSerializer(serializers.ModelSerializer):
     login = serializers.ReadOnlyField(source='user.username')
     email = serializers.ReadOnlyField(source='user.email')
     is_online = serializers.SerializerMethodField()
+    current_trip_fleet_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Driver
@@ -62,7 +63,8 @@ class DriverSerializer(serializers.ModelSerializer):
             'auto_model',
             'auto_manufacturer',
             'login',
-            'email'
+            'email',
+            'current_trip_fleet_id'
         )
 
     def get_is_online(self, obj):
@@ -71,6 +73,13 @@ class DriverSerializer(serializers.ModelSerializer):
             if diff.seconds < 2 * 60: # two minutes
                 return True
         return False
+
+    def get_current_trip_fleet_id(self, obj):
+        try:
+            trip = Trip.objects.get(driver=obj, is_finished=False)
+            return trip.fleet.id
+        except:
+            return -1
 
 
 class TripSerializer(serializers.ModelSerializer):

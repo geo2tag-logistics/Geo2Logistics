@@ -35,7 +35,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>Карта</th>
+                    <th>Поездка</th>
                     <th>Онлайн</th>
                     <th>Водитель</th>
                     <th>Машина</th>
@@ -45,9 +45,14 @@
                 </thead>
 
                 <tr ng-repeat="driver in getDrivers()">
-                    <td><a target="_blank" href="{{ map_url }}&current_driver={[{ driver.id }]}"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
+                    <td ng-if="driver.current_trip_fleet_id == getFleetId()">
+                        <a target="_blank" href="{{ map_url }}&current_driver={[{ driver.id }]}"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a>
+                    </td>
+                    <td ng-if="driver.current_trip_fleet_id != getFleetId()">Отсутствует</td>
+
                     <td ng-if="driver.is_online"><img src="{% static 'logistics/img/status-on.png' %}" alt="status-on" height="20" width="auto"></td>
                     <td ng-if="!driver.is_online"><img src="{% static 'logistics/img/status-off.png' %}" alt="status-off" height="20" width="auto"></td>
+
                     <td>{[{ driver.first_name }]} {[{driver.last_name}]}</td>
                     <td>{[{ driver.auto_model }]}  {[{ driver.auto_manufacturer }]}</td>
                     <td>{[{ driver.last_seen | date:'MM/dd/yyyy @ HH:mm'}]}</td>

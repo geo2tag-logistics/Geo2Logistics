@@ -68,4 +68,3 @@ class DriverAcceptTripForm(forms.Form):
 class DriverUpdatePosForm(forms.Form):
     lat = forms.CharField(max_length=10)
     lon = forms.CharField(max_length=10)
-    alt = forms.CharField(max_length=10)

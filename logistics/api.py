@@ -7,7 +7,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from logistics.Geo2TagService import updateDriverPos, deleteFleetChannel, deleteDriver
+from logistics.Geo2TagService import updateDriverPos, deleteFleetChannel, deleteDriverPos
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
 from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, DriverPendingFleetAddDeclineForm, AddTripForm, DriverReportProblemForm, \
     DriverAcceptTripForm, DriverUpdatePosForm
@@ -211,7 +211,7 @@ class FleetDismiss(APIView):
                 if fleet in Fleet.objects.filter(owner=request.user.owner):
                     id = form_dismiss.cleaned_data.get('driver_id')
                     driver = Driver.objects.get(id=id)
-                    deleteDriver(fleet, driver)
+                    deleteDriverPos(fleet, driver)
                     driver.fleets.remove(fleet)
                     driver.save()
                     print(fleet.id, id, driver.id)
@@ -538,13 +538,14 @@ class DriverFinishTrip(APIView):
         try:
             trip = Trip.objects.get(driver=request.user.driver, is_finished=False)
         except:
-            return Response({"status": "error", "errors": "You have not current trip"},
+            return Response({"status": "error", "errors": "You have no current trip"},
                             status=status.HTTP_409_CONFLICT)
         print(trip, trip.id, trip.fleet)
         try:
             trip.is_finished = True
             trip.end_date = timezone.now()
             trip.save()
+            deleteDriverPos(trip.fleet, request.user.driver)
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
@@ -557,6 +558,13 @@ class DriverUpdatePos(APIView):
     def post(self, request):
         #POST /api/driver/update_pos/
         driver = request.user.driver
+
+        try:
+            trip = Trip.objects.get(driver=driver, is_finished=False)
+        except:
+            return Response({"status": "error", "errors": "You have no current trip"},
+                            status=status.HTTP_409_CONFLICT)
+
         update_pos_form = DriverUpdatePosForm(request.data)
         if not update_pos_form.is_valid():
             return Response({"status": "update_pos_form not valid"}, status=status.HTTP_400_BAD_REQUEST)
@@ -564,7 +572,7 @@ class DriverUpdatePos(APIView):
         try:
             lat = update_pos_form.cleaned_data.get('lat')
             lon = update_pos_form.cleaned_data.get('lon')
-            alt = update_pos_form.cleaned_data.get('alt')
-            updateDriverPos(driver, lat, lon, alt)
+            updateDriverPos(trip.fleet, driver, lat, lon)
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
