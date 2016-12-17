@@ -23,6 +23,12 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
 
     $scope.showCoordinates = function(position) {
+        var reqFirst = {
+            method: 'POST',
+            url: '/api/driver/update_pos/',
+            data: { lat: position.coords.latitude, lon: position.coords.longitude }
+        };
+        $http(reqFirst).then(function(res){console.log(res.data);}, function(error){console.error(error);});
         var timeForInterval = 7000;
         var intervalID = setInterval(function () {
             if($scope.stopGeoFlag!= undefined) clearInterval(intervalID);
@@ -32,7 +38,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
                 url: '/api/driver/update_pos/',
                 data: { lat: position.coords.latitude, lon: position.coords.longitude }
             };
-            $http(req).then(function(res){console.log(res.data);}, function(error){console.log(error);});
+            $http(req).then(function(res){console.log(res.data);}, function(error){console.error(error);});
         }, timeForInterval);
 
 
@@ -42,7 +48,6 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         console.log("get coordinates");
         if (trip == null) return;
         console.log("get coordinates - have trip");
-        console.log(trip);
         $scope.watchID = navigator.geolocation.watchPosition($scope.showCoordinates, $scope.showError);
         return $scope.watchID;
     };
