@@ -7,9 +7,10 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from logistics.Geo2TagService import updateDriverPos, deleteFleetChannel, deleteDriver
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
 from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, DriverPendingFleetAddDeclineForm, AddTripForm, DriverReportProblemForm, \
-    DriverAcceptTripForm
+    DriverAcceptTripForm, DriverUpdatePosForm
 from .models import Fleet, Driver, Owner, DriverStats, Trip
 from .serializers import FleetSerializer, DriverSerializer, TripSerializer
 
@@ -147,6 +148,7 @@ class FleetByIdView(APIView):
     def delete(self, request, fleet_id):
         fleet_for_delete = Fleet.objects.get(id=fleet_id)
         if fleet_for_delete in Fleet.objects.filter(owner=request.user.owner):
+            deleteFleetChannel()
             fleet_for_delete.delete()
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         else:
@@ -209,6 +211,7 @@ class FleetDismiss(APIView):
                 if fleet in Fleet.objects.filter(owner=request.user.owner):
                     id = form_dismiss.cleaned_data.get('driver_id')
                     driver = Driver.objects.get(id=id)
+                    deleteDriver(fleet, driver)
                     driver.fleets.remove(fleet)
                     driver.save()
                     print(fleet.id, id, driver.id)
@@ -543,5 +546,25 @@ class DriverFinishTrip(APIView):
             trip.end_date = timezone.now()
             trip.save()
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+
+
+class DriverUpdatePos(APIView):
+    permission_classes = (IsDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        #POST /api/driver/update_pos/
+        driver = request.user.driver
+        update_pos_form = DriverUpdatePosForm(request.data)
+        if not update_pos_form.is_valid():
+            return Response({"status": "update_pos_form not valid"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            lat = update_pos_form.cleaned_data.get('lat')
+            lon = update_pos_form.cleaned_data.get('lon')
+            alt = update_pos_form.cleaned_data.get('alt')
+            updateDriverPos(driver, lat, lon, alt)
         except Exception as e:
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)

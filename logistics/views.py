@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from rest_framework.decorators import permission_classes
+
+from logistics.Geo2TagService import getFleetMap
 from logistics.forms import SignUpForm
 from django.contrib.auth.models import User, Group
 from .models import Driver, Owner, DriverStats
@@ -45,12 +47,12 @@ def ownerFleets(request):
 
 @permission_classes((IsOwnerPermission, ))
 def ownerFleetId(request, fleet_id):
-    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id, "username": request.user.username})
+    return render(request, 'logistics/owner-fleet-id.html', {"fleet_id": fleet_id, "map_url": getFleetMap(fleet_id), "username": request.user.username})
 
 
 @permission_classes((IsOwnerPermission, ))
 def map(request, fleet_id):
-    return render(request, 'logistics/owner-fleet-id-map.html', {"fleet_id": fleet_id, "username": request.user.username})
+    return render(request, 'logistics/owner-fleet-id-map.html', {"fleet_id": fleet_id, "map_url": getFleetMap(fleet_id), "username": request.user.username})
 
 
 @permission_classes((IsDriverPermission, ))

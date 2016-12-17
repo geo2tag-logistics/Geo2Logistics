@@ -63,3 +63,9 @@ class DriverReportProblemForm(forms.ModelForm):
 
 class DriverAcceptTripForm(forms.Form):
     trip_id = forms.CharField(max_length=50)
+
+
+class DriverUpdatePosForm(forms.Form):
+    lat = forms.CharField(max_length=10)
+    lon = forms.CharField(max_length=10)
+    alt = forms.CharField(max_length=10)

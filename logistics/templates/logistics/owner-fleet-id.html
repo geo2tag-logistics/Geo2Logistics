@@ -26,7 +26,7 @@
     <div data-ng-controller="ownerFleetController" data-ng-init="init('{{ fleet_id }}')"></div>
 
     <div class="page-header">
-        <h1><span ng-bind="getFleetName()"></span> <a href="/fleet/{{ fleet_id }}/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></h1>
+        <h1><span ng-bind="getFleetName()"></span> <a target="_blank" href="{{ map_url }}"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></h1>
     </div>
 
 
@@ -45,7 +45,7 @@
                 </thead>
 
                 <tr ng-repeat="driver in getDrivers()">
-                    <td><a href="/fleet/{{ fleet_id }}/map/"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
+                    <td><a target="_blank" href="{{ map_url }}&current_driver={[{ driver.id }]}"><img src="{% static 'logistics/img/map.png' %}" alt="map" height="35" width="auto"></a></td>
                     <td ng-if="driver.is_online"><img src="{% static 'logistics/img/status-on.png' %}" alt="status-on" height="20" width="auto"></td>
                     <td ng-if="!driver.is_online"><img src="{% static 'logistics/img/status-off.png' %}" alt="status-off" height="20" width="auto"></td>
                     <td>{[{ driver.first_name }]} {[{driver.last_name}]}</td>
