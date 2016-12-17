@@ -33,6 +33,9 @@
                     <div class="tab-pane active" id="tab1">
                         <div class="container" id="search-fleet-bar">
                             <div class="container">
+                                <div class="row" ng-init="getCurrentTrip()">
+                                    <button ng-click="getCoordinates(currentTrip)">ЖМЯК</button>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
@@ -192,7 +195,7 @@
                             </div>
                             <div ng-if="currentTrip !== null ">
                                 <div class="row" ng-init="changeColor(1)">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2" ng-init="getCoordinates(currentTrip)">
                                         <p class="category">ID рейса</p>
                                         <p class="category">Название</p>
                                         <p class="category">Дата начала</p>

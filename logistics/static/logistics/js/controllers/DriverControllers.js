@@ -18,6 +18,59 @@ dApp.controller('getPendings', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
+    //
+
+
+
+    $scope.showCoordinates = function(position) {
+        console.log(9);
+        // console.log('Широта: ' + position.coords.latitude);
+        // console.log('Долгота: ' + position.coords.longitude);
+        // send REQ
+
+        var req = {
+            method: 'POST',
+            url: '/api/driver/update_pos/',
+            data: { lat: position.coords.latitude, lon: position.coords.longitude }
+        };
+
+        $http(req).then(function(res){console.log(res.data);}, function(error){console.log(error);});
+    };
+
+    $scope.getCoordinates = function(trip) {
+        console.log("get coordinates");
+        if (trip == null) return;
+        console.log("get coordinates - have trip");
+        console.log(trip);
+        $scope.watchID = navigator.geolocation.watchPosition($scope.showCoordinates, $scope.showError);
+        return $scope.watchID;
+    };
+
+    $scope.showError = function(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.error("Пользователь запретил считывать информацию о его местоположении.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.error("Браузер не смог определить местоположение пользователя.");
+                break;
+            case error.TIMEOUT:
+                console.error("Браузер не успел определить местоположение за выделенное ему время.");
+                break;
+            case error.UNKNOWN_ERROR:
+                console.error("Произошла неопределенная ошибка.");
+                break;
+        }
+    };
+
+    $scope.stopGeo = function() {
+        if ($scope.watchID) {
+            navigator.geolocation.clearWatch($scope.watchID);
+            $scope.watchID = null;
+        }
+    };
+
+    //
 
     $scope.showDriversFleets = function(){
         $scope.dfleets =[];
@@ -123,6 +176,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         console.log(id);
         $http.post('/api/driver/accept_trip/', {trip_id:id}).then(function (res) {
             console.log(res);
+            $scope.getCoordinates(res.data);
             // TODO redirect на "Текущий рейс"
             location.reload();
         }, function (err) {
@@ -142,11 +196,8 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.refreshPendings = function () {
-                    console.log(123);
-
         $scope.pendings = [];
         $http.get('/api/driver/pending_fleets/').then(function(result) {
-            console.log(result.data);
             return angular.forEach(result.data, function(item) {
                 $scope.pendings.push(item);
             });
@@ -188,10 +239,10 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     $scope.getCurrentTrip = function () {
         $scope.currentTrip = null;
         $http.get('/api/driver/current_trip/').then(function(result) {
-            document.getElementById('cur-trip-lili').style.display = 'block';
+            // document.getElementById('cur-trip-lili').style.display = 'block';
             $scope.currentTrip = result.data;
         }, function (err) {
-            document.getElementById('cur-trip-lili').style.display = 'none';
+            // document.getElementById('cur-trip-lili').style.display = 'none';
             console.log("No current trip");
         });
         return $scope.currentTrip;
@@ -200,6 +251,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     $scope.finishTrip = function () {
         $http.post('/api/driver/finish_trip/', {}).then(function (res) {
             console.log(res);
+            $scope.stopGeo();
             location.reload()
         }, function (err) {
             console.log(err);
@@ -229,3 +281,4 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     };
 
 }]);
+
