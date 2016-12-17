@@ -23,18 +23,19 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
 
 
     $scope.showCoordinates = function(position) {
-        console.log(9);
-        // console.log('Широта: ' + position.coords.latitude);
-        // console.log('Долгота: ' + position.coords.longitude);
-        // send REQ
+        var timeForInterval = 7000;
+        var intervalID = setInterval(function () {
+            if($scope.stopGeoFlag!= undefined) clearInterval(intervalID);
+            console.log("Sending geo");
+            var req = {
+                method: 'POST',
+                url: '/api/driver/update_pos/',
+                data: { lat: position.coords.latitude, lon: position.coords.longitude }
+            };
+            $http(req).then(function(res){console.log(res.data);}, function(error){console.log(error);});
+        }, timeForInterval);
 
-        var req = {
-            method: 'POST',
-            url: '/api/driver/update_pos/',
-            data: { lat: position.coords.latitude, lon: position.coords.longitude }
-        };
 
-        $http(req).then(function(res){console.log(res.data);}, function(error){console.log(error);});
     };
 
     $scope.getCoordinates = function(trip) {
@@ -45,6 +46,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
         $scope.watchID = navigator.geolocation.watchPosition($scope.showCoordinates, $scope.showError);
         return $scope.watchID;
     };
+
 
     $scope.showError = function(error) {
         switch(error.code) {
@@ -66,6 +68,7 @@ dApp.controller('driverFleets', ['$scope', '$http', function ($scope, $http) {
     $scope.stopGeo = function() {
         if ($scope.watchID) {
             navigator.geolocation.clearWatch($scope.watchID);
+            $scope.stopGeoFlag = true;
             $scope.watchID = null;
         }
     };
