@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.shortcuts import get_object_or_404, render
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
@@ -558,6 +558,9 @@ class DriverUpdatePos(APIView):
     def post(self, request):
         #POST /api/driver/update_pos/
         driver = request.user.driver
+        if filterSpam(driver.id):
+            print("Filtered too frequent request by driver_id="+str(driver.id))
+            return Response({"status": "error", "errors": "Too frequent requests"}, status=status.HTTP_409_CONFLICT)
 
         try:
             trip = Trip.objects.get(driver=driver, is_finished=False)
@@ -576,3 +579,14 @@ class DriverUpdatePos(APIView):
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+
+
+spam_driver_dict = {}
+time_interval = 5 # 5 секунд
+def filterSpam(driver_id):
+    time_now = timezone.now()
+    last_activity = spam_driver_dict.get(driver_id, None)
+    if(last_activity is None or (time_now-last_activity).seconds >= time_interval):
+        spam_driver_dict[driver_id] = time_now
+        return False
+    return True

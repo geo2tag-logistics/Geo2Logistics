@@ -28,7 +28,7 @@ def getFleetMap(fleet_id):
     except:
         channel_id = "none"
 
-    return SERVICE_URL + "/map?latitude=59.8944&longitude=30.2642&channel=" + str(channel_id)
+    return SERVICE_URL + "/map?zoom=10&latitude=59.8944&longitude=30.2642&channel_ids=[\""+str(channel_id)+"\"]"
 
 
 # создаёт канал для автопарка, если не существует (при добавлении точки updateDriverPos)
@@ -101,20 +101,31 @@ def updateDriverPos(fleet, driver, lat, lon):
         channel_oid = getOrCreateFleetChannel(fleet)
         if channel_oid is not None:
             point_oid = points_dict.get(driver.id, None)
+
+            url = SERVICE_URL + '/point'
+            data = [{"lon": float(lat), "lat": float(lon), "alt": 1.1,
+                     "json": {"name": driver.first_name + " " + driver.last_name}, "channel_id": channel_oid}]
             if point_oid is None:
-                url = SERVICE_URL + '/point'
-                data = [{"lat":float(lat),"lon":float(lon),"alt":1.1,"json":{"driver":driver.first_name+" "+driver.last_name},"channel_id":channel_oid}]
                 request = requests.post(url, data=json.dumps(data))
-                response = json.loads(request.text)
-                point_oid = response[0]
+                point_oid = json.loads(request.text)[0]
                 points_dict[driver.id] = point_oid
                 print("added point " + str(lat) + " " + str(lon) + " for driver " + str(driver) + " in fleet " + str(fleet) + " result: "+request.text)
 
             else:
-                url = SERVICE_URL + '/point/'+point_oid
-                data = [{"lat":float(lat),"lon":float(lon)}]
-                request = requests.put(url, data=json.dumps(data))
-                print("updated point " + str(lat) + " " + str(lon) + " for driver " + str(driver) + " in fleet " + str(fleet) + " result: "+request.text)
+                # delete old
+                del_url = SERVICE_URL + '/point/' + point_oid
+                request = requests.delete(del_url)
+                success = request.text == '{}'
+                if success:
+                    points_dict.pop(driver.id)
+                    # add new
+                    request = requests.post(url, data=json.dumps(data))
+                    point_oid = json.loads(request.text)[0]
+                    points_dict[driver.id] = point_oid
+                    print("updated point " + str(lat) + " " + str(lon) + " for driver " + str(driver) + " in fleet " + str(fleet) + " result: " + request.text)
+
+                else:
+                    print("error while delete "+request.text)
 
     except Exception as e:
         print("EXCEPTION WHILE updateDriverPos: " + str(e))
@@ -127,7 +138,7 @@ def deleteDriverPos(fleet, driver):
         url = SERVICE_URL + '/point/' + point_oid
         request = requests.delete(url)
         points_dict.pop(driver.id)
-        print("dismissed driver " + str(driver) + " from fleet " + str(fleet) + " result: "+request.text)
+        print("cleared position for driver " + str(driver) + " from fleet " + str(fleet) + " result: "+request.text)
     except Exception as e:
         print("EXCEPTION WHILE deleteDriverPos: " + str(e))
 
