@@ -66,7 +66,7 @@ tr + tr { border-top: 1px solid; }
 #myTable, #driver-fleets-table{
   margin-top: 15px;
   width: 800px;
-  height: 300px;
+  height: 100px;
   border: double;
 }
 
@@ -190,4 +190,7 @@ tr + tr { border-top: 1px solid; }
 ::-webkit-scrollbar-track:hover{
     border-left: solid 1px #aaa;
     background-color: #eee;
+}
+#myTable {
+  height: 50px;
 }
