@@ -1,10 +1,14 @@
+import hashlib
 import json
+import socket
+
 import requests
 
 from logistics.models import Fleet
 
 SERVER_URL = "http://demo.geo2tag.org/instance/"
-SERVICE_NAME = "testservice"
+BASE_SERVICE_NAME = "testservice"
+SERVICE_NAME = BASE_SERVICE_NAME
 SERVICE_URL = SERVER_URL + "service/" + SERVICE_NAME
 
 channel_dict = {}
@@ -17,6 +21,10 @@ def one_time_startup():
 
 
 def createService():
+    m = hashlib.md5()
+    m.update(socket.gethostbyname(socket.getfqdn()).encode('utf-8'))
+    SERVICE_NAME = BASE_SERVICE_NAME + "_" + str(m.hexdigest())
+    print("SERVICE_NAME: "+SERVICE_NAME)
     # curl -b 'cookiefile.cookie' -X POST -d 'name=LOGISTICS&ownerId=new_test_ownerId&logSize=10' http://demo.geo2tag.org/instance/service
     pass
 
