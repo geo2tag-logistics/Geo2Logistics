@@ -58,6 +58,9 @@ urlpatterns = [
     url(r'^api/fleet/(?P<fleet_id>[-\w]+)/add_trip/$', api.AddTrip.as_view(), name='driver-add-trip'),
     url(r'^api/trip/(?P<trip_id>[-\w]+)/$', api.TripById.as_view(), name='driver-trip-id'),
 
+    # Admin API
+    url(r'^api/reload/$', api.ReloadGeo.as_view(), name='admin-restart-geo'),
+
     # default
     url(r'^', views.home, name='home'),
 ]

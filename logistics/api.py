@@ -7,7 +7,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from logistics.Geo2TagService import updateDriverPos, deleteFleetChannel, deleteDriverPos
+from logistics.Geo2TagService import updateDriverPos, deleteFleetChannel, deleteDriverPos, clearAllFleetChannels
 from logistics.permissions import is_driver, is_owner, IsOwnerPermission, IsDriverPermission, IsOwnerOrDriverPermission
 from .forms import SignUpForm, LoginForm, FleetAddForm, FleetInviteDismissForm, DriverPendingFleetAddDeclineForm, AddTripForm, DriverReportProblemForm, \
     DriverAcceptTripForm, DriverUpdatePosForm
@@ -576,6 +576,20 @@ class DriverUpdatePos(APIView):
             lat = update_pos_form.cleaned_data.get('lat')
             lon = update_pos_form.cleaned_data.get('lon')
             updateDriverPos(trip.fleet, driver, lat, lon)
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
+
+
+class ReloadGeo(APIView):
+    # TODO admin only
+    # permission_classes = (IsOwnerOrDriverPermission,)
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get(self, request):
+        # GET /api/reload/
+        try:
+            clearAllFleetChannels()
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"status": "error", "errors": [str(e)]}, status=status.HTTP_409_CONFLICT)
