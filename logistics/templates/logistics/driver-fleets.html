@@ -33,9 +33,6 @@
                     <div class="tab-pane active" id="tab1">
                         <div class="container" id="search-fleet-bar">
                             <div class="container">
-{#                                <div class="row" ng-init="getCurrentTrip()">#}
-{#                                    <button class="btn btn-lg btn-success" ng-click="getCoordinates(currentTrip)">ВЖЫК и ты на карте</button>#}
-{#                                </div>#}
                                 <div class="row">
                                     <div class="col-md-4" id="add-driver-div">
                                         <label for="sel2"> Выберите автопарк: </label><br>
@@ -297,31 +294,6 @@
                                 </div>
                                 <div class="col-xs-6 col-sm-3"></div>
                                 <div class="col-xs-6 col-sm-3"></div>
-                            </div>
-
-                            <div ng-if="data.singleSelect&&!data.getByFleet">
-                                <table id="driver-fleets-table" class="tablesorter" ng-init="getFinishedTrips(data.singleSelect)">
-                                    <thead>
-                                    <tr>
-                                        <th>ID рейса</th>
-                                        <th>Дата завершения</th>
-                                        <th>Статус завершения</th>
-                                        <th>Начальная позиция</th>
-                                        <th>Конечная позиция</th>
-                                        <th>Детали</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="trip in finishedTrips">
-                                        <td>{[{trip.name}]}</td>
-                                        <td>{[{trip.end_date | date:'MM/dd/yyyy @ HH:mm'}]}</td>
-                                        <td>{[{trip.is_finished ? 'Завершена' : 'В процессе'}]}</td>
-                                        <td>{[{trip.start_position}]}</td>
-                                        <td>{[{trip.end_position}]}</td>
-                                        <td><a ng-href="/trip/{[{trip.id}]}/"><img src="{% static 'logistics/img/taxi.png' %}" alt="map" height="35" width="auto"></a></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
                             </div>
 
                             <div ng-if="data.getByFleet">
