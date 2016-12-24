@@ -1,80 +1,51 @@
-This project is built on Python-Django stack.
+Проект выполняется с помощью следующих технологий:
+--------------------------------------------------
+Backend:<BR>
+* Python 3.5
+* Django v1.10.1
 
-Task
+Frontend:<BR>
+* HTML5/СSS3
+* Bootstrap3
+* AngularJS 
+
+Задача
 ----
+Разработка логистического сервиса, предназначенного для владельцев автопарков и таксистов.
 
-https://geo2tag.atlassian.net/wiki/pages/viewpage.action?pageId=45514805
+Возможности использования приложения
+------------------
+В первую очередь, неоходимо произвести предварительную настройку
+* Владелец создаёт в системе новый автопарк
+* Владелец приглашает в созданный автопарк водителя
+* Водитель принимает приглашение
 
-Getting Started
----------------
+Выполнение рейсов происходит следующим образом
+* Владельцу автопарка поступает заявка, и он создаёт в системе новый рейс
+* Рейс принимается одним из водителей, состоящих в автопарке
+* В случае неожиданных обстоятельств, которые мешают выполнить рейс, водитель нажимает кнопку "Сообщить о проблеме".
+* Водитель завершает рейс, и затем в любое время может посмотреть информацию о выполненных рейсам во вкладке "Мои рейсы"
+* Владелец автопарка также может посмотреть информацию обо всех выполненных водителями рейсах
 
-You need to download and install Python 3.5.x, PyCharm 2016 professional
-
-Then install django
-
-```
-pip install django
-```
-
+Отображение метоположения водителей на карте
+* После принятия рейса водителем и до завершения, его местоположение через определённые промежутки времени передаётся на сервер
+* Владелец автопарка может открыть карту, на которой отображается текущее местоположение всех водителей, состоящих в автопарке и выполняющих рейс
 
 Deployment
 ----------
-Install required libraries.
-```
-pip install -r /path/to/requirements.txt
-```
+[Инструкция](https://github.com/geo2tag-logistics/Geo2Logistics/wiki/%D0%9A%D0%B0%D0%BA-%D1%80%D0%B0%D0%B7%D0%B2%D0%B5%D1%80%D0%BD%D1%83%D1%82%D1%8C-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-(%D0%BC%D0%B0%D0%BD%D1%83%D0%B0%D0%BB))
 
-After cloning you should be able to run this as a django application. You can
-run it via your IDE or from the command line.
+Для корректной передачи местоположения на сервер необходимо развёртывать приложение по проколу https.
 
-Run manage.py to manage application. The tool can be fetched from Tools -> Run manage.py Task
-
-1. Make migrations if models were changed
-
-```
-makemigrations
-```
-
-2. Migrate database if needed
-
-```
-migrate
-```
-
-3. Start server
-
-```
-runserver
-```
-
-To create admin and get access to admin tool you should type
-
-```
-createsuperuser
-```
-Default admin username/password pair created is: admin/adminadmin
-
-Initial Endpoints
------------------
-
-You should be able to visit the following endpoints on your new running
-instance..
-
-Login page.
+Страница логина.
 
     http://127.0.0.1:8000/
 
 Django Admin tool.
 
     http://127.0.0.1:8000/admin/
-
-References
-----------
-
-Helpful links
-
-[https://habrahabr.ru/post/240463/](https://habrahabr.ru/post/240463/) <BR>
-[http://jsman.ru/mongo-book/](http://jsman.ru/mongo-book/) <BR>
-[https://docs.djangoproject.com/en/1.10/](https://docs.djangoproject.com/en/1.10/) <BR>
-[https://www.youtube.com/watch?v=IZqBTPmxoew](https://www.youtube.com/watch?v=IZqBTPmxoew) <BR>
-[http://geo2tag.org/?tag=geo2tag_seminars&lang=ru_RU](http://geo2tag.org/?tag=geo2tag_seminars&lang=ru_RU)
+ 
+Для создания учётной записи администратора необходимо ввести команду через manage.py
+```
+createsuperuser
+```
